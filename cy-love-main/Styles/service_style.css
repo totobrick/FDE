@@ -1,0 +1,307 @@
+.wrapper{
+    background: transparent;
+}
+
+.subscription-area{
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    margin-left: calc( max(15%, 100px) + 5%);
+        /*  1. marge en bas du cadre : 20px
+            2. account_icon_bar :   width: 15%;
+                                    min-width: 100px;
+            => marge à gauche : max(15%, 100px).
+            on ajoute 5% à gauche et à droite ici (plus beau)
+        */
+    width: calc(100% - max(15%, 100px) - 2 * 5%);
+    min-width: 210px;
+    /*border: 3px dashed violet;*/
+}
+
+.subscription-area .top{
+    display: flex;
+    justify-content: center; /*center horizontally*/
+    align-items: center; /*center vertically*/
+    margin-bottom: 20px;
+    transition: .3s ease;
+    /*border: 1px solid white;*/
+}
+
+.subscription-area .top .top-info{
+    display: block;
+    /*  ajustement pour que la largeur de .top-info soit toujours égale à :
+            la largeur de .free-block + celle de .sub-block + l'espace séparant ces 2 blocs
+    */
+    max-width: 100%;
+    width: calc(2 * 40% + 20% / 3);
+    padding: 20px 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50vh; /*50% de la hauteur de l'écran : pour avoir un arc de cercle de part et d'autre du cadre*/
+    transition: .3s ease;
+    /*border: 1px solid palegreen;*/
+}
+.subscription-area .top .top-info p{
+    font-size: 1em;
+    text-align: center;
+    color:#ffffff;
+    line-height: 100%;
+    margin: 0% 15%;
+    transition: .3s ease;
+}
+.subscription-area .top .top-info p i{
+    font-size: 0.7em;
+}
+
+.subscription-infos{
+    display: flex;
+    justify-content: space-evenly; /*horizontally*/
+    align-items: center; /*center vertically*/
+    height: 350px;
+    width: 100%;
+    transition: .3s ease;
+    /*border: 1px solid yellow;*/
+}
+
+.free-block, .sub-block{
+    display: flex;
+    flex-direction: column;
+    border-radius: 35px 35px 0 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px); /*blur : flou*/
+    width: 40%; /*20em*/
+    min-width: 100px;/*300px*/
+    max-width: 400px;/*400px*/
+    height: 100%; /*30em*/
+    transition: .3s ease;
+}
+
+.top-free-block, .top-sub-block{
+    display: flex;
+    position: absolute;
+    justify-content: center; /*center vertically*/
+    align-items: center; /*center horizontally*/
+    width: 100%;
+    height: 80px;
+    border-radius: 35px 35px 0 0;
+    transition: .3s ease;
+}
+.top-free-block{
+    background-color: grey;
+}
+.top-sub-block{
+    background-color: #ffb6cb;
+}
+
+.top-free-block p, .top-sub-block p{
+    font-size: 24px;
+    transition: .3s ease;
+    /*border: 1px solid black;*/
+}
+.top-free-block p{
+    color: black;
+}
+.top-sub-block p{
+    color: #ffffff;
+}
+
+.free-block-content, .sub-block-content{
+    display: flex;
+    justify-content: center; /*center vertically*/
+    align-items: center; /*center horizontally*/
+    margin-top: 80px;
+    width: 100%;
+    height: 220px;  /*  hauteur .chat-area : 350px
+                        hauteur .top-free-block et .top-sub-block : 80px
+                        350px - 80px - 220px = 50px restant pour le bouton de soumision
+                    */
+    align-items: center;
+    justify-content: center;
+    /*border: 1px solid blue;*/
+}
+
+.free-block-content .text-free-block, .sub-block-content .text-sub-block{
+    display: block;
+    text-align: left;
+    line-height: 2.5;
+    font-size: 16px;
+    transition: .3s ease;
+    /*border: 1px solid black;*/
+}
+/*
+.free-block-content .text-free-block table, .sub-block-content .text-sub-block table{
+    border: 1px solid black;
+}
+*/
+/*
+.free-block-content .text-free-block table td, .sub-block-content .text-sub-block table td{
+    border: 1px solid green;
+}
+*/
+
+
+.free-block form, .sub-block form{
+    display: flex;
+    justify-content: center; /*center horizontally*/
+    align-items: center; /*center vertically*/
+    width: 100%;
+    height: calc(350px - 80px - 220px); /*  hauteur .chat-area : 350px
+                                            hauteur .top-free-block et .top-sub-block : 80px
+                                            hauteur .text-free-block et .text-sub-block : 220px
+                                        */
+    /*border: 1px solid orange;*/
+}
+.free-block-btn, .sub-block-btn {
+    display: flex;
+    align-items: center; /*center vertically*/
+    justify-content: center; /*center horizontally*/
+    text-align: center;
+    font-size: 16px;
+    border-radius: 100px;
+    color: black;
+    cursor: pointer;
+    padding: 7px 20px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    border: none;
+    transition: .3s ease;
+    /*border: 3px solid orangered;*/
+}
+.free-block-btn{
+    background-color: grey;
+}
+.sub-block-btn {
+    background-color: #ffb6cb;
+}
+
+.free-block-btn:hover, .sub-block-btn:hover {
+    transform: scale(1.05) rotate(-3deg);
+}
+
+.free-block-btn .emoji, .sub-block-btn .emoji {
+    display: flex;
+    align-items: center; /*center vertically*/
+    justify-content: center; /*center horizontally*/
+    text-align: center;
+    transition: .3s ease;
+    /*border: 1px solid blue;*/
+}
+
+@media (max-width: 700px){
+    .subscription-infos{
+        height: 300px;
+    }
+    .top-free-block, .top-sub-block{
+        height: 70px;
+    }
+    .free-block-content, .sub-block-content{
+        margin-top: 70px;
+    }
+    .free-block-content .text-free-block, .sub-block-content .text-sub-block{
+        font-size: 15px;
+        line-height: 2.0;
+    }
+    .free-block-btn, .sub-block-btn {
+        font-size: 15px;
+        padding: 7px 20px;
+    }
+}
+@media (max-width: 650px){
+    .subscription-area .top .top-info{
+        padding: 15px 0;
+    }
+    .free-block, .sub-block{
+        width: 43%;
+    }
+}
+@media (max-width: 600px){
+    .subscription-area .top .top-info{
+        padding: 12px 0;
+    }
+    .free-block, .sub-block{
+        width: 45%;
+    }
+}
+@media (max-width: 575px){
+    .subscription-area .top .top-info{
+        padding: 10px 0;
+    }
+    .free-block-content .text-free-block, .sub-block-content .text-sub-block{
+        line-height: 1.5;
+    }
+}
+@media (max-width: 550px){
+    .free-block-btn, .sub-block-btn {
+        padding: 5px 12px;
+    }
+}
+@media (max-width: 500px){
+    .subscription-infos{
+        display: flex;
+        justify-content: space-between; /*horizontally*/
+    }
+    .subscription-area .top .top-info{
+        border-radius: 35px;
+    }
+    .top-free-block, .top-sub-block{
+        height: 60px;
+    }
+    .free-block-content, .sub-block-content{
+        margin-top: 60px;
+    }
+    .top-free-block p, .top-sub-block p{
+        font-size: 20px;
+    }
+    .free-block-content .text-free-block, .sub-block-content .text-sub-block{
+        font-size: 14px;
+    }
+    .free-block-btn, .sub-block-btn {
+        font-size: 14px;
+        padding: 7px 20px;
+    }
+    .free-block-btn .emoji, .sub-block-btn .emoji {
+        display: none;
+    }
+}
+@media (max-width: 450px){
+    .free-block, .sub-block{
+        border-radius: 25px 25px 0 0;
+    }
+    .top-free-block, .top-sub-block{
+        border-radius: 25px 25px 0 0;
+    }
+    .free-block-btn, .sub-block-btn {
+        padding: 7px 14px;
+    }
+    .free-block-content .text-free-block, .sub-block-content .text-sub-block{
+        line-height: 1.3;
+    }
+}
+@media (max-width: 400px){
+    .free-block, .sub-block{
+        width: 47.5%;
+    }
+    .subscription-area .top{
+        margin-bottom: 10px;
+    }
+    .top-free-block p, .top-sub-block p{
+        font-size: 17px;
+    }
+    .subscription-area .top .top-info{
+        border-radius: 30px;
+        padding: 10px 0;
+    }
+    .subscription-area .top .top-info p{
+        margin: 0% 10%;
+    }
+    .free-block-content .text-free-block, .sub-block-content .text-sub-block{
+        font-size: 13px;
+    }
+}
+@media (max-width: 350px){
+    .subscription-area .top .top-info p{
+        margin: 0% 7%;
+    }
+}

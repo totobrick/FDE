@@ -1,0 +1,368 @@
+.chat-area{
+    display: block;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: 100px;
+    margin-bottom: 10px;
+    margin-left: calc( max(15%, 100px) + 2.5%);
+        /*  1. marge en bas du cadre : 20px
+            2. account_icon_bar :   width: 15%;
+                                    min-width: 100px;
+            => marge à gauche : max(15%, 100px).
+            on ajoute 2.5% à gauche et à droite ici (plus beau)
+        */
+    width: calc(100% - max(15%, 100px) - 2 * 2.5%); /* 5% = margin-right + margin-left*/
+    min-width: 220px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /*border: 15px solid blue;*/
+}
+.chat-area .top-chat-area{
+    display: flex;
+    height: 70px;
+    align-items: center; /*center vertically*/
+    transition: .3s ease;
+}
+.recipient{
+    display: inline-flex; /*take only the needed with (flex take all width available)*/
+    padding: 5px;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+    align-items: center; /*center vertically*/
+    height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px 35px 35px 20px;
+    /*border: 1px solid yellow;*/
+}
+.recipient .profile-picture{
+    display: inline-flex;
+    height: 100%;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1; /*échelle 1/1; on peut prendre 16/9, ...*/
+    overflow: hidden;
+    justify-content: center; /*center horizontally*/
+    align-items: center; /*center vertically*/
+    margin-left: 5px;
+    margin-right: 15px;
+    background-color: rgb(230, 230, 230);
+    /*border: 1px solid green;*/
+}
+.recipient .profile-picture.vertical-img img{
+    width: 100%;
+    height: auto;
+}
+.recipient .profile-picture.horizontal-img img{
+    width: auto;
+    height: 100%;
+}
+.recipient p{
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    line-height: 100%;
+    font-weight: bold;
+    color: #ffffff;
+    /*border: 1px solid red;*/
+}
+
+.top-chat-area .top-chat-area-right{
+    display: block;
+    padding: 0;
+    margin: 0 0 auto 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    /*border: 1px solid orange;*/
+}
+
+
+/* Messages*/
+#messages{
+    display: block;
+    width: 100%;
+    height: calc(100vh - 100px - 70px - 80px - 10px);/*100vh : hauteur de la fenêtre,
+                                                100px : hauteur de l'en-tête .nav (avec logo CY Love)
+                                                70px : hauteur de .recipient
+                                                80px : hauteur de .write-message-container
+                                                10px : pour laisser une marge de 10px en bas de l'écran (sous le .chat-area)
+                                                    -> même valeur que margin_bottom: 10px; de .chat-area*/
+    min-height: 250px;
+    /*height : 400px;*/
+    overflow: auto;
+}
+#messages-observed{
+    display: block;
+    width: 100%;
+    height: calc(100vh - 100px - 70px - 10px);/*100vh : hauteur de la fenêtre,
+                                                100px : hauteur de l'en-tête .nav (avec logo CY Love)
+                                                70px : hauteur de .recipient
+                                                10px : pour laisser une marge de 10px en bas de l'écran (sous le .chat-area)
+                                                    -> même valeur que margin_bottom: 10px; de .chat-area*/
+    min-height: 250px;
+    overflow: auto;
+}
+#messages::-webkit-scrollbar,
+#messages-observed::-webkit-scrollbar{
+    width: 12px; /*INDISPENSABLE : si aucune largeur n'est définie, les autres propriétés ne pourront pas s'appliquer*/
+}
+#messages::-webkit-scrollbar-thumb,
+#messages-observed::-webkit-scrollbar-thumb{ /*curseur*/
+    background: rgb(145, 145, 145);
+    border-radius: 12px;
+}
+#messages::-webkit-scrollbar-track,
+#messages-observed::-webkit-scrollbar-track{ /*gouttière*/
+    background: rgba(255, 255, 255, 0.20);
+    border: 1px solid rgb(145, 145, 145);
+    border-radius: 12px;
+    /*border: 1px solid yellow;*/
+}
+
+#messages .msg,
+#messages-observed .msg{
+    display: block;
+    font-size: 16px;
+    position: relative;
+    word-wrap: break-word; /*coupe les mots trop longs (plus de 1 ligne) pour les mettre sur plusieurs lignes*/
+    /*display: flex;
+    justify-content: space-between;*/
+    padding: 5px;
+    max-width: 60%;
+    color: black;
+    transition: .3s ease;
+}
+
+.msg.receiving{
+    margin-right: auto;
+    margin-left: 0;
+    margin-bottom: 10px;
+    text-align: left;
+    border-radius: 0px 15px 15px 15px;
+    background-color: rgb(255,192,203);
+}
+.msg.sending{
+    margin-right: 0;
+    margin-left: auto;
+    margin-bottom: 10px;
+    text-align: right;
+    border-radius: 15px 0px 15px 15px;
+    background-color: rgb(192,255,203);
+}
+
+.msg .removed_msg{
+    text-align : center;
+    color: rgba(255, 0, 0, 0.7);
+    font-style: italic;
+}
+
+.msg.receiving .msg_date{
+    font-size: 12px;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.7);
+    transition: .3s ease;
+}
+.msg.sending .msg_date{
+    font-size: 12px;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.7);
+    transition: .3s ease;
+}
+
+
+/* Delete a message */
+.msg.sending .delete_msg{
+    display: flex; /*align red_cross and text ("Supprimer le message")*/
+    position: absolute; /*align at the left top corner*/
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+.msg.receiving .delete_msg{
+    display: flex; /*align red_cross and text ("Supprimer le message")*/
+    position: absolute; /*align at the right top corner*/
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+    /*red_cross*/
+.delete_msg .red_cross{
+    padding: 2px;
+}
+.red_cross .bar1, .red_cross .bar2 {
+    width: 20px;
+    height: 4px;
+    background-color: rgb(255,0, 0);
+}
+.red_cross .bar1 {
+    margin-bottom: 10px;
+    transform: translate(0px, 7px) rotate(45deg);
+}
+.red_cross .bar2 {
+    margin-top: 10px;
+    transform: translate(0px, -7px) rotate(-45deg);
+}
+.delete_msg span{
+    display: none;
+    align-items: center;
+    font-size: 12px;
+    line-height: 100%;
+    color: rgb(255,0, 0);
+}
+.msg:hover .delete_msg span{
+    display: flex;
+}
+
+
+/*Give back the message access*/
+.msg.sending .give_back_msg{
+    display: flex;      /*align green_check and text ("Supprimer le message")*/
+    position: absolute; /*align at the left top corner*/
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+.msg.receiving .give_back_msg{
+    display: flex;      /*align green_check and text ("Supprimer le message")*/
+    position: absolute; /*align at the right top corner*/
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+
+/*green_check*/
+.give_back_msg .green_check{
+    display: flex;
+    justify-content: center;
+    width: 26px;
+    padding: 1px 2px 0px 0px;
+}
+.give_back_msg .green_check .green_check_contain{
+    width: 10px;
+    height: 20px;
+    transform: rotate(45deg);
+}
+
+.green_check .bar1 {
+    width: 20px;
+    height: 4px;
+    background-color: rgb(0, 255, 0);
+}
+.green_check .bar2 {
+    width: 10px;
+    height: 4px;
+    background-color: rgb(0, 255, 0);
+}
+.green_check .bar1 {
+    margin-bottom: 10px;
+    transform: translate(-2px, 6px) rotate(90deg);
+}
+.green_check .bar2 {
+    margin-top: 10px;
+}
+
+.give_back_msg span{
+    display: none;
+    align-items: center;
+    font-size: 12px;
+    line-height: 100%;
+    color: rgb(0, 255, 0);
+}
+.msg:hover .give_back_msg span{
+    display: flex;
+}
+
+
+
+/*Write message*/
+.write-message-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center; /*center vertically*/
+    justify-content: center; /*center horizontally*/
+    text-align: center;
+    width: 100%;
+    height: 80px;
+    /*border: 1px solid violet;*/
+}
+.write-message-container form{
+    display: flex;
+    align-items: center; /*center vertically*/
+    justify-content: center; /*center horizontally*/
+    height: 100%;
+    width: 100%;
+    /*border: 1px solid green;*/
+}
+
+.input-box-msg{
+    display: inline-flex;
+    width: 60%;
+    min-width: 150px;
+    color: #fff;
+}
+.input-box-send-msg{
+    display: inline-flex;
+    color: #fff;
+}
+
+.input-box-msg .input-field-message {
+    font-size: 1em;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    height: 50px;
+    width: 100%;
+    padding: 0 20px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    resize: none;
+    transition: .2s ease;
+}
+
+.input-box-msg .input-field-message:hover, .input-box-msg .input-field-message:focus {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.input-box-send-msg .submit-message-btn {
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: 10px;
+    color: black;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.input-box-send-msg .submit-message-btn:hover {
+    background: rgb(255, 255, 255);
+    box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+}
+
+@media(max-width: 600px){
+    .chat-area .top-chat-area{
+        height: 60px;
+    }
+    .recipient p{
+        font-size: 20px;
+    }
+    .msg.sending .msg_date, .msg.receiving .msg_date{
+        font-size: 10px;
+    }
+    #messages .msg,
+    #messages-observed .msg{
+        font-size: 15px;
+    }
+}
+@media(max-width: 500px){
+    #messages .msg,
+    #messages-observed .msg{
+        font-size: 14px;
+    }
+    .msg.sending .msg_date, .msg.receiving .msg_date{
+        font-size: 9px;
+    }
+}
