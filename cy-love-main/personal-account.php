@@ -3,7 +3,7 @@
     /*echo "<p color='white'>";
     print_r($_SESSION);
     echo "</p>";*/
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         //session open
         //do nothing
     }
@@ -18,7 +18,7 @@
 
     //Variables
     $ID = $_SESSION['ID'];
-    $Pseudo = $_SESSION['Pseudo'];
+    $login = $_SESSION['login'];
 ?>
 
 <!DOCTYPE html>
@@ -43,10 +43,11 @@
             <div class="login-container" id="modify-account">
                 <?php
                     $servername = "localhost";
-                    $login = "root";
+                    $database = "FDE_database";
+                    $login_server = "root";
                     $pass = "";
 
-                    if( isset($_SESSION['Pseudo']) && isset($_SESSION['is_connected']) && $_SESSION['is_connected']=='oui' ){
+                    if( isset($_SESSION['login']) && isset($_SESSION['is_connected']) && $_SESSION['is_connected']=='oui' ){
                         //affiche les infos de compte
                     }
                     else{
@@ -57,11 +58,11 @@
 
                     //server connexion test
                     try{
-                        $connexion = new PDO("mysql:host=$servername;dbname=cy_love_database", $login, $pass);
+                        $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
                         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
 
-                        $query_info_account = $connexion->prepare("SELECT * FROM user_info WHERE BINARY Pseudo = :pseudo"); //BINARY : permet de tenir compte de la casse des caractères
-                        $query_info_account->bindParam(':pseudo', $Pseudo, PDO::PARAM_STR);
+                        $query_info_account = $connexion->prepare("SELECT * FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
+                        $query_info_account->bindParam(':login', $login, PDO::PARAM_STR);
                         $query_info_account->execute();
                         // array with all info of the user
                         $array_info_account = $query_info_account->fetchAll(PDO::FETCH_ASSOC); //ou FETCH_NUM
@@ -74,7 +75,7 @@
                     }
                 ?>
                 <fieldset>
-                    <header>Vos informations <?php echo $_SESSION['Pseudo'];?></header>
+                    <header>Vos informations <?php echo $_SESSION['login'];?></header>
                     <div class='error_msg'>
                     <?php
                         echo "<div id='time_session' style='color: rgb(39, 208, 255);'>";
@@ -92,45 +93,45 @@
                             <label for="Gender">Genre</label>
                             <div class="select-gender">
                                 <div>
-                                    <input type="radio" name="Gender" value="Madame" <?php if( isset($array_info_account[0]['Genre']) && $array_info_account[0]['Genre']=="Madame" ){ echo "checked";}?> >Madame
+                                    <input type="radio" name="Gender" value="Madame" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Madame" ){ echo "checked";}?> >Madame
                                 </div>
                                 <div>
-                                    <input type="radio" name="Gender" value="Monsieur" <?php if( isset($array_info_account[0]['Genre']) && $array_info_account[0]['Genre']=="Monsieur" ){ echo "checked";}?> >Monsieur
+                                    <input type="radio" name="Gender" value="Monsieur" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Monsieur" ){ echo "checked";}?> >Monsieur
                                 </div>
                                 <div>
-                                    <input type="radio" name="Gender" value="Non binaire" <?php if( isset($array_info_account[0]['Genre']) && $array_info_account[0]['Genre']=="Non binaire" ){ echo "checked";}?> >Non binaire
+                                    <input type="radio" name="Gender" value="Non binaire" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Non binaire" ){ echo "checked";}?> >Non binaire
                                 </div>
                                 <div>
-                                    <input type="radio" name="Gender" value="Non défini" <?php if( isset($array_info_account[0]['Genre']) && $array_info_account[0]['Genre']=="Non défini" ){ echo "checked";}?> >Non défini
+                                    <input type="radio" name="Gender" value="Non défini" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Non défini" ){ echo "checked";}?> >Non défini
                                 </div>
                             </div>
                         </div>
                         <div class="input-box">
-                            <label for="Pseudo">Pseudo</label>
-                            <input type="text" name="Pseudo" id="Pseudo" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['Pseudo']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
+                            <label for="Pseudo">Login</label>
+                            <input type="text" name="Pseudo" id="Pseudo" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['login']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
                         </div>
                         <div class="input-box">
                             <label for="Password">Mot de passe</label>
-                            <input type="text" name="Password" id="Password" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['Mot_de_passe']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
+                            <input type="text" name="Password" id="Password" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['password']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
                         </div>
                         <div class="input-box">
                             <label for="Firstname">Prénom</label>
-                            <input type="text" name="Firstname" id="Firstname" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['Prénom']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                            <input type="text" name="Firstname" id="Firstname" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['first_name']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
                         </div>
                         <div class="input-box">
                             <label for="Name">Nom</label>
-                            <input type="text" name="Name" id="Name" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['Nom']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                            <input type="text" name="Name" id="Name" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['last_name']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
                         </div>
                         <div class="input-box">
                             <label for="Email">Email</label>
-                            <input type="text" name="Email" id="Email" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['Email']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                            <input type="text" name="Email" id="Email" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['mail']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
                         </div>
                         <div class="input-box">
                             <label>Photo de profil</label>
                             <input type="file" name="Profile_picture" id="Profile_picture" accept="image/jpeg">
                             <div class="Profile_picture_area" id="Profile_picture_area">
                                 <?php
-                                    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+                                    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                                         //session open
                                         $ID = $_SESSION['ID'];
                                         echo "      <div class=\"PP_block_img\" id=\"PP_block_img\">";
@@ -181,19 +182,8 @@
                         </div>
                         <div class="input-box">
                             <label for="Profession">Profession</label>
-                            <input type="text" name="Profession" id="Profession" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['Profession'] ?? '') //?? : s'il y a une valeur null, elle est remplacée par ce qui suit (ici rien car guillements vides)
+                            <input type="text" name="Profession" id="Profession" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['profession'] ?? '') //?? : s'il y a une valeur null, elle est remplacée par ce qui suit (ici rien car guillements vides)
                             //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
-                        </div>
-                        <div class="input-box">
-                            <label for="Preference">Fruit</label>
-                            <select name="Preference" id="Preference" class="input-field" required>
-                                <option value="" disabled selected>Choisissez votre préférence</option>
-                                <option value="Cerise" <?php if( isset($array_info_account[0]['Preference']) && $array_info_account[0]['Preference']=="Cerise" ){ echo "selected";}?>>Cerise: Trouver sa moitié</option>
-                                <option value="Raisin" <?php if( isset($array_info_account[0]['Preference']) && $array_info_account[0]['Preference']=="Raisin" ){ echo "selected";}?>>Raisin: Boire un verre sans se prendre la grappe</option>
-                                <option value="Pasteque" <?php if( isset($array_info_account[0]['Preference']) && $array_info_account[0]['Preference']=="Pasteque" ){ echo "selected";}?>>Pastèque: Des câlins sans pépins</option>
-                                <option value="Peche" <?php if( isset($array_info_account[0]['Preference']) && $array_info_account[0]['Preference']=="Peche" ){ echo "selected";}?>>Pêche: Un coup d'un soir</option>
-                            </select>
-                            <i class="bx bx-heart"></i>
                         </div>
                         <div class="input-box">
                             <input type="submit" name="submit" class="submit" value="Enregistrer">

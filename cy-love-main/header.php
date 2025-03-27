@@ -5,7 +5,7 @@
     </div>
     <div class="nav-button">
         <?php
-            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                 //session open
                 echo "<button class=\"btn white-btn\" id=\"login-btn\" onclick=\"window.location.href='logout.php'\">Se déconnecter</button>";
             }
@@ -17,7 +17,7 @@
     </div>
     <div class="nav-right"><!-- style="display: flex; justify-content: space-between; height: 100%; align-items: center;"-->
         <?php
-            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                 //session open
                 $ID = $_SESSION['ID'];
                 echo "  <div class=\"menu-profile-picture\">";

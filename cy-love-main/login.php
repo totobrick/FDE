@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         //redirection to personal-account.php
         header("Location: personal-account.php");
         exit();
@@ -23,10 +23,10 @@
                         <header>Se connecter</header>
                         <span>Vous ne possédez pas de compte ? <a href="register.php" onclick="register()">S'inscrire</a></span>
                         <?php
-                            if(isset($_SESSION['Pseudo'])){
+                            if(isset($_SESSION['login'])){
                                 echo "<div class=\"error_msg\">
                                     <b style=\"color: rgb(255, 0, 0)\">ATTENTION !</b>
-                                    Le mot de passe de " . $_SESSION['Pseudo'] . " est incorrect, veuillez réessayer.
+                                    Le mot de passe de " . $_SESSION['login'] . " est incorrect, veuillez réessayer.
                                     </div>";
                             }
                             if(isset($_SESSION['error_msg'])){
@@ -36,7 +36,7 @@
                         ?>
                     </div>
                     <div class="input-box">
-                        <input type="text" name="Pseudo" class="input-field" width="40%" placeholder="Pseudo">
+                        <input type="text" name="login" class="input-field" width="40%" placeholder="Login">
                         <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">

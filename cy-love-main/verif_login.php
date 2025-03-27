@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         header("Location: personal-account.php");
         exit;
     }
@@ -14,7 +14,7 @@
 <html lang="fr">
 <head>
     <script>
-        var n = 4; // en secondes (n-1 secondes exécutées)
+        var n = 0; // en secondes (n-1 secondes exécutées) //4
         var x = setInterval(countdown, 1000); //call countdown (without '()') function every 1000 milliseconds
 
         // Fonction compte à rebours (countdown)
@@ -38,56 +38,56 @@
             <?php
                 // Add account in cylove
                 $servername = "localhost";
-                $login = "root";
+                $login_server = "root";
                 $pass = "";
-                $database = "cy_love_database";
+                $database = "FDE_database";
 
                 // Server connection test
                 try{
-                    $connexion = new PDO("mysql:host=$servername;dbname=$database", $login, $pass);
+                    $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
                     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
                     //echo "Connexion à la base de données réussie";
 
-                    $Pseudo = $_POST["Pseudo"];
+                    $login = $_POST["login"];
                     $Password =  $_POST["Password"];
-                    if( strlen($Password)<=0 || strlen($Pseudo)<=0 ){
+                    if( strlen($Password)<=0 || strlen($login)<=0 ){
                         $_SESSION['error_msg'] = "Aucun champ ne doit être vide !";
                         header("Location: login.php");
                         exit;
                     }
 
                     // TEST if the pseudo exists in database
-                    $query_all_pseudos = $connexion->prepare("SELECT Pseudo FROM user_info");
+                    $query_all_pseudos = $connexion->prepare("SELECT login FROM user_info");
                     $query_all_pseudos->execute();
                     $array_all_pseudos = $query_all_pseudos->fetchall(); // array with all pseudos in database
                     for ($i=0; $i<count($array_all_pseudos); $i++){
-                        if ($Pseudo == $array_all_pseudos[$i][0]){
+                        if ($login == $array_all_pseudos[$i][0]){
                             $query_pwd = $connexion->prepare(
-                                "SELECT Mot_de_passe
+                                "SELECT password
                                 FROM user_info
-                                WHERE BINARY Pseudo = :pseudo"
+                                WHERE BINARY login = :login"
                             ); //BINARY : permet de tenir compte de la casse des caractères
                             //check the password
-                            $query_pwd->bindParam(':pseudo', $Pseudo);
+                            $query_pwd->bindParam(':login', $login);
                             $query_pwd->execute();
                             $result_pwd = $query_pwd->fetchall(); // array with the correct password
 
-                            $_SESSION['Pseudo'] = $Pseudo;
+                            $_SESSION['login'] = $login;
 
                             // User is CONNECTED
                             if($Password == $result_pwd[0][0]){
                                 echo "  <div class=\"form-box_login\">
                                             <div class=\"login-container\" id=\"login\">
-                                                Bienvenue " . $Pseudo . "<br>
+                                                Bienvenue " . $login . "<br>
                                                 Mot de passe : " . $Password;
 
                                 // Get user ID
                                 $query = $connexion->prepare(
                                     "SELECT *
                                     FROM user_info
-                                    WHERE BINARY Pseudo = :pseudo"
+                                    WHERE BINARY login = :login"
                                 ); //BINARY : permet de tenir compte de la casse des caractères
-                                $query->bindParam(':pseudo', $Pseudo);
+                                $query->bindParam(':login', $login);
                                 $query->execute();
                                 $array_all_infos = $query->fetchall(PDO::FETCH_ASSOC); // array with user ID
 
@@ -95,7 +95,7 @@
                                 $_SESSION['ID'] = $array_all_infos[0]['ID'];
                                 $ID = $_SESSION['ID'];
                                 $_SESSION['is_connected'] = 'oui';
-                                $_SESSION['Admin'] = $array_all_infos[0]['Admin'];
+                                $_SESSION['admin'] = $array_all_infos[0]['admin'];
                                 $_SESSION['last_activity_time'] = time();
                                     /*  -> time() : nbre de secondes écoulées depuis le 1er janvier 1970
                                         -> ici on enregistre le moment de connection pour pouvoir faire une déconnection automatique

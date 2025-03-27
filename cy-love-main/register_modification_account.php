@@ -2,13 +2,13 @@
     session_start();
 
     $servername = "localhost";
-    $login = "root";
+    $login_server = "root";
     $pass = "";
-    $database = "cy_love_database";
+    $database = "FDE_database";
     
     //server connexion test
     try{    
-        $connexion = new PDO("mysql:host=$servername;dbname=$database", $login, $pass);
+        $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
         
         /* -------------- Variables -------------- */
@@ -54,7 +54,7 @@
 
         /* -------------- MODIFY PSEUDO -------------- */
         $query1 = $connexion->prepare(//query = requête
-            "SELECT ID, Pseudo FROM user_info WHERE BINARY Pseudo = :new_pseudo"
+            "SELECT ID, login FROM user_info WHERE BINARY login = :new_pseudo"
         ); //BINARY : permet de tenir compte de la casse des caractères
         $query1->bindParam(':new_pseudo', $new_Pseudo);
         $query1->execute();
@@ -81,7 +81,7 @@
         else{               //change user pseudo : count($array_same_pseudo) == 0
             $query_pseudo_update = $connexion->prepare(
                 "UPDATE user_info
-                SET Pseudo = :new_pseudo
+                SET login = :new_pseudo
                 WHERE ID = :ID"
             );
             $query_pseudo_update->bindParam(':new_pseudo', $new_Pseudo);
@@ -94,7 +94,7 @@
         /* -------------- MODIFY INFO ACCOUNT : firstname, name, email, gender, password, profession -------------- */
         $query2 = $connexion->prepare(
             "UPDATE user_info
-            SET Mot_de_passe = :new_pwd, Prénom = :new_firstname, Nom = :new_name, Email = :new_email, Preference = :new_preference, Genre = :new_gender, Profession = :new_profession
+            SET password = :new_pwd, first_name = :new_firstname, last_name = :new_name, mail = :new_email, gender = :new_gender, profession = :new_profession
             WHERE ID = :ID;"
         );
         $query2->bindParam(':new_pwd', $new_Password);
@@ -102,7 +102,6 @@
         $query2->bindParam(':new_name', $new_Name);
         $query2->bindParam(':new_email', $new_Email);
         $query2->bindParam(':new_gender', $new_Gender);
-        $query2->bindParam(':new_preference', $new_Preference);
         $query2->bindParam(':new_profession', $new_Profession);
         $query2->bindParam(':ID', $ID);
         $query2->execute();
