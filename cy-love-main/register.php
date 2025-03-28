@@ -1,9 +1,6 @@
 <?php
     session_start();
-    /*echo "<p color='white'>";
-    print_r($_SESSION);
-    echo "</p>";*/
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         //redirection to personal-account.php
         $_SESSION['error_msg'] = "Vous êtes déjà inscrit(e).<br>Déconnectez vous pour créer un autre compte.";
         header("Location: personal-account.php");
@@ -44,12 +41,6 @@
                             <div>
                                 <input type="radio" name="gender" value="Monsieur" <?php if( isset($_SESSION['register_gender']) && $_SESSION['register_gender']=="Monsieur" ){ echo "checked";}?> required>Monsieur
                             </div>
-                            <div>
-                                <input type="radio" name="gender" value="Non binaire" <?php if( isset($_SESSION['register_gender']) && $_SESSION['register_gender']=="Non binaire" ){ echo "checked";}?> required>Non binaire
-                            </div>
-                            <div>
-                                <input type="radio" name="gender" value="Non défini" <?php if( isset($_SESSION['register_gender']) && $_SESSION['register_gender']=="Non défini" ){ echo "checked";}?> required>Non défini
-                            </div>
                         </div>
                     </div>
                     <div class="input-box">
@@ -66,22 +57,12 @@
                         <i class="bx bx-envelope"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" name="Pseudo" class="input-field" placeholder="Pseudo" <?php if(isset($_SESSION["register_Pseudo"])){echo "value=\"" . $_SESSION["register_Pseudo"] . "\"";}?> required>
+                        <input type="text" name="Pseudo" class="input-field" placeholder="Login" <?php if(isset($_SESSION["register_Pseudo"])){echo "value=\"" . $_SESSION["register_Pseudo"] . "\"";}?> required>
                         <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">
                         <input type="password" name="Password" class="input-field" placeholder="Mot de passe" required>
                         <i class="bx bx-lock-alt"></i>
-                    </div>
-                    <div class="input-box">
-                        <select name="Preference" class="input-field" required>
-                            <option value="" disabled selected>Choisissez votre préférence</option>
-                            <option value="Cerise" <?php if( isset($_SESSION['register_Preference']) && $_SESSION['register_Preference']=="Cerise" ){ echo "selected";}?>>Cerise: Trouver sa moitié</option>
-                            <option value="Raisin" <?php if( isset($_SESSION['register_Preference']) && $_SESSION['register_Preference']=="Raisin" ){ echo "selected";}?>>Raisin: Boire un verre sans se prendre la grappe</option>
-                            <option value="Pasteque" <?php if( isset($_SESSION['register_Preference']) && $_SESSION['register_Preference']=="Pasteque" ){ echo "selected";}?>>Pastèque: Des câlins sans pépins</option>
-                            <option value="Peche" <?php if( isset($_SESSION['register_Preference']) && $_SESSION['register_Preference']=="Peche" ){ echo "selected";}?>>Pêche: Un coup d'un soir</option>
-                        </select>
-                        <i class="bx bx-heart"></i>
                     </div>
                     <div class="input-box">
                         <input type="submit" class="submit" value="Valider">

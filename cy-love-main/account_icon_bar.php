@@ -1,8 +1,7 @@
 <div class="account_icon_bar" id="account_icon_bar">
     <a id="first_menu" href="personal-account.php">Mes données</a>
     <a id="middle_menu" href="admin.php">Espace Administrateur</a>
-    <a id="middle_menu" href="chat_history_contact.php">Messagerie</a>
-    <a id="middle_menu" href="service.php">Abonnement</a>
+    <a id="middle_menu" href="search.php">Rechercher</a>
     <a id="last_menu" href="logout.php">Déconnexion</a>
     <?php
         /* DEBUG affichage : $_SESSION['last_activity_time']

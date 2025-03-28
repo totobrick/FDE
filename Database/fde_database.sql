@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 27 mars 2025 à 20:59
+-- Généré le : ven. 28 mars 2025 à 20:27
 -- Version du serveur : 8.3.0
 -- Version de PHP : 8.2.18
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `fde_database`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `employees`
+--
+
+DROP TABLE IF EXISTS `employees`;
+CREATE TABLE IF NOT EXISTS `employees` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `employees`
+--
+
+INSERT INTO `employees` (`ID`, `first_name`, `last_name`) VALUES
+(10, 'A', 'A');
 
 -- --------------------------------------------------------
 
@@ -41,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `admin` varchar(255) DEFAULT NULL,
   `score` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `user_info`
@@ -52,7 +73,8 @@ INSERT INTO `user_info` (`ID`, `login`, `password`, `first_name`, `last_name`, `
 (3, 'TS', 'MDPts', 'Taylor', 'Swift', 'taylor.swift@eras-tour.com', 'Accounts/ID_3/profile_picture/profile_picture_ID_3.jpg', 'Madame', 'Chanteuse du Eras tour.', NULL, 0),
 (4, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', 'shakira@gmail.com', 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', NULL, 0),
 (1, 'Toto_admin', '0000', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'Administrateur du site.', 'oui', 0),
-(5, 'Toto', 'a', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'JSP', NULL, 0);
+(5, 'Toto', 'a', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'JSP', NULL, 0),
+(47, 'A', 'A', 'A', 'A', 'totovadordlp@gmail.com', '', 'Madame', NULL, NULL, 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

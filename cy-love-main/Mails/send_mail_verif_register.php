@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         //redirection to personal-account.php
         header("Location: ../personal-account.php");
         exit();
@@ -49,7 +49,7 @@
         $mail->Port         = $_ENV['SMTP_port'];       //$mail->Port = 587; //fourni par serveur de messagerie: gmail, outlook ...
         
         //Expéditeur et destinataire
-        $mail->setFrom($_ENV['SMTP_username'], 'CY Love');
+        $mail->setFrom($_ENV['SMTP_username'], 'FDE : Gestionaire d\'électricité');
         $mail->addAddress($Mail_recipient);
 
         //Contenu du mail
@@ -62,8 +62,8 @@
         $mail->isHTML(true);
         $mail->CharSet  = 'UTF-8';           //Encodage en UTF-8 pour caractères spéciaux (ex : °)
         $mail->Subject  = "CY Love : Vérification de votre identité";
-        $mail->AddEmbeddedImage('../Logos/CY_Love_PNG/Logo_CY_Love_14_(1618x343).png', 'cid_logo_CY_Love');//Images svg non prises en compte par mail, il faut les convertir en png (utilisation de la commande 'convert' de imagemagick dans le terminal
-        $mail->AddEmbeddedImage('../Images/Background_images.jpg', 'cid_background_img');
+        $mail->AddEmbeddedImage('../Logos/FDE_PNG/logo_FDE.png', 'cid_logo_CY_Love');//Images svg non prises en compte par mail, il faut les convertir en png (utilisation de la commande 'convert' de imagemagick dans le terminal
+        //$mail->AddEmbeddedImage('../Images/Background_images.jpg', 'cid_background_img');
         $mail->Body     = $Mail_content;
         /*$mail->Body     = " <p>Code de vérification : " . $code_with_spaces . "</p>
                             <p>Le code ci-dessus doit être saisi sans les espaces.</p>

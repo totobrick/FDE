@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="Styles/style_header.css">
 <nav class="nav">
     <div class="nav-logo">
-        <img src="Logos/logo_CY_Love.svg" alt="Logo CY Love" onclick="document.location='login.php'">
+        <img src="Logos/logo_FDE.svg" alt="Logo CY Love" onclick="document.location='login.php'">
     </div>
     <div class="nav-button">
         <?php

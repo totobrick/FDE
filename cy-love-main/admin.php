@@ -1,7 +1,7 @@
 <?php
     // Start the session
     session_start();
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         if( isset($_SESSION['Admin']) && $_SESSION['Admin'] == 'oui'){
             //do nothing
         }

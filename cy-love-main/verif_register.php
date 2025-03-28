@@ -8,7 +8,7 @@
     print_r($_POST);
     echo "</p>";
     exit;*/
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         //redirection to personal-account.php
         header("Location: personal-account.php");
         exit();
@@ -16,12 +16,12 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $servername = "localhost";
-        $login = "root";
+        $login_server = "root";
         $pass = "";
-        $dbname = "cy_love_database";
+        $dbname = "FDE_database";
 
         try {
-            $connexion = new PDO("mysql:host=$servername;dbname=$dbname", $login, $pass);
+            $connexion = new PDO("mysql:host=$servername;dbname=$dbname", $login_server, $pass);
             $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             /* -------------- Variables -------------- */
@@ -29,9 +29,8 @@
             $firstname = $_POST["Firstname"];
             $lastname = $_POST["Name"];
             $email = $_POST["Email"];
-            $pseudo = $_POST["Pseudo"];
+            $login = $_POST["Pseudo"];
             $password = $_POST["Password"];
-            $preference = $_POST["Preference"];
             unset($_POST);
 
             /* Cas de redirection vers register.php (pour préremplir le formulaire) */
@@ -39,31 +38,40 @@
             $_SESSION["register_Firstname"] = $firstname;
             $_SESSION["register_Name"] = $lastname;
             $_SESSION["register_Email"] = $email;
-            $_SESSION["register_Pseudo"] = $pseudo;
+            $_SESSION["register_Pseudo"] = $login;
             $_SESSION["register_Password"] = $password;
-            $_SESSION["register_Preference"] = $preference;
 
-            // Check if the email is in the banned_emails table
-            $query_banned = $connexion->prepare("SELECT Email FROM bannis WHERE Email = :email");
-            $query_banned->bindParam(':email', $email, PDO::PARAM_STR);
-            $query_banned->execute();
-            $banned_email = $query_banned->fetch(PDO::FETCH_ASSOC);
+            // Get user ID
+            $query = $connexion->prepare(
+                "SELECT *
+                FROM employees
+                WHERE BINARY first_name = :first_name
+                AND BINARY last_name = :last_name"
+            ); //BINARY : permet de tenir compte de la casse des caractères
+            $query->bindParam(':first_name', $firstname, PDO::PARAM_STR);
+            $query->bindParam(':last_name', $firstname, PDO::PARAM_STR);
+            $query->execute();
+            $array = $query->fetchall(PDO::FETCH_ASSOC);
 
-            if ($banned_email) {
-                unset($_SESSION["register_gender"], $_SESSION["register_Firstname"], $_SESSION["register_Name"], $_SESSION["register_Email"], $_SESSION["register_Pseudo"], $_SESSION["register_Password"], $_SESSION["register_Preference"]);
-                $_SESSION['error_msg'] = "Votre adresse email a été bannie. Veuillez contacter le support.";
+            // Vérification que la personne est un salarié (table : employees)
+            if(count($array) == 0){
+                $_SESSION['error_msg'] = $firstname . " " . $lastname . " n'est pas un salarié de FDE. Aucun compte ne peut être créé pour cette personne.";
                 header("Location: register.php");
-                exit;
             }
+            else if (count($array) > 1){
+                $_SESSION['error_msg'] = "PROBLEME : plusieurs salariés se nomment : " . $firstname . " " . $lastname . ".";
+                header("Location: register.php");
+            }
+            
 
-            // Vérification du pseudo unique
-            $query1 = $connexion->prepare("SELECT ID FROM user_info WHERE BINARY Pseudo = :pseudo"); //BINARY : permet de tenir compte de la casse des caractères
-            $query1->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+            // Vérification du login unique
+            $query1 = $connexion->prepare("SELECT ID FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
+            $query1->bindParam(':login', $login, PDO::PARAM_STR);
             $query1->execute();
-            $array_same_pseudo = $query1->fetchAll(PDO::FETCH_NUM);
+            $array_same_login = $query1->fetchAll(PDO::FETCH_NUM);
 
-            if (count($array_same_pseudo) > 0) {
-                $_SESSION['error_msg'] = "Le pseudo " . $pseudo . " est déjà utilisé, veuillez en choisir un autre.";
+            if (count($array_same_login) > 0) {
+                $_SESSION['error_msg'] = "Le login " . $login . " est déjà utilisé, veuillez en choisir un autre.";
                 header("Location: register.php");
                 exit;
             }

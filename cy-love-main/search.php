@@ -1,6 +1,5 @@
 <?php
     session_start();
-    include 'verifi-abonee.php';
     // Nouvelle activité, on met à jour la variable pour la déconnexion automatique (après un certain temps d'inactivité)
     $_SESSION['last_activity_time'] = time();
 ?>
@@ -22,7 +21,7 @@
     <div class="wrapper">
         <?php include 'header.php'; ?>
         <?php
-            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                 include 'account_icon_bar.php';
             }
         ?>
@@ -71,7 +70,7 @@
                     $servername = "localhost";
                     $username = "root";
                     $password = "";
-                    $database = "cy_love_database";
+                    $database = "FDE_database";
 
                     echo "<div class=\"profiles-list\">";
 
@@ -83,13 +82,12 @@
                         $keyword = $_GET['keyword'];
 
                         // Recherche profils correspondant à la recherche (on recherche dans pseudo, nom, prénom ...)
-                        $sql = "SELECT * FROM user_info WHERE Genre LIKE :keyword
-                                    OR Preference LIKE :keyword
-                                    OR Pseudo LIKE :keyword
-                                    OR Profession LIKE :keyword
-                                    OR Nom LIKE :keyword
-                                    OR Prénom LIKE :keyword
-                                    OR Email LIKE :keyword
+                        $sql = "SELECT * FROM user_info WHERE gender LIKE :keyword
+                                    OR login LIKE :keyword
+                                    OR profession LIKE :keyword
+                                    OR last_name LIKE :keyword
+                                    OR first_name LIKE :keyword
+                                    OR mail LIKE :keyword
                                     OR ID LIKE :keyword"; //LIKE permet de comparer la présence de caractères ou chaines de caractères
                         $stmt = $conn->prepare($sql);
                         $stmt->bindValue(':keyword', "%$keyword%", PDO::PARAM_STR);
@@ -104,12 +102,12 @@
                                 echo "
                                     <div class='profile-box'>
                                         <div class='profile-container'>
-                                            <div class='profile-pseudo'>" . htmlspecialchars($array_info_account[$i]["Pseudo"]) . "
+                                            <div class='profile-pseudo'>" . htmlspecialchars($array_info_account[$i]["login"]) . "
                                             </div>
                                 ";
 
                                 // Afficher la photo si elle existe
-                                $path_contact_profile_picture = htmlspecialchars($array_info_account[$i]["Photo_de_profil"]);
+                                $path_contact_profile_picture = htmlspecialchars($array_info_account[$i]["profile_picture"]);
                                 if(!file_exists($path_contact_profile_picture)){
                                     $path_contact_profile_picture = "Logos/profile_picture.svg";
                                     echo "  <div class=\"profile-picture vertical-img\">
@@ -134,24 +132,16 @@
                                             <tr>
                                                 <td class='col1'>Sexe&ensp;: </td>
                                                 <td class='col2'>";
-                                                if( ($array_info_account[$i]["Genre"])!=NULL ){
-                                                    echo htmlspecialchars($array_info_account[$i]["Genre"]);
+                                                if( ($array_info_account[$i]["gender"])!=NULL ){
+                                                    echo htmlspecialchars($array_info_account[$i]["gender"]);
                                                 }
                                                 echo "</td>
                                             </tr>
                                             <tr>
                                                 <td class='col1'>Profession&ensp;: </td>
                                                 <td class='col2'>";
-                                                if( ($array_info_account[$i]["Profession"])!=NULL ){
-                                                    echo htmlspecialchars($array_info_account[$i]["Profession"]);
-                                                }
-                                                echo "</td>
-                                            </tr>
-                                            <tr>
-                                                <td class='col1'>Préférence&ensp;: </td>
-                                                <td class='col2'>";
-                                                if( ($array_info_account[$i]["Preference"])!=NULL ){
-                                                    echo htmlspecialchars($array_info_account[$i]["Preference"]);
+                                                if( ($array_info_account[$i]["profession"])!=NULL ){
+                                                    echo htmlspecialchars($array_info_account[$i]["profession"]);
                                                 }
                                                 echo "</td>
                                             </tr>

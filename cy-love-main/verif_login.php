@@ -56,7 +56,7 @@
                         exit;
                     }
 
-                    // TEST if the pseudo exists in database
+                    // TEST if the login exists in database
                     $query_all_pseudos = $connexion->prepare("SELECT login FROM user_info");
                     $query_all_pseudos->execute();
                     $array_all_pseudos = $query_all_pseudos->fetchall(); // array with all pseudos in database
