@@ -1,0 +1,3 @@
+__pycache__
+.tmp/log/log_*.txt
+.tmp/generated_files/power_plant_*.py
