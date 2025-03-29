@@ -1,7 +1,7 @@
-.nav{
+header.nav{
     box-sizing: border-box;
     display: flex;
-    position: absolute;
+    /*position: absolute;*/
     align-items: center;
     top: 0;
     left: 0;
@@ -12,7 +12,9 @@
     line-height: 70px;
     background: linear-gradient(rgba(39,39,39, 0.6), transparent);
     z-index: 100;
-    /*border: 1px solid grey;*/
+
+    border: 5px solid red;
+    background-color : rgba(238, 130, 238, 0.5);
 }
 
 .nav-logo{

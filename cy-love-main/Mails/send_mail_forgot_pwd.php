@@ -1,22 +1,22 @@
 <?php
     session_start();
 
-    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['Pseudo']) ){
+    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         //redirection to personal-account.php
         header("Location: ../personal-account.php");
         exit;
     }
 
     //Get password
-    if ( isset($_SESSION['temp_ID']) && isset($_SESSION['temp_Pseudo']) && isset($_SESSION['temp_MDP']) && isset($_SESSION['temp_Mail']) ){
+    if ( isset($_SESSION['temp_ID']) && isset($_SESSION['temp_Login']) && isset($_SESSION['temp_Password']) && isset($_SESSION['temp_Mail']) ){
         //Variables
         $ID_recipient = $_SESSION['temp_ID'];
-        $Pseudo_recipient = $_SESSION['temp_Pseudo'];
-        $MDP_recipient = $_SESSION['temp_MDP'];
+        $login_recipient = $_SESSION['temp_Login'];
+        $password_recipient = $_SESSION['temp_Password'];
         $Mail_recipient = $_SESSION['temp_Mail'];
         unset($_SESSION['temp_ID']);
-        unset($_SESSION['temp_Pseudo']);
-        unset($_SESSION['temp_MDP']);
+        unset($_SESSION['temp_Login']);
+        unset($_SESSION['temp_Password']);
         unset($_SESSION['temp_Mail']);
     }
     else{
@@ -57,23 +57,23 @@
         $mail->Port         = $_ENV['SMTP_port'];                   //$mail->Port = 587; //fourni par serveur de messagerie: gmail, outlook ...
 
         //Expéditeur et destinataire
-        $mail->setFrom($_ENV['SMTP_username'], 'CY Love');
+        $mail->setFrom($_ENV['SMTP_username'], 'FDE : Gestionaire d\'électricité');
         $mail->addAddress($Mail_recipient);
 
         //Contenu du mail
         $Mail_content   = file_get_contents('content_mail_forgot_pwd.html');
         $Mail_content   = str_replace('{ID_utilisateur}', $ID_recipient, $Mail_content); //str_replace : permet de remplacer du texte dans le fichier (par un chemin ici)
-        $Mail_content   = str_replace('{Pseudo_utilisateur}', $Pseudo_recipient, $Mail_content);
-        $Mail_content   = str_replace('{MDP_utilisateur}', $MDP_recipient, $Mail_content);
+        $Mail_content   = str_replace('{Pseudo_utilisateur}', $login_recipient, $Mail_content);
+        $Mail_content   = str_replace('{MDP_utilisateur}', $password_recipient, $Mail_content);
         $Mail_content   = str_replace('{Background_img_en_JPG}', 'cid:cid_background_img', $Mail_content);//image ajoutée plus bas
-        $Mail_content   = str_replace('{Logo_CY_Love_en_PNG}', 'cid:cid_logo_CY_Love', $Mail_content);//image ajoutée plus bas
+        $Mail_content   = str_replace('{Logo_FDE_en_PNG}', 'cid:cid_logo_FDE', $Mail_content);//image ajoutée plus bas
 
         //Mail
         $mail->isHTML(true);
         $mail->CharSet  = 'UTF-8';           //Encodage en UTF-8 pour caractères spéciaux (ex : °)
-        $mail->Subject  = "CY Love : Mot de passe oublié";
-        $mail->AddEmbeddedImage('../Logos/CY_Love_PNG/Logo_CY_Love_14_(1618x343).png', 'cid_logo_CY_Love'); //Images svg non prises en compte par mail, il faut les convertir en png (utilisation de la commande 'convert' de imagemagick dans le terminal
-        $mail->AddEmbeddedImage('../Images/Background_images.jpg', 'cid_background_img');
+        $mail->Subject  = "FDE : Mot de passe oublié";
+        $mail->AddEmbeddedImage('../Logos/FDE_PNG/Logo_FDE.png', 'cid_logo_FDE'); //Images svg non prises en compte par mail, il faut les convertir en png (utilisation de la commande 'convert' de imagemagick dans le terminal
+        //$mail->AddEmbeddedImage('../Images/Background_images.jpg', 'cid_background_img');
 
         $mail->Body     = $Mail_content;
         /*$mail->Body     = "
@@ -84,7 +84,7 @@
                             <p>Pseudo : " . $Pseudo_recipient . "</p>
                             <p>Mot de passe : " . $MDP_recipient . "</p>
                         ";*/
-        $mail->AltBody  = "Votre compte : " . $Pseudo_recipient . "   ID : " . $ID_recipient . "    Mot de passe : " . $MDP_recipient;
+        $mail->AltBody  = "Votre compte : " . $login_recipient . "   ID : " . $ID_recipient . "    Mot de passe : " . $password_recipient;
 
         //Envoi du mail
         $mail->send();

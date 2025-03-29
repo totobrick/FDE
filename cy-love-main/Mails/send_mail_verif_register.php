@@ -56,13 +56,13 @@
         $Mail_content   = file_get_contents('content_mail_verif_register.html');
         $Mail_content   = str_replace('{Code_verif}', $code_with_spaces, $Mail_content); //str_replace : permet de remplacer du texte dans le fichier (par un chemin ici)
         $Mail_content   = str_replace('{Background_img_en_JPG}', 'cid:cid_background_img', $Mail_content);//image ajoutée plus bas
-        $Mail_content   = str_replace('{Logo_CY_Love_en_PNG}', 'cid:cid_logo_CY_Love', $Mail_content);//image ajoutée plus bas
+        $Mail_content   = str_replace('{Logo_FDE_en_PNG}', 'cid:cid_logo_FDE', $Mail_content);//image ajoutée plus bas
 
         //Mail
         $mail->isHTML(true);
         $mail->CharSet  = 'UTF-8';           //Encodage en UTF-8 pour caractères spéciaux (ex : °)
-        $mail->Subject  = "CY Love : Vérification de votre identité";
-        $mail->AddEmbeddedImage('../Logos/FDE_PNG/logo_FDE.png', 'cid_logo_CY_Love');//Images svg non prises en compte par mail, il faut les convertir en png (utilisation de la commande 'convert' de imagemagick dans le terminal
+        $mail->Subject  = "FDE : Vérification de votre identité";
+        $mail->AddEmbeddedImage('../Logos/FDE_PNG/logo_FDE.png', 'cid_logo_FDE');//Images svg non prises en compte par mail, il faut les convertir en png (utilisation de la commande 'convert' de imagemagick dans le terminal
         //$mail->AddEmbeddedImage('../Images/Background_images.jpg', 'cid_background_img');
         $mail->Body     = $Mail_content;
         /*$mail->Body     = " <p>Code de vérification : " . $code_with_spaces . "</p>

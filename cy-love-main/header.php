@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="Styles/style_header.css">
-<nav class="nav">
+<header class="nav">
     <div class="nav-logo">
-        <img src="Logos/logo_FDE.svg" alt="Logo CY Love" onclick="document.location='login.php'">
+        <img src="Logos/logo_FDE.svg" alt="Logo FDE" onclick="document.location='login.php'">
     </div>
     <div class="nav-button">
         <?php
@@ -61,18 +61,16 @@
             <div class="bar3"></div>
         </div>
     </div>
-    <div class="nav-menu" id="navMenu">
+    <nav class="nav-menu" id="navMenu">
         <div class="nav-menu-content">
             <ul>
                 <li><a href="login.php" class="link active">Menu principal</a></li>
                 <li><a href="personal-account.php" class="link">Compte</a></li>
-                <li><a href="search.php" class="link">Rechercher un compte</a></li>
-                <li><a href="service.php" class="link">Services & Abonnements</a></li>
-                <li><a href="10profil.php" class="link">Voir 10 profils</a></li>
+                <li><a href="search.php" class="link">Rechercher</a></li>
             </ul>
         </div>
-    </div>
-</nav>
+        </nav>
+        </header>
 <script>
     function myMenuFunction() {
         var i = document.getElementById("menu-btn");

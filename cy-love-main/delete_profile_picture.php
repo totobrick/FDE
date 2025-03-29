@@ -4,13 +4,13 @@
     $_SESSION['last_activity_time'] = time();
 
     $servername = "localhost";
-    $login = "root";
+    $login_server = "root";
     $pass = "";
-    $database = "cy_love_database";
+    $database = "FDE_database";
     
     //server connexion test
     try {
-        $connexion = new PDO("mysql:host=$servername;dbname=$database", $login, $pass);
+        $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
         
         /* -------------- Variables -------------- */
@@ -19,7 +19,7 @@
         
         // 2. Get path of personal picture
         $query_PP = $connexion->prepare("
-                SELECT Photo_de_profil FROM user_info
+                SELECT profile_picture FROM user_info
                 WHERE ID = :ID");
         $query_PP->bindParam(':ID', $ID); //bind parameters
         $query_PP->execute();
@@ -27,7 +27,7 @@
         //print_r($path_img);
 
         // 3. Delete profile picture file
-        $path_img_PP = $path_img['Photo_de_profil'];
+        $path_img_PP = $path_img['profile_picture'];
         if (file_exists($path_img_PP)){
             unlink($path_img_PP);       // unlink : delete file (irreversible)
             echo "Photo de profil supprimé avec succès.";
@@ -40,7 +40,7 @@
         // 4. Update database
         $query_update_database = $connexion->prepare(
             "UPDATE user_info
-            SET Photo_de_profil = ''
+            SET profile_picture = ''
             WHERE ID = :ID");
         $query_update_database->bindParam(':ID', $ID); //bind parameters
         $query_update_database->execute();

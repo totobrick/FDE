@@ -31,12 +31,25 @@ body{
     color: rgb(255, 50, 50);
     z-index: 1000;
 }
+main{
+    flex-grow: 1; /*take all disponible space*/
+    display : flex;
+    border : 5px solid yellow;
+    background-color: lightseagreen;
+}
+.container{
+    display: flex;
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 3px solid violet;
+}
 
 .form-box_login, .form-box_register {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 70%;
+    align-self: flex-start; /*Empeche le cadre de s'étirer sur toute la hauteur de son parent*/
     min-width: 300px;
     max-width: 700px;
     padding: 20px;
@@ -56,15 +69,19 @@ body{
     word-break: break-word; /*coupe les mots plus logns que 1 ligne pour les mettre sur 2 lignes*/
     justify-content: center;
     align-items: center;
+    align-self: flex-start; /*Empeche le cadre de s'étirer sur toute la hauteur de son parent*/
     margin-top: 100px;
-    margin-left: calc( max(15%, 100px) + 10%);
+    margin-left: 15%;
+    margin-right: 15%;
+    /*margin-left: calc( max(15%, 100px) + 10%);*/
         /*  1. marge en bas du cadre : 20px
             2. account_icon_bar :   width: 15%;
                                     min-width: 100px;
             => marge à gauche : max(15%, 100px).
             on ajoute 10% à gauche et à droite ici (plus beau)
         */
-    width: calc(100% - max(15%, 100px) - 20%); /* 20% = margin-right + margin-left*/
+    /*width: calc(100% - max(15%, 100px) - 20%);*/ /* 20% = margin-right + margin-left*/
+    width: calc(100% - 30%); /* 30% = margin-right + margin-left*/
     min-width: 300px;
     padding: 20px;
     color: #fff;
@@ -73,7 +90,8 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: .3s ease;
     text-align: center;
-    /*border: 1px solid red;*/
+
+    flex: 1;
 }
 
 .top {
@@ -324,13 +342,12 @@ header{
 /* ---- personal-account.php : Icon bar ---- */
 .account_icon_bar{
     display: inline-block;
-    position: absolute;
+    /*position: absolute;*/
     word-break: break-word; /*coupeur de mots quand mot plus grand que la ligne*/
     width: 15%;
     min-width: 100px;
     font-size: 16px;
-    top: 100px; /* 70px du nav + 30px margin*/
-    left: 0;
+    margin-top: 100px; /* 70px du nav + 30px margin*/
     transition: .3s ease;
 }
 
@@ -378,14 +395,16 @@ a#first_menu:hover, a#middle_menu:hover, a#last_menu:hover{
 }
 @media (max-width: 666.67px){
     .form-box {
-        margin-left: calc( max(15%, 100px) + 5%);
+        margin-left: 5%;
+        /*margin-left: calc( max(15%, 100px) + 5%);*/
             /*  1. marge en bas du cadre : 20px
                 2. account_icon_bar :   width: 15%;
                                         min-width: 100px;
                 => marge à gauche : max(15%, 100px).
                 on ajoute 5% à gauche et à droite ici (plus beau)
             */
-        width: calc(100% - max(15%, 100px) - 10%); /* 10% = margin-right + margin-left*/
+        /*width: calc(100% - max(15%, 100px) - 10%);*/ /* 10% = margin-right + margin-left*/
+        width: calc(100% - 10%); /* 10% = margin-right + margin-left*/
         padding: 20px;
     }
 }
@@ -397,14 +416,6 @@ a#first_menu:hover, a#middle_menu:hover, a#last_menu:hover{
 
 @media (max-width: 470px){
     .form-box {
-        margin-left: calc( max(15%, 100px) + 5%);
-            /*  1. marge en bas du cadre : 20px
-                2. account_icon_bar :   width: 15%;
-                                        min-width: 100px;
-                => marge à gauche : max(15%, 100px).
-                on ajoute 5% à gauche et à droite ici (plus beau)
-            */
-        width: calc(100% - max(15%, 100px) - 10%); /* 10% = margin-right + margin-left*/
         min-width: 200px;
         padding: 10px;
     }

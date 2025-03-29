@@ -38,163 +38,167 @@
 <body style="background-image: url('Images/Background_images.jpg');">
     <div class="wrapper">
         <?php include 'header.php'?>
-        <?php include 'account_icon_bar.php'?>
-        <div class="form-box">
-            <div class="login-container" id="modify-account">
-                <?php
-                    $servername = "localhost";
-                    $database = "FDE_database";
-                    $login_server = "root";
-                    $pass = "";
+        <main>
+            <?php include 'account_icon_bar.php'?>
+            <div class="container">
+                <div class="form-box">
+                    <div class="login-container" id="modify-account">
+                        <?php
+                            $servername = "localhost";
+                            $database = "FDE_database";
+                            $login_server = "root";
+                            $pass = "";
 
-                    if( isset($_SESSION['login']) && isset($_SESSION['is_connected']) && $_SESSION['is_connected']=='oui' ){
-                        //affiche les infos de compte
-                    }
-                    else{
-                        echo "<p>Vous n'êtes pas connecté(e) à votre session.<br>
-                            Connectez vous en cliquant <a href='login.php'>ici</a>.</p>";
-                        exit;
-                    }
+                            if( isset($_SESSION['login']) && isset($_SESSION['is_connected']) && $_SESSION['is_connected']=='oui' ){
+                                //affiche les infos de compte
+                            }
+                            else{
+                                echo "<p>Vous n'êtes pas connecté(e) à votre session.<br>
+                                    Connectez vous en cliquant <a href='login.php'>ici</a>.</p>";
+                                exit;
+                            }
 
-                    //server connexion test
-                    try{
-                        $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
-                        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
+                            //server connexion test
+                            try{
+                                $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
+                                $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
 
-                        $query_info_account = $connexion->prepare("SELECT * FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
-                        $query_info_account->bindParam(':login', $login, PDO::PARAM_STR);
-                        $query_info_account->execute();
-                        // array with all info of the user
-                        $array_info_account = $query_info_account->fetchAll(PDO::FETCH_ASSOC); //ou FETCH_NUM
-                        $ID = $array_info_account[0]['ID'];
-                        $_SESSION['ID'] = $ID;
-                    }
-                    catch (PDOException $e){
-                        echo "Connexion impossible à la base de données: " . $e->getMessage();
-                        exit;
-                    }
-                ?>
-                <fieldset>
-                    <header>Vos informations <?php echo $_SESSION['login'];?></header>
-                    <div class='error_msg'>
-                    <?php
-                        echo "<div id='time_session' style='color: rgb(39, 208, 255);'>";
-                        /*require 'lifespan_session.php';*/ /*  require : fatal error si fichier non trouvé
-                                                            include : si fichier non trouvé, le reste du document est exécuté*/
-                        echo "</div>";
-                        if(isset($_SESSION['error_msg'])){
-                            echo $_SESSION['error_msg'];
-                        }
-                        unset($_SESSION['error_msg']);  // remove only this session variable
-                    ?>
+                                $query_info_account = $connexion->prepare("SELECT * FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
+                                $query_info_account->bindParam(':login', $login, PDO::PARAM_STR);
+                                $query_info_account->execute();
+                                // array with all info of the user
+                                $array_info_account = $query_info_account->fetchAll(PDO::FETCH_ASSOC); //ou FETCH_NUM
+                                $ID = $array_info_account[0]['ID'];
+                                $_SESSION['ID'] = $ID;
+                            }
+                            catch (PDOException $e){
+                                echo "Connexion impossible à la base de données: " . $e->getMessage();
+                                exit;
+                            }
+                        ?>
+                        <fieldset>
+                            <header>Vos informations <?php echo $_SESSION['login'];?></header>
+                            <div class='error_msg'>
+                            <?php
+                                echo "<div id='time_session' style='color: rgb(39, 208, 255);'>";
+                                /*require 'lifespan_session.php';*/ /*  require : fatal error si fichier non trouvé
+                                                                    include : si fichier non trouvé, le reste du document est exécuté*/
+                                echo "</div>";
+                                if(isset($_SESSION['error_msg'])){
+                                    echo $_SESSION['error_msg'];
+                                }
+                                unset($_SESSION['error_msg']);  // remove only this session variable
+                            ?>
+                            </div>
+                            <form action="register_modification_account.php" method="post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
+                                <div class="input-box" id="gender">
+                                    <label for="Gender">Genre</label>
+                                    <div class="select-gender">
+                                        <div>
+                                            <input type="radio" name="Gender" value="Madame" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Madame" ){ echo "checked";}?> >Madame
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="Gender" value="Monsieur" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Monsieur" ){ echo "checked";}?> >Monsieur
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="Gender" value="Non binaire" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Non binaire" ){ echo "checked";}?> >Non binaire
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="Gender" value="Non défini" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Non défini" ){ echo "checked";}?> >Non défini
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label for="Pseudo">Login</label>
+                                    <input type="text" name="Pseudo" id="Pseudo" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['login']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
+                                </div>
+                                <div class="input-box">
+                                    <label for="Password">Mot de passe</label>
+                                    <input type="text" name="Password" id="Password" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['password']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
+                                </div>
+                                <div class="input-box">
+                                    <label for="Firstname">Prénom</label>
+                                    <input type="text" name="Firstname" id="Firstname" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['first_name']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Name">Nom</label>
+                                    <input type="text" name="Name" id="Name" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['last_name']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Email">Email</label>
+                                    <input type="text" name="Email" id="Email" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['mail']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                                </div>
+                                <div class="input-box">
+                                    <label>Photo de profil</label>
+                                    <input type="file" name="Profile_picture" id="Profile_picture" accept="image/jpeg">
+                                    <div class="Profile_picture_area" id="Profile_picture_area">
+                                        <?php
+                                            if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
+                                                //session open
+                                                $ID = $_SESSION['ID'];
+                                                echo "      <div class=\"PP_block_img\" id=\"PP_block_img\">";
+
+                                                $path_profile_picture = "Accounts/ID_" . $ID . "/profile_picture/profile_picture_ID_" . $ID . ".jpg";
+                                                if (!file_exists($path_profile_picture)){
+                                                    $path_profile_picture = "Logos/profile_picture.svg";
+                                                    echo "      <div class=\"profile-img vertical-img\">
+                                                                    <img id=\"PP_img_actual\" src=$path_profile_picture?t=" . $_SESSION['cache_buster'] . " alt=\"IMG\">
+                                                                </div>
+                                                            </div>
+                                                            <div class=\"PP_block_btn\">
+                                                                <div class=\"PP_add-img_btn\">
+                                                                    <button id=\"change_actual_PP\">Ajouter une photo</button>
+                                                                </div>
+                                                            </div>";
+                                                }
+                                                else {
+                                                    list($width, $height, $type, $attr) = getimagesize($path_profile_picture);
+                                                    if ($height >= $width){
+                                                        echo "  <div class=\"profile-img vertical-img\">";
+                                                    }
+                                                    else {
+                                                        echo "  <div class=\"profile-img horizontal-img\">";
+                                                    }
+                                                    echo "          <img  id=\"PP_img_actual\" src=$path_profile_picture?t=" . $_SESSION['cache_buster'] . " alt=\"img_PP\">";
+                                                            /*  microtime(true) :   nbre de secondes écoulés depuis le 1er janvier 1970 (début de l'époque Unix)
+                                                                                    c'est un float, contrairement à time
+                                                                (int) : rend entier le float
+                                                                BUT :   - rendre l'URL unique en ajoutant le nbre de millisecondes écoulés depuis le 1er janvier 1970.
+                                                                        - cela permet en JS (function refreshProfilePicture()) de recharger l'image si elle a été changée
+                                                                        ce qui n'est pas possible si on ne met que $path_profile_picture car le navigateur a l'image en cache et ne fera pas le changement d'image
+                                                            */
+                                                    echo "      </div>
+                                                            </div>
+                                                            <div class=\"PP_block_btn\">
+                                                                <div class=\"PP_delete-img_btn\">
+                                                                    <button id=\"delete_actual_PP\">Supprimer photo</button>
+                                                                </div>
+                                                                <div class=\"PP_add-img_btn\">
+                                                                    <button id=\"change_actual_PP\">changer photo</button>
+                                                                </div>
+                                                            </div>";
+                                                }
+                                            }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label for="Profession">Profession</label>
+                                    <input type="text" name="Profession" id="Profession" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['profession'] ?? '') //?? : s'il y a une valeur null, elle est remplacée par ce qui suit (ici rien car guillements vides)
+                                    //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
+                                </div>
+                                <div class="input-box">
+                                    <input type="submit" name="submit" class="submit" value="Enregistrer">
+                                </div>
+                        <?php
+                            //echo "<div id='test'><p id='azerty'>Cache-buster : " . $_SESSION['cache_buster'] . "</div></p>";
+                        ?>
+                            </form>
+                        </fieldset>
                     </div>
-                    <form action="register_modification_account.php" method="post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
-                        <div class="input-box" id="gender">
-                            <label for="Gender">Genre</label>
-                            <div class="select-gender">
-                                <div>
-                                    <input type="radio" name="Gender" value="Madame" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Madame" ){ echo "checked";}?> >Madame
-                                </div>
-                                <div>
-                                    <input type="radio" name="Gender" value="Monsieur" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Monsieur" ){ echo "checked";}?> >Monsieur
-                                </div>
-                                <div>
-                                    <input type="radio" name="Gender" value="Non binaire" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Non binaire" ){ echo "checked";}?> >Non binaire
-                                </div>
-                                <div>
-                                    <input type="radio" name="Gender" value="Non défini" <?php if( isset($array_info_account[0]['gender']) && $array_info_account[0]['gender']=="Non défini" ){ echo "checked";}?> >Non défini
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-box">
-                            <label for="Pseudo">Login</label>
-                            <input type="text" name="Pseudo" id="Pseudo" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['login']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
-                        </div>
-                        <div class="input-box">
-                            <label for="Password">Mot de passe</label>
-                            <input type="text" name="Password" id="Password" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['password']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>" >
-                        </div>
-                        <div class="input-box">
-                            <label for="Firstname">Prénom</label>
-                            <input type="text" name="Firstname" id="Firstname" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['first_name']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
-                        </div>
-                        <div class="input-box">
-                            <label for="Name">Nom</label>
-                            <input type="text" name="Name" id="Name" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['last_name']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
-                        </div>
-                        <div class="input-box">
-                            <label for="Email">Email</label>
-                            <input type="text" name="Email" id="Email" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['mail']) //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
-                        </div>
-                        <div class="input-box">
-                            <label>Photo de profil</label>
-                            <input type="file" name="Profile_picture" id="Profile_picture" accept="image/jpeg">
-                            <div class="Profile_picture_area" id="Profile_picture_area">
-                                <?php
-                                    if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
-                                        //session open
-                                        $ID = $_SESSION['ID'];
-                                        echo "      <div class=\"PP_block_img\" id=\"PP_block_img\">";
-
-                                        $path_profile_picture = "Accounts/ID_" . $ID . "/profile_picture/profile_picture_ID_" . $ID . ".jpg";
-                                        if (!file_exists($path_profile_picture)){
-                                            $path_profile_picture = "Logos/profile_picture.svg";
-                                            echo "      <div class=\"profile-img vertical-img\">
-                                                            <img id=\"PP_img_actual\" src=$path_profile_picture?t=" . $_SESSION['cache_buster'] . " alt=\"IMG\">
-                                                        </div>
-                                                    </div>
-                                                    <div class=\"PP_block_btn\">
-                                                        <div class=\"PP_add-img_btn\">
-                                                            <button id=\"change_actual_PP\">Ajouter une photo</button>
-                                                        </div>
-                                                    </div>";
-                                        }
-                                        else {
-                                            list($width, $height, $type, $attr) = getimagesize($path_profile_picture);
-                                            if ($height >= $width){
-                                                echo "  <div class=\"profile-img vertical-img\">";
-                                            }
-                                            else {
-                                                echo "  <div class=\"profile-img horizontal-img\">";
-                                            }
-                                            echo "          <img  id=\"PP_img_actual\" src=$path_profile_picture?t=" . $_SESSION['cache_buster'] . " alt=\"img_PP\">";
-                                                    /*  microtime(true) :   nbre de secondes écoulés depuis le 1er janvier 1970 (début de l'époque Unix)
-                                                                            c'est un float, contrairement à time
-                                                        (int) : rend entier le float
-                                                        BUT :   - rendre l'URL unique en ajoutant le nbre de millisecondes écoulés depuis le 1er janvier 1970.
-                                                                - cela permet en JS (function refreshProfilePicture()) de recharger l'image si elle a été changée
-                                                                  ce qui n'est pas possible si on ne met que $path_profile_picture car le navigateur a l'image en cache et ne fera pas le changement d'image
-                                                    */
-                                            echo "      </div>
-                                                    </div>
-                                                    <div class=\"PP_block_btn\">
-                                                        <div class=\"PP_delete-img_btn\">
-                                                            <button id=\"delete_actual_PP\">Supprimer photo</button>
-                                                        </div>
-                                                        <div class=\"PP_add-img_btn\">
-                                                            <button id=\"change_actual_PP\">changer photo</button>
-                                                        </div>
-                                                    </div>";
-                                        }
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="input-box">
-                            <label for="Profession">Profession</label>
-                            <input type="text" name="Profession" id="Profession" class="input-field" value="<?php echo htmlspecialchars($array_info_account[0]['profession'] ?? '') //?? : s'il y a une valeur null, elle est remplacée par ce qui suit (ici rien car guillements vides)
-                            //htmlspecialchars : permet d'afficher les commandes HTML sans qu'elles soient interprétées (comme des balises ou ' ou ")?>">
-                        </div>
-                        <div class="input-box">
-                            <input type="submit" name="submit" class="submit" value="Enregistrer">
-                        </div>
-    <?php
-        //echo "<div id='test'><p id='azerty'>Cache-buster : " . $_SESSION['cache_buster'] . "</div></p>";
-    ?>
-                    </form>
-                </fieldset>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
     <script>
         $(document).ready(function(){

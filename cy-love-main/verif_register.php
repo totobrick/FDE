@@ -41,34 +41,73 @@
             $_SESSION["register_Pseudo"] = $login;
             $_SESSION["register_Password"] = $password;
 
-            // Get user ID
-            $query = $connexion->prepare(
+            // Vérification que la personne est un salarié (table : employees)
+            $query1 = $connexion->prepare(
                 "SELECT *
                 FROM employees
                 WHERE BINARY first_name = :first_name
                 AND BINARY last_name = :last_name"
             ); //BINARY : permet de tenir compte de la casse des caractères
-            $query->bindParam(':first_name', $firstname, PDO::PARAM_STR);
-            $query->bindParam(':last_name', $firstname, PDO::PARAM_STR);
-            $query->execute();
-            $array = $query->fetchall(PDO::FETCH_ASSOC);
+            $query1->bindParam(':first_name', $firstname, PDO::PARAM_STR);
+            $query1->bindParam(':last_name', $firstname, PDO::PARAM_STR);
+            $query1->execute();
+            $array1 = $query1->fetchall(PDO::FETCH_ASSOC);
 
-            // Vérification que la personne est un salarié (table : employees)
-            if(count($array) == 0){
+            if(count($array1) == 0){
                 $_SESSION['error_msg'] = $firstname . " " . $lastname . " n'est pas un salarié de FDE. Aucun compte ne peut être créé pour cette personne.";
                 header("Location: register.php");
             }
-            else if (count($array) > 1){
-                $_SESSION['error_msg'] = "PROBLEME : plusieurs salariés se nomment : " . $firstname . " " . $lastname . ".";
+            else if (count($array1) > 1){
+                $_SESSION['error_msg'] = "PROBLEME : plusieurs salariés se nomment : " . $firstname . " " . $lastname . ". Création de compte impossible.";
                 header("Location: register.php");
             }
+            /*
+            echo "isEmployee :";
+            echo " -> count : " . count($array1);
+            echo " -> " . $array1[0];
+            echo " -> " . $array1[0]["ID"] . $array1[0]["fisrtname"] . $array1[0]["lastname"];
+            echo "";
+            */
             
 
+            // Vérification que la personne est un salarié (table : employees)
+            $query2 = $connexion->prepare(
+                "SELECT *
+                FROM user_info
+                WHERE BINARY first_name = :first_name
+                AND BINARY last_name = :last_name"
+            ); //BINARY : permet de tenir compte de la casse des caractères
+            $query2->bindParam(':first_name', $firstname, PDO::PARAM_STR);
+            $query2->bindParam(':last_name', $lastname, PDO::PARAM_STR);
+            $query2->execute();
+            $array2 = $query2->fetchall(PDO::FETCH_ASSOC);
+
+            if(count($array2) == 1){
+                $_SESSION['error_msg'] = "PROBLEME : Le salarié " . $firstname . " " . $lastname . " possède déjà un compte.";
+                header("Location: register.php");
+            }
+            else if(count($array2) > 1){
+                $_SESSION['error_msg'] = "ERREUR : Le salarié " . $firstname . " " . $lastname . " possède déjà PLUSIEURS comptes. (normalement impossible)";
+                header("Location: register.php");
+            }
+
+            /*
+            echo "hasAccount :";
+            echo " -> count : " . count($array2);
+            echo " -> " . $array2[0];
+            echo " -> " . $array2[0]["ID"] . $array2[0]["fisrtname"] . $array2[0]["lastname"];
+            echo "";
+            echo " -> " . $array2[1];
+            echo " -> " . $array2[1]["ID"] . $array2[1]["fisrtname"] . $array2[1]["lastname"];
+            echo "";
+            exit;*/
+
+
             // Vérification du login unique
-            $query1 = $connexion->prepare("SELECT ID FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
-            $query1->bindParam(':login', $login, PDO::PARAM_STR);
-            $query1->execute();
-            $array_same_login = $query1->fetchAll(PDO::FETCH_NUM);
+            $query3 = $connexion->prepare("SELECT ID FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
+            $query3->bindParam(':login', $login, PDO::PARAM_STR);
+            $query3->execute();
+            $array_same_login = $query3->fetchAll(PDO::FETCH_NUM);
 
             if (count($array_same_login) > 0) {
                 $_SESSION['error_msg'] = "Le login " . $login . " est déjà utilisé, veuillez en choisir un autre.";
