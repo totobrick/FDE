@@ -1,5 +1,5 @@
 from .nuclear import Nuclear
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
 import uvicorn
 import secrets
 import threading
@@ -24,13 +24,21 @@ class INuclearPowerPlant(Nuclear):
             """
         )
 
+
+
+
     def initializeRoute(self) :
         @self.app.get("/")
         def read_root():
             return {f"Nuclear Power Plant {self.id} : {self.name}."}
         
         @self.app.get("/getStatus")
-        def getStatus():
+        def getStatus(request: Request):
+            auth_header = request.headers.get("Authorization")
+    
+            if auth_header is None or auth_header != f"{self.apiKey}":
+                raise HTTPException(status_code=401, detail="Unauthorized")
+            
             return {
                     "id": self.id,
                     "date": self.lastDataDate,
@@ -41,15 +49,17 @@ class INuclearPowerPlant(Nuclear):
         
 
         @self.app.get("/setTarget")
-        def setTarget(apiKey: str, targetedValue: float):
-            if apiKey != self.apiKey :
-                return {"status": 401, "message": "Unauthorize"}
+        def setTarget(request: Request, targetedValue: float):
+            auth_header = request.headers.get("Authorization")
+    
+            if auth_header is None or auth_header != f"Bearer {self.apiKey}":
+               raise HTTPException(status_code=401, detail="Unauthorized")
 
             if targetedValue < 0 or targetedValue > 1:
-                return {"status": 400, "message": "Bad Request"}
+                raise HTTPException(status_code=400, detail="Bad Request: Value must be between 0 and 1")
 
             self.targeted_exploitation = targetedValue
-            return {"status": 200, "message": "Ok"}
+            return {"status_code": 200, "message": "Ok"}
         
     def runSimulation(self) :
         while True:
