@@ -12,6 +12,8 @@ class IPowerSource:
         self.powerSource = ps
         self.id = id
 
+        self.time = 0
+
         self.initializeRoute()
 
     def checkToken(self, request):
@@ -50,7 +52,8 @@ class IPowerSource:
 
     def runSimulation(self) :
         while True:
-            self.powerSource.simulate(0, 5)
+            self.powerSource.simulate(self.time, 5)
+            self.time += 100
             #print("Prod:", self.getProd())
             time.sleep(2)
 

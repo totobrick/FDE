@@ -25,6 +25,8 @@ class Nuclear(PowerSource):
             "min_prod": self.min_exploitable
         }
 
+        return info
+
     def simulate(self, time, dt):
         for i in range(dt) :
             if self.actual_exploitation < self.targeted_exploitation:
@@ -42,7 +44,7 @@ class Nuclear(PowerSource):
             prod = 0 if self.actual_exploitation < self.min_exploitable else self.max_power * self.actual_exploitation
 
             prodData = {
-                "date": 0,
+                "date": time,
                 "targeted_exploitation" : self.targeted_exploitation,
                 "actual_exploitation" : self.actual_exploitation,
                 "production" : prod

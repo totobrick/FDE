@@ -1,4 +1,4 @@
-from .nuclear import Nuclear
+from .Nuclear import Nuclear
 from fastapi import FastAPI, Request, HTTPException
 import uvicorn
 import secrets

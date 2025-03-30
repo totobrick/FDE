@@ -5,7 +5,8 @@ const express = require('express');
 const apis = [
     { "id": 0, "url": "http://127.0.0.1:8000", "apikey": "key1", "lastDataTime": null },
     { "id": 1, "url": "http://127.0.0.1:8001", "apikey": "key2", "lastDataTime": null },
-    { "id": 2, "url": "http://127.0.0.1:8002", "apikey": "key3", "lastDataTime": null }
+    { "id": 2, "url": "http://127.0.0.1:8002", "apikey": "key3", "lastDataTime": null },
+    { "id": 3, "url": "http://127.0.0.1:8003", "apikey": "key4", "lastDataTime": null }
 ];
 
 let data = {};
@@ -16,30 +17,23 @@ apis.forEach(api => {
 
 const getData = async () => {
     for (const api of apis) {
-        await axios.get(`${api.url}/getProdData`,
-        {
-            params: {
-                'lastDataTime': `${api.lastDataTime}`
-            },
-            headers: {
-              'Authorization': `${api.apikey}`
-            }
-        })
+        try {
+            const response = await axios.get(`${api.url}/getProdData`, {
+                params: { 'lastDataTime': api.lastDataTime },
+                headers: { 'Authorization': api.apikey }
+            });
 
-        .then(response => {
-            
-            //data that we ll send to the DB
             data[api.id].push(response.data);
-        })
 
-        .catch(error => {
-            //console.error("Error", error.response.status)
-            console.log(error.response.data)
-        });
+        } catch (error) {
+            console.error(api)
+            console.error("Error:", error.response?.status || "Unknown error");
+            console.error(error.response?.data || error.message);
+        }
     }
 };
 
-setInterval(getData, 10000);
+setInterval(getData, 1000);
 
 const app = express();
 const PORT = 3000;

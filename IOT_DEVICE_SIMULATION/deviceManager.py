@@ -4,9 +4,10 @@ from datetime import datetime
 
 
 config = [
-    {"name": "p1", "apiKey": "key1"},
-    {"name": "p2", "apiKey": "key2"},
-    {"name": "p3", "apiKey": "key3"}
+    {"type": "Nuclear", "name": "NuclearPowerPlant_01", "apiKey": "key1"},
+    {"type": "Nuclear", "name": "NuclearPowerPlant_02", "apiKey": "key2"},
+    {"type": "Nuclear", "name": "NuclearPowerPlant_03", "apiKey": "key3"},
+    {"type": "SolarPanel", "name": "SolarPanel_01", "apiKey": "key4"}
 ]
 
 
@@ -34,13 +35,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 print()
 
 from model.new.IPowerSource import IPowerSource
-from model.new.simulation.nuclear import Nuclear
+from model.new.simulation.{type} import {type}
 
 print("Creating power source and API {id}.")
 
-NucPowerPlant = Nuclear("{name}", "IDF")
+plant = {type}("{name}", "IDF")
 
-API = IPowerSource(NucPowerPlant, {id} ,"{apiKey}")
+API = IPowerSource(plant, {id} ,"{apiKey}")
 API.run()
 """
 
@@ -65,6 +66,7 @@ def generate_files(config):
         generated_code = code_template_bis.format(
             id=i,
             name=plant['name'],
+            type=plant['type'],
             apiKey=plant['apiKey']
         )
         
