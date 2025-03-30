@@ -10,7 +10,6 @@ config = [
     {"type": "SolarPanel", "name": "SolarPanel_01", "apiKey": "key4"}
 ]
 
-
 code_template = """
 import sys
 import os
@@ -19,23 +18,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 print()
 
-from model.nuclearPlant.nuclearInterface import INuclearPowerPlant
-
-print("Creating power source and API {id}.")
-powerPlant = INuclearPowerPlant({id}, "{name}", "{apiKey}")
-powerPlant.run()
-"""
-
-code_template_bis = """
-import sys
-import os
-
-#Add model to python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-print()
-
-from model.new.IPowerSource import IPowerSource
-from model.new.simulation.{type} import {type}
+from model.IPowerSource import IPowerSource
+from model.simulation.{type} import {type}
 
 print("Creating power source and API {id}.")
 
@@ -63,7 +47,7 @@ def generate_files(config):
     for i, plant in enumerate(config):  
         filename = f"{output_dir}/power_plant_{i}.py"  
         
-        generated_code = code_template_bis.format(
+        generated_code = code_template.format(
             id=i,
             name=plant['name'],
             type=plant['type'],

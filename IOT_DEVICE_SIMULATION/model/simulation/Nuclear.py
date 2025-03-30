@@ -1,4 +1,5 @@
-from ..powerSource import PowerSource
+from model.powerSource import PowerSource
+import random 
 
 class Nuclear(PowerSource):  
     def __init__(self, name, area):
@@ -41,7 +42,8 @@ class Nuclear(PowerSource):
             elif self.actual_exploitation > 1:
                 self.actual_exploitation = 1 
 
-            prod = 0 if self.actual_exploitation < self.min_exploitable else self.max_power * self.actual_exploitation
+
+            prod = 0 if self.actual_exploitation < self.min_exploitable else max(0, (self.max_power * self.actual_exploitation) * random.uniform(0.975, 1.025))
 
             prodData = {
                 "date": time,

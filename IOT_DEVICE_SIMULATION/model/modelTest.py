@@ -1,16 +1,18 @@
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 import time
-from model import *  
+from model.simulation.Nuclear import Nuclear
+from model.simulation.SolarPanel import SolarPanel
+from model.simulation.GridDemand import GridDemand
 
 
-grid = GridDemand(id=1, name="Main Grid", population=5000000)
+grid = GridDemand(population=10000000)
 tab = []
 for i in range(5):
-    tab.append(Nuclear(i, f"nuclear_{i}")) 
+    tab.append(Nuclear(i, "")) 
 
-for i in range(5):
-    tab.append(SolarPanel(i, f"solar_{i}")) 
+for i in range(20):
+    tab.append(SolarPanel(i, "")) 
 
 
 
@@ -43,7 +45,7 @@ for i, facility in enumerate(tab):
         create_slider(facility, ax_slider_pos)
         ax_slider_pos += 0.05  
 
-dt = 1
+dt = 50
 iteration = 0
 while True:
     total_production = 0  
@@ -52,14 +54,14 @@ while True:
 
    
     for facility in tab:
-        facility.simulate(iteration%1440, dt) 
-        total_production += facility.getProd() 
+        facility.simulate(iteration, dt) 
+        total_production += facility.getLastProd()["production"]
         if type(facility) is Nuclear:
-            total_nuc += facility.getProd()
+            total_nuc += facility.getLastProd()["production"]
         elif type(facility) is SolarPanel:
-            total_solar += facility.getProd()
+            total_solar += facility.getLastProd()["production"]
 
-    grid.simulate(iteration%1440, dt)
+    grid.simulate(iteration, dt)
 
     x_data.append(iteration)
     y_data_nuc.append(total_nuc)
@@ -67,7 +69,7 @@ while True:
     y_data_total.append(total_production)
     y_data_grid.append(grid.getDemand())
 
-    max_length = (1440 * 2) / dt
+    max_length = (1440 * 5) / dt
     if len(x_data) > max_length:
         x_data.pop(0)
         y_data_nuc.pop(0)
