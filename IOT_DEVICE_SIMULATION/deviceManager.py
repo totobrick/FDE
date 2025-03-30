@@ -25,6 +25,25 @@ powerPlant = INuclearPowerPlant({id}, "{name}", "{apiKey}")
 powerPlant.run()
 """
 
+code_template_bis = """
+import sys
+import os
+
+#Add model to python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+print()
+
+from model.new.IPowerSource import IPowerSource
+from model.new.simulation.nuclear import Nuclear
+
+print("Creating power source and API {id}.")
+
+NucPowerPlant = Nuclear("{name}", "IDF")
+
+API = IPowerSource(NucPowerPlant, {id} ,"{apiKey}")
+API.run()
+"""
+
 output_dir = "IOT_DEVICE_SIMULATION/.tmp/generated_files"
 log_dir = "IOT_DEVICE_SIMULATION/.tmp/log"
 
@@ -43,7 +62,7 @@ def generate_files(config):
     for i, plant in enumerate(config):  
         filename = f"{output_dir}/power_plant_{i}.py"  
         
-        generated_code = code_template.format(
+        generated_code = code_template_bis.format(
             id=i,
             name=plant['name'],
             apiKey=plant['apiKey']

@@ -16,7 +16,7 @@ apis.forEach(api => {
 
 const getData = async () => {
     for (const api of apis) {
-        await axios.get(`${api.url}/getStatus`,
+        await axios.get(`${api.url}/getProdData`,
         {
             params: {
                 'lastDataTime': `${api.lastDataTime}`
@@ -33,7 +33,7 @@ const getData = async () => {
         })
 
         .catch(error => {
-            console.error("Error", error.response.status)
+            //console.error("Error", error.response.status)
             console.log(error.response.data)
         });
     }
