@@ -172,14 +172,14 @@ header.nav{
     top: -100vh;
     left: 0;
     width: 100%;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 70px);
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(20px); /*flou*/
     overflow: auto;
     transition: .3s;
 }
 .nav-menu.responsive {
-    top: 100px;
+    top: 70px;
 }
 
 .nav-menu-content{

@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="Styles/style_header.css">
 <header class="nav">
     <div class="nav-logo">
-        <img src="Logos/logo_FDE.svg" alt="Logo FDE" onclick="document.location='login.php'">
+        <img src="Logos/logo_FDE.svg" alt="Logo FDE" onclick="document.location='index.php'">
     </div>
     <div class="nav-button">
         <?php
@@ -64,7 +64,7 @@
     <nav class="nav-menu" id="navMenu">
         <div class="nav-menu-content">
             <ul>
-                <li><a href="login.php" class="link active">Menu principal</a></li>
+                <li><a href="index.php" class="link active">Menu principal</a></li>
                 <li><a href="personal-account.php" class="link">Compte</a></li>
                 <li><a href="search.php" class="link">Rechercher</a></li>
             </ul>

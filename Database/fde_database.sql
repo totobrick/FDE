@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 28 mars 2025 à 20:27
+-- Généré le : lun. 31 mars 2025 à 09:13
 -- Version du serveur : 8.3.0
 -- Version de PHP : 8.2.18
 
@@ -33,14 +33,17 @@ CREATE TABLE IF NOT EXISTS `employees` (
   `first_name` varchar(100) DEFAULT NULL,
   `last_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `employees`
 --
 
 INSERT INTO `employees` (`ID`, `first_name`, `last_name`) VALUES
-(10, 'A', 'A');
+(10, 'A', 'A'),
+(11, 'B', 'B2'),
+(12, 'C', 'C2'),
+(13, 'D', 'D2');
 
 -- --------------------------------------------------------
 
@@ -62,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `admin` varchar(255) DEFAULT NULL,
   `score` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `user_info`
@@ -74,7 +77,8 @@ INSERT INTO `user_info` (`ID`, `login`, `password`, `first_name`, `last_name`, `
 (4, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', 'shakira@gmail.com', 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', NULL, 0),
 (1, 'Toto_admin', '0000', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'Administrateur du site.', 'oui', 0),
 (5, 'Toto', 'a', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'JSP', NULL, 0),
-(47, 'A', 'A', 'A', 'A', 'totovadordlp@gmail.com', '', 'Madame', NULL, NULL, 0);
+(50, 'B', 'B', 'B', 'B2', 'totovadordlp@gmail.com', '', 'Madame', NULL, NULL, 0),
+(49, 'A', 'A', 'A', 'A', 'totovadordlp@gmail.com', '', 'Madame', NULL, NULL, 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
