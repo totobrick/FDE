@@ -64,6 +64,11 @@ class IPowerSource:
         thread.start()
 
         print("Launching API.")
-        uvicorn.run(self.app, host="127.0.0.1", port=8000+self.id)
+        port  = 8000+self.id
+        try:
+            uvicorn.run(self.app, host="127.0.0.1", port=port)
+        except OSError as e:
+            print(f"Port {port} is likely already in use. API launching aborted.")
+            print(f"Error: {e}")
 
 
