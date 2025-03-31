@@ -64,7 +64,7 @@ main{
     transition: .3s ease;
 }
 
-.form-box {
+.box, .form-box {
     display: flex;
     word-break: break-word; /*coupe les mots plus logns que 1 ligne pour les mettre sur 2 lignes*/
     justify-content: center;
@@ -264,7 +264,7 @@ header{
 
 
 
-.login-container, .register-container, .code-container{
+.login-container, .register-container, .code-container, .box-container{
     /*display: block;*/
     width: 100%;
     padding: 0;

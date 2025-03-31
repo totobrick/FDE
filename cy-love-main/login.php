@@ -10,7 +10,7 @@
 <html lang="fr">
 <head>
     <link rel="stylesheet" href="Styles/style2.css">
-    <title>CY LOVE : Connexion</title>
+    <title>FDE : Connexion</title>
 </head>
 
 <body style="background-image: url('Images/Background_images.jpg')"> <!--Background image : https://img.freepik.com/photos-gratuite/jeune-couple-romantique-sexy-amoureux-heureux-plage-ete-ensemble-s-amusant-portant-maillots-bain-montrant-signe-du-coeur-sundet_285396-6545.jpg?t=st=1715103572~exp=1715107172~hmac=144c7e5b0ff875c6caeab703b9f2860b0da711ca04f6eb9e9186eb8b7e9f819d&w=2000-->

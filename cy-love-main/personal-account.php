@@ -33,7 +33,7 @@
     -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="session_lifespan.js"></script>
-    <title>CY LOVE : Mes informations</title>
+    <title>FDE : Mes informations</title>
 </head>
 <body style="background-image: url('Images/Background_images.jpg');">
     <div class="wrapper">
