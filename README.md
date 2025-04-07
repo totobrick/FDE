@@ -8,6 +8,28 @@ It concerns :
    - CSS for the style
 
 ## Installation
+### node.js and npm
+MESSAGE A ARTHUR : je n'ai pas pu retraiter ce point car j'ai passé plus de temps que prévu mais voici néanmoins ce que je peux dire.
+
+Requests in our web pages are done in node.js
+To **install node.js (and npm)** on Windows :
+   - go to : https://nodejs.org/en/download
+   - select the last LTS version (LTS is more stable than Current version) for Windows using "fnm" with "npm"
+   - download clicking on "Windows installer (.msi)"
+   - follow the information of the installer
+
+After installation : 
+   - open a PowerShell terminal
+   - type : ```node -v```, if your version is not written there is a problem
+   - type : ```npm -v```, if your version is not written there is a problem
+
+### MySQL
+To install mysql : 
+   - open your PowerShell terminal
+   - type : ```npm install mysql``` (in the good directory, I don't know where actually, I will say you very soon)
+
+
+
 ### General & database
 To use the website and install it, please launch your Windows OS and read the next steps :
    1. Launch Windows
@@ -20,12 +42,12 @@ To use the website and install it, please launch your Windows OS and read the ne
       - PhpMyAdmin connection : 
          - login : **"root"**
          - password : **""** (nothing)
-      - Click on "New database" and create a database called **"FDE_database"** (do not change this name)
-      - click on "FDE_database"
       - click on "Import" at the top
       - choose this file in the project : ".../www/FDE/Database/**fde_database.sql**"
 
 Now the database is installed and you can use the website.
+
+**Information** : we have actually a new database but the old is in */Database/OLD_database/* because web pages are still based on this old database. It will change in a few time ...
 
 ### Email
 Emails are sent to the user when :
