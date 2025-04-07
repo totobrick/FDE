@@ -141,7 +141,7 @@ INSERT INTO Power_Source (ID_object, `type`, max_prod, min_prod) VALUES
 DROP TABLE IF EXISTS Production;
 CREATE TABLE IF NOT EXISTS Production (
   ID_power_source int,
-  date_prod DATETIME NOT NULL,
+  date_prod int NOT NULL,
   targeted_prod float,
   actual_prod float,
   PRIMARY KEY (ID_power_source, date_prod),
