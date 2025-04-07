@@ -25,13 +25,15 @@ class SolarPanel(PowerSource):
 
     def simulate(self, time, dt):
         g = self.irradiance(time%1440)
-        p = self.max_power * (g + random.uniform(-0.90, 0))
+        p = (g + random.uniform(-0.90, 0))
 
         prod = p if p > 0 else 0
 
         prodData = {
                 "date": time,
-                "production" : prod
+                "actual_exploitation" : prod,
+                "targeted_exploitation": 1,
+                "production": prod * self.max_power,
         }
 
         self.addProdData(prodData)
