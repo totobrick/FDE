@@ -1,0 +1,16 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic List with EJS</title>
+</head>
+<body>
+  <h2>My Dynamic List</h2>
+  <ul>
+    <% items.forEach(function(item) { %> <!-- Loop over items array -->
+      <li><%= item %></li> <!-- Inject each item into the list -->
+    <% }); %>
+  </ul>
+</body>

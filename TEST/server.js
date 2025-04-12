@@ -1,129 +1,89 @@
 const mysql = require('mysql2');
+const express = require('express'); // |
+const app = express();              // | pour host le site
+const fs = require('fs');           // Lire des fichiers
+const port=3100;
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
 
 // Créer une connexion à MySQL
+
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',  // Ton utilisateur MySQL
-  password: ''  // Ton mot de passe MySQL
+    host: 'localhost',
+    user: 'root',  // Ton utilisateur MySQL
+    password: '',  // Ton mot de passe MySQL
+    database: 'fde_database'
 });
 
-// Requête SQL avec plusieurs instructions
-const query = `
-  DROP DATABASE IF EXISTS fde_database;
-  CREATE DATABASE fde_database;
-  USE fde_database;
-  CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100),
-    age INT
-  );
-  INSERT INTO users (name, email, age) VALUES
-  ('Alice', 'alice@example.com', 30),
-  ('Bob', 'bob@example.com', 25),
-  ('Charlie', 'charlie@example.com', 35);
-`;
-
-// Exécuter la requête multiple
-connection.query(query, (err, result) => {
-  if (err) {
-    console.error('Erreur lors de l\'exécution des requêtes SQL:', err);
-  } else {
-    console.log('Requêtes exécutées avec succès');
-  }
-
-  // Fermer la connexion
-  connection.end();
+app.get('/', (req, res) => {
+    var file = "form.html";
+    console.log("fichier" + file + ".");
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (err){
+            console.error("ERREUR survenue à l'envoi du fichier" + file + ".", err);
+        }
+        //res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        res.end();
+    });
 });
 
-/*
-const mysql = require('mysql2');
+app.get('/query', (req, res) => {
+    const query1 = 'SELECT login, password FROM user WHERE login=? AND password=?'
+    connection.query(query1, ['Toto', 'a'], (err, response) => {
+        if (err){
+            console.error("Une erreur est survenue", err);
+        }
+        console.log(response);
+        console.log("Nb lignes : ", response.length);
 
-// Créer une connexion à MySQL
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',  // Ton utilisateur MySQL
-  password: ''  // Ton mot de passe MySQL
+        if (response.length == 1){
+            console.log(response[0].login);
+            res.send("True");
+        }
+        else{
+            res.send("False");
+        }
+    });
 });
 
-// Requête SQL avec plusieurs instructions
-const query = `
-  DROP DATABASE IF EXISTS fde_database;
-  CREATE DATABASE fde_database;
-  USE fde_database;
-  CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100),
-    age INT
-  );
-  INSERT INTO users (name, email, age) VALUES
-  ('Alice', 'alice@example.com', 30),
-  ('Bob', 'bob@example.com', 25),
-  ('Charlie', 'charlie@example.com', 35);
-`;
+// Use to receive POST data
+app.use(express.urlencoded({ extended: true }));
 
-// Exécuter la requête multiple
-connection.query(query, (err, result) => {
-  if (err) {
-    console.error('Erreur lors de l\'exécution des requêtes SQL:', err);
-  } else {
-    console.log('Requêtes exécutées avec succès');
-  }
+app.post("/verif_login", (req, res) => {
+    console.log("Formulaire login recu.");
+    const login = req.body.login;
+    const pwd = req.body.password;
+    console.log(`login: ${login},\npwd : ${pwd}.`);
 
-  // Fermer la connexion
-  connection.end();
-});*/
+    const query_1 = "SELECT login, password FROM user WHERE login=? AND password=?";
+    connection.query(query_1, [login, pwd], (err, response) => {
+        if (err){
+            console.error("Une erreur est survenue", err);
+        }
+        //console.log(response);
+        //console.log("Nb lignes : ", response.length);
 
-
-
-
-/*const http = require('http')    // include the HTTP module
-const mysql = require('mysql2')    // many requests can be done
-const fs = require('fs')         // file system module
-const port = 5000
-//var mysql = require('mysql')    // requests are done 1 by 1 (sequential execution of requests)
-
-var connection = mysql.createConnection({
-    host : "localhost",
-    user : "root",
-    password : ""
+        if (response.length == 1){
+            console.log(`Bonjour ${login}, vous êtes connecté.`);
+            res.redirect(301, "/connected");
+        }
+        else{
+            res.send("Non connecté.");
+        }
+    });
 });
 
-
-
-connection.connect(function(error){
-    if(error){
-        console.error("Erreur de connexion à MySQL." + error);
-        //throw error;
-    }
-    else{
-        console.log("Connected to MySQL database!");
-    }
+app.get("/connected", (req, res) => {
+    var file = "account_data.html";
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (err){
+            console.error("ERREUR survenue à l'envoi du fichier" + file + ".", err);
+        }
+        //res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        res.end();
+    });
 });
-
-var query = `DROP DATABASE IF EXISTS fde_database;
-        CREATE DATABASE IF NOT EXISTS fde_database;`;
-        connection.query(query, function(err, res){
-            console.log(query);
-            if(err){
-                console.error("Error : when creating the database.", err.message);
-            }
-            else{
-                console.log("Database created !");
-            }
-        });
-*/
-/*
-fs.readFile("fde_database.sql", 'utf8', function(err, data){
-    if(err){
-        console.error("Error : database file not found.");
-    }
-    else{
-        //console.log(data);
-        //return;
-        
-
-    }
-});
-*/

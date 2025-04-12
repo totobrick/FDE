@@ -19,34 +19,34 @@
         <main>
             <div class="container">
                 <div class="form-box_login">
-                    <div class="login-container" id="login">
-                        <form action="verif_login.php" method="post">
+                    <div class="login-container">
+                        <!--<form action="verif_login.php" method="post">-->
                             <div class="top">
                                 <header>Se connecter</header>
                                 <span>Vous ne possédez pas de compte ? <a href="register.php" onclick="register()">S'inscrire</a></span>
+                                <div class="error_msg" id="error_msg">
                                 <?php
                                     if(isset($_SESSION['login'])){
-                                        echo "<div class=\"error_msg\">
-                                            <b style=\"color: rgb(255, 0, 0)\">ATTENTION !</b>
-                                            Le mot de passe de " . $_SESSION['login'] . " est incorrect, veuillez réessayer.
-                                            </div>";
+                                        echo "<b style=\"color: rgb(255, 0, 0)\">ATTENTION !</b>
+                                            Le mot de passe de " . $_SESSION['login'] . " est incorrect, veuillez réessayer.";
                                     }
                                     if(isset($_SESSION['error_msg'])){
-                                        echo "<div class='error_msg'>" . $_SESSION['error_msg'] . "</div>";
+                                        echo $_SESSION['error_msg'];
                                     }
                                     unset($_SESSION['error_msg']); // remove only this session variable
                                 ?>
+                                </div>
                             </div>
                             <div class="input-box">
-                                <input type="text" name="login" class="input-field" width="40%" placeholder="Login">
+                                <input type="text" name="login" class="input-field" id="login" width="40%" placeholder="Login">
                                 <i class="bx bx-user"></i>
                             </div>
                             <div class="input-box">
-                                <input type="password" name="Password" class="input-field" placeholder="Mot de passe">
+                                <input type="password" name="Password" class="input-field" id="password" placeholder="Mot de passe">
                                 <i class="bx bx-lock-alt"></i>
                             </div>
                             <div class="input-box">
-                                <input type="submit" name="submit" class="submit" value="Connexion">
+                                <button class="submit" id="submit123" onclick="submit()">Connexion</button>
                             </div>
                             <div class="two-col">
                                 <div class="one">
@@ -57,7 +57,7 @@
                                     <label><a href="forgot_pwd.php">Mot de passe oublié ?</a></label>
                                 </div>
                             </div>
-                        </form>
+                        <!--</form>-->
                     </div>
                 </div>
             </div>
@@ -65,19 +65,30 @@
     <?php session_unset(); ?>
     
     <script>
-        var a = document.getElementById("loginBtn");
-        var b = document.getElementById("registerBtn");
-        var x = document.getElementById("login");
-        var y = document.getElementById("register");
 
-        function login() {
-            x.style.left = "4px";
-            y.style.right = "-520px";
-            a.className += " white-btn";
-            b.className = "btn";
-            x.style.opacity = 1;
-            y.style.opacity = 0;
+        function sendData(){
+            const login = document.getElementById("login").value;
+            const password = document.getElementById("password").value;
+            document.getElementById("error_msg").innerHTML = "Bonjour," + login +","+ password +".";
+            
+            const test = fetch('/verif_login',{
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({login, password})
+            });
+            document.getElementById("error_msg").innerHTML = test.text();
+
+            
         }
+
+        const express = require('express');
+        const app = express();
+        app.use(express.json());
+        
+        app.get("/verif_login", (req,res)=>{
+            res.send("Bien reçu !");
+        })
+        
     </script>
 
 </body>
