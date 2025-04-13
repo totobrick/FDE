@@ -49,6 +49,4 @@ CONFIG = [
         "apiKey": "key7",
         "port": 8006
     },
-
-
 ]
