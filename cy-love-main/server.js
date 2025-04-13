@@ -33,10 +33,6 @@ app.set('view engine', 'ejs');
 // Change les dossier de vues (cad les rend visible s'ils ne le sont pas)
 //app.set('views', chemin)
 
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
-
 // Créer une connexion à MySQL
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -50,7 +46,8 @@ app.get('/login', (req, res) => {
     console.log("Envoi du fichier " + filePath + " .");
     console.log("__dirname : " + __dirname);
     //res.sendFile(filePath);
-    res.render(filePath);
+    res.render(filePath, { loginBtn: "Se Connecter",
+                            path_loginBtn: "/login"});
     /*fs.readFile(filePath, 'utf8', (err, data) => {
         if (err){
             console.error("ERREUR survenue à l'envoi du fichier" + filePath + ".", err);
@@ -143,7 +140,9 @@ app.get("/connected_homepage", (req, res) => {
         res.end();
     });*/
     console.log("ID : " + req.session.user_id)
-    res.render(filePath, { welcome_msg: "Bienvenue " + req.session.user_id + " " + req.session.login + " "+ req.session.password + "."})
+    res.render(filePath, { loginBtn: "Se déconnecter",
+                            path_loginBtn: "/logout",
+                            welcome_msg: "Bienvenue " + req.session.user_id + " " + req.session.login + " "+ req.session.password + "."})
 });
 
 app.get('/page2', (req, res) => {
@@ -159,7 +158,7 @@ app.get('/page2', (req, res) => {
     });
 });
 
-app.post('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
     req.session.destroy( (err) => {
         if(err){
             console.log("Echec de destruction de session.");
@@ -168,4 +167,9 @@ app.post('/logout', (req, res) => {
         console.log("Destruction de la session réussie.");
         res.redirect(301, '/');     // 301 : http status for permanent redirection
     });
+});
+
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });

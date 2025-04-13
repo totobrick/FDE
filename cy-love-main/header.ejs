@@ -7,12 +7,13 @@
         <!--<?php
             if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                 //session open
-                echo "<button class=\"btn white-btn\" id=\"login-btn\" onclick=\"window.location.href='logout.php'\">Se déconnecter</button>";
+                echo "";
             }
             else{
                 echo "<button class=\"btn white-btn\" id=\"login-btn\" onclick=\"window.location.href='login.php'\">Se connecter</button>";
             }
         ?>-->
+        <button class="btn white-btn" id="login-btn" onclick="window.location.href='<%= path_loginBtn %>'"><%= loginBtn %></button>
         <button class="btn" id="register-btn" onclick="window.location.href='register.php'">S'inscrire</button>
     </div>
     <div class="nav-right"><!-- style="display: flex; justify-content: space-between; height: 100%; align-items: center;"-->
