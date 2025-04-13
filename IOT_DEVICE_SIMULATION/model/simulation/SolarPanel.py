@@ -7,7 +7,7 @@ class SolarPanel(PowerSource):
         super().__init__(name, area)
 
         #Simulation const
-        self.max_power = 300 
+        self.max_power = 300 #MW
         self.actif = True
 
     def setTarget(self, target: bool):
@@ -30,10 +30,10 @@ class SolarPanel(PowerSource):
         prod = p if p > 0 else 0
 
         prodData = {
-                "date": time,
-                "actual_exploitation" : prod,
-                "targeted_exploitation": 1,
                 "production": prod * self.max_power,
+                "targeted_exploitation": 1,
+                "actual_exploitation" : prod,
+                
         }
 
         self.addProdData(prodData)

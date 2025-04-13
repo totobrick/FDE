@@ -1,55 +1,47 @@
 const axios = require('axios');
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'fde_database',
-});
-
-
-
-//Data that we ll have to query from the DB
-const apis = [
-    { "id": 0, "url": "http://127.0.0.1:8000", "apikey": "key1", "lastDataTime": null },
-    { "id": 1, "url": "http://127.0.0.1:8001", "apikey": "key2", "lastDataTime": null },
-    { "id": 2, "url": "http://127.0.0.1:8002", "apikey": "key3", "lastDataTime": null },
-    { "id": 3, "url": "http://127.0.0.1:8003", "apikey": "key4", "lastDataTime": null }
-];
-
-var dataG = {};
-apis.forEach(api => {
-    dataG[api.id] = [];
-});
-
-
+var dataHistory = {};
 var data = {};
 
-apis.forEach(api => {
-    data[api.id] = [];
-});
+const getAndPushData = async () => {
+    const connection = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'fde_database',
+    });
 
-const getData = async () => {
+    const [apis] = await connection.execute('SELECT id, name, link as url, apiKey FROM connected_object');
+
+    
+    apis.forEach(api => {
+        data[api.id] = [];
+
+        if (!dataHistory[api.id]) {
+            dataHistory[api.id] = [];
+        }
+    });
+
+
     for (const api of apis) {
         try {
             const response = await axios.get(`${api.url}/getProdData`, {
-                params: { 'lastDataTime': api.lastDataTime },
-                headers: { 'Authorization': api.apikey }
+                //params: { lastDataTime: api.lastDataTime },
+                headers: { Authorization: api.apikey }
             });
 
             data[api.id].push(response.data);
-            dataG[api.id].push(response.data);
-            //console.log(data[api.id]);
+            dataHistory[api.id].push(response.data);
 
         } catch (error) {
-            console.error(api)
-            console.error("Error:", error.response?.status || "Unknown error");
-            console.error(error.response?.data || error.message);
+            console.error(`Error fetching from ${api.url}`);
+            console.error("Status:", error.response?.status || "Unknown error");
+            console.error("Details:", error.response?.data || error.message);
         }
     }
+
 
     const sql = 'INSERT INTO production SET ?';
 
@@ -61,30 +53,39 @@ const getData = async () => {
             const prod = {
                 ID_power_source: api.id,
                 date_prod: entry.date,
-                targeted_prod: entry.targeted_exploitation ?? undefined,
-                actual_prod: entry.actual_exploitation ?? undefined
+                targeted_prod: entry.targeted_exploitation ?? null,
+                actual_prod: entry.actual_exploitation ?? null,
+                production: entry.production ?? null,
+                opt: entry.opt ?? null
             };
 
-            connection.query(sql, prod, (err, result) => {
-                if (err) {
-                    console.error('Insert error:', err);
-                }
-            });
+            try {
+                await connection.query(sql, prod);
+            } catch (err) {
+                console.error(`Insert error for API ID ${api.id}:`, err.message);
+            }
         }
     }
+
     data = {};
     apis.forEach(api => {
         data[api.id] = [];
     });
+
+    await connection.end();
 };
 
-setInterval(getData, 1000);
+
+
+
+
+setInterval(getAndPushData, 5000);
 
 const app = express();
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-    res.json(dataG);
+    res.json(dataHistory);
 });
 
 app.listen(PORT, () => {
