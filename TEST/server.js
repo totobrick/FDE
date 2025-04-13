@@ -1,8 +1,19 @@
 const mysql = require('mysql2');
-const express = require('express'); // |
-const app = express();              // | pour host le site
+const express = require('express');         // |
+const app = express();                      // | pour host le site
+const session = require('express-session');     // use for user session
 const fs = require('fs');           // Lire des fichiers
 const port=3100;
+
+app.use(session({
+    secret: 'ThisKeyProtectsMySession', // this marks the cookie session
+    resave: false,                      // | true : register session for all requests 
+                                        // | false : session is registered only if there is modification, it's to say when necessary (better performances)
+    saveUninitialized: false            // do not register an empty session (before login for ex)
+}));
+
+// Use to receive POST data
+app.use(express.urlencoded({ extended: true }));
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
@@ -19,7 +30,7 @@ const connection = mysql.createConnection({
 
 app.get('/', (req, res) => {
     var file = "form.html";
-    console.log("fichier" + file + ".");
+    console.log("Envoi du fichier " + file + " .");
     fs.readFile(file, 'utf8', (err, data) => {
         if (err){
             console.error("ERREUR survenue à l'envoi du fichier" + file + ".", err);
@@ -30,6 +41,7 @@ app.get('/', (req, res) => {
     });
 });
 
+/*
 app.get('/query', (req, res) => {
     const query1 = 'SELECT login, password FROM user WHERE login=? AND password=?'
     connection.query(query1, ['Toto', 'a'], (err, response) => {
@@ -48,9 +60,8 @@ app.get('/query', (req, res) => {
         }
     });
 });
+*/
 
-// Use to receive POST data
-app.use(express.urlencoded({ extended: true }));
 
 app.post("/verif_login", (req, res) => {
     console.log("Formulaire login recu.");
@@ -68,7 +79,40 @@ app.post("/verif_login", (req, res) => {
 
         if (response.length == 1){
             console.log(`Bonjour ${login}, vous êtes connecté.`);
-            res.redirect(301, "/connected");
+            if (! req.session.login){
+                console.log("LOGIN : Pas de variable de session.");
+            }
+            else{
+                console.log("LOGIN : variable de session existante.");
+            }
+            if (! req.session.password){
+                console.log("PASSWORD : Pas de variable de session.");
+            }
+            else{
+                console.log("PASSWORD : variable de session existante.");
+            }
+            req.session.login = login;
+            req.session.password = pwd;
+            res.cookie('sessionID','007', {
+                expires: new Date(Date.now() + 3)
+            });
+
+            if (! req.session.login){
+                console.log("LOGIN : Pas de variable de session.");
+            }
+            else{
+                console.log("LOGIN : variable de session existante.");
+            }
+            if (! req.session.password){
+                console.log("PASSWORD : Pas de variable de session.");
+            }
+            else{
+                console.log("PASSWORD : variable de session existante.");
+            }
+
+
+
+            res.redirect(301, "/connected");        // 301 : http status for permanent redirection
         }
         else{
             res.send("Non connecté.");
@@ -84,6 +128,31 @@ app.get("/connected", (req, res) => {
         }
         //res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
+        res.write("Variable de session :<br> login : " + req.session.login + "<br>\t pwd : " + req.session.password);
         res.end();
+    });
+});
+
+app.get('/page2', (req, res) => {
+    var file ="page2.html";
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (err){
+            console.error("ERREUR survenue à l'envoi du fichier" + file + ".", err);
+        }
+        //res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        res.write("Variable de session :<br> login : " + req.session.login + "<br>\t pwd : " + req.session.password);
+        res.end();
+    });
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy( (err) => {
+        if(err){
+            console.log("Echec de destruction de session.");
+            return res.status(500).send("Echec de destruction de session.");
+        }
+        console.log("Destruction de la session réussie.");
+        res.redirect(301, '/');     // 301 : http status for permanent redirection
     });
 });
