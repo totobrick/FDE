@@ -6,11 +6,12 @@ import threading
 import time
 
 class IPowerSource:
-    def __init__(self, ps:PowerSource, id, apiKey=secrets.token_hex(16)):
+    def __init__(self, ps:PowerSource, id, port, apiKey=secrets.token_hex(16)):
         self.app = FastAPI()
         self.apiKey = apiKey
         self.powerSource = ps
         self.id = id
+        self.port = port
 
         self.time = 0
 
@@ -34,7 +35,7 @@ class IPowerSource:
 
         @self.app.get("/getProdData")
         def getStatus(request: Request):
-            self.checkToken(request)
+            #self.checkToken(request)
             
             return self.powerSource.getLastProd()
         
@@ -54,8 +55,7 @@ class IPowerSource:
         while True:
             self.powerSource.simulate(self.time, 5)
             self.time += 100
-            #print("Prod:", self.getProd())
-            time.sleep(2)
+            time.sleep(5)
 
 
     def run(self):
@@ -64,7 +64,7 @@ class IPowerSource:
         thread.start()
 
         print("Launching API.")
-        port  = 8000+self.id
+        port = self.port
         try:
             uvicorn.run(self.app, host="127.0.0.1", port=port)
         except OSError as e:

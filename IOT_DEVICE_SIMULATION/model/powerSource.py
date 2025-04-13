@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import time
 
 class PowerSource:
     def __init__(self, name, area):
@@ -8,6 +9,7 @@ class PowerSource:
         self.name = name
 
     def addProdData(self, prod: dict):
+        prod["date"] = time.time()
         self.prodData.append(prod)
 
         if(len(self.prodData) > self.historySize):

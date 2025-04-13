@@ -6,7 +6,7 @@ class Nuclear(PowerSource):
         super().__init__(name, area)
 
         #Simulation const
-        self.max_power = 1650 
+        self.max_power = 1600 
         self.min_exploitable = 0.25 
         self.targeted_exploitation = 0.5 
         self.actual_exploitation = 0.25 
@@ -46,10 +46,9 @@ class Nuclear(PowerSource):
             prod = 0 if self.actual_exploitation < self.min_exploitable else max(0, (self.max_power * self.actual_exploitation) * random.uniform(0.975, 1.025))
 
             prodData = {
-                "date": time,
-                "targeted_exploitation" : self.targeted_exploitation,
+                "production" : prod,
+                "targeted_exploitation" : self.targeted_exploitation,   
                 "actual_exploitation" : self.actual_exploitation,
-                "production" : prod
             }
 
             self.addProdData(prodData)

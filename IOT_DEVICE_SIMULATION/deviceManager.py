@@ -1,40 +1,11 @@
 import os
 import subprocess
 from datetime import datetime
-
-
-config = [
-    {"type": "Nuclear", "name": "NuclearPowerPlant_01", "apiKey": "key1"},
-    {"type": "Nuclear", "name": "NuclearPowerPlant_02", "apiKey": "key2"},
-    {"type": "Nuclear", "name": "NuclearPowerPlant_03", "apiKey": "key3"},
-    {"type": "SolarPanel", "name": "SolarPanel_01", "apiKey": "key4"}
-]
-
-code_template = """
-import sys
-import os
-
-#Add model to python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-print()
-
-from model.IPowerSource import IPowerSource
-from model.simulation.{type} import {type}
-
-print("Creating power source and API {id}.")
-
-plant = {type}("{name}", "IDF")
-
-API = IPowerSource(plant, {id} ,"{apiKey}")
-API.run()
-"""
-
-output_dir = "IOT_DEVICE_SIMULATION/.tmp/generated_files"
-log_dir = "IOT_DEVICE_SIMULATION/.tmp/log"
+from config import CONFIG
+from const import *
 
 
 process = []
-
 
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
@@ -51,6 +22,7 @@ def generate_files(config):
             id=i,
             name=plant['name'],
             type=plant['type'],
+            port=plant['port'],
             apiKey=plant['apiKey']
         )
         
@@ -59,7 +31,7 @@ def generate_files(config):
             print(f"Generated file: {filename}")
 
 
-def launch_all_power_plants():
+def launch_all_power_plants(config):
     for i in range(len(config)):
         script_filename = f"{output_dir}/power_plant_{i}.py"
 
@@ -75,10 +47,9 @@ def launch_all_power_plants():
             print(f"Error launching {script_filename}: {e}")
 
 
+generate_files(CONFIG) #see config.py
 
-generate_files(config)
-
-launch_all_power_plants()
+launch_all_power_plants(CONFIG)
 
 input("Press any input to terminate all APIs.")
 
