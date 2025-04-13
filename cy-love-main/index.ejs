@@ -1,10 +1,10 @@
-<?php
+<!--<?php
     session_start();
     if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
         // Nouvelle activité, on met à jour la variable pour la déconnexion automatique (après un certain temps d'inactivité)
         $_SESSION['last_activity_time'] = time();
     }
-?>
+?>-->
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -18,25 +18,26 @@
 </head>
 <body style="background-image: url('Images/Background_images.jpg');">
     <div class="wrapper">
-        <?php include 'header.php'?>
+        <%- include('header') %>
         <main>
-            <?php
+            <!--<?php
                 if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                     include 'account_icon_bar.php';
                 }
-            ?>
+            ?>-->
             <div class="container">
                 <div class="box">
                     <div class="box-container">
                         <div class="top">
                             <header>Courbe</header>
                             <span>Cette courbe est fixe, elle sera à retravailler avec les données de Donatien.</span>
-                            <?php
+                            <!--<?php
                                 if(isset($_SESSION['error_msg'])){
                                     echo "<div class='error_msg'>" . $_SESSION['error_msg'] . "</div>";
                                 }
                                 unset($_SESSION['error_msg']); // remove only this session variable
-                            ?>
+                            ?>-->
+                            <div class='error_msg'><%= welcome_msg %></div>
                         </div>
                         
                         <canvas id="myChart" style="width:100%; background-color : rgba(255,255,255,0.5); border-radius : 5px; padding: 5px;"></canvas>

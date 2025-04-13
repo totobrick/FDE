@@ -4,7 +4,7 @@
         <img src="Logos/logo_FDE.svg" alt="Logo FDE" onclick="document.location='index.php'">
     </div>
     <div class="nav-button">
-        <?php
+        <!--<?php
             if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                 //session open
                 echo "<button class=\"btn white-btn\" id=\"login-btn\" onclick=\"window.location.href='logout.php'\">Se déconnecter</button>";
@@ -12,11 +12,11 @@
             else{
                 echo "<button class=\"btn white-btn\" id=\"login-btn\" onclick=\"window.location.href='login.php'\">Se connecter</button>";
             }
-        ?>
+        ?>-->
         <button class="btn" id="register-btn" onclick="window.location.href='register.php'">S'inscrire</button>
     </div>
     <div class="nav-right"><!-- style="display: flex; justify-content: space-between; height: 100%; align-items: center;"-->
-        <?php
+        <!--<?php
             if ( isset($_SESSION['is_connected']) && $_SESSION['is_connected'] == 'oui' && isset($_SESSION['ID']) && isset($_SESSION['login']) ){
                 //session open
                 $ID = $_SESSION['ID'];
@@ -54,7 +54,7 @@
                 }
                 echo "  </div>";
             }
-        ?>
+        ?>-->
         <div class="menu-btn" id="menu-btn" onclick="myMenuFunction()">
             <div class="bar1"></div>
             <div class="bar2"></div>
