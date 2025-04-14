@@ -9,7 +9,6 @@ It concerns :
 
 ## Installation
 ### node.js and npm
-MESSAGE A ARTHUR : je n'ai pas pu retraiter ce point car j'ai passé plus de temps que prévu mais voici néanmoins ce que je peux dire.
 
 Requests in our web pages are done in node.js
 To **install node.js (and npm)** on Windows :
@@ -23,10 +22,30 @@ After installation :
    - type : ```node -v```, if your version is not written there is a problem
    - type : ```npm -v```, if your version is not written there is a problem
 
-### MySQL
-To install mysql : 
+### mysql2
+To install mysql2 : 
    - open your PowerShell terminal
-   - type : ```npm install mysql``` (in the good directory, I don't know where actually, I will say you very soon)
+   - type : ```npm install mysql2``` (in the directory: FDE/cy-love-main)
+
+### express
+To install express : 
+   - open your PowerShell terminal
+   - type : ```npm install express``` (in the directory: FDE/cy-love-main)
+
+### express-session
+To install express-session : 
+   - open your PowerShell terminal
+   - type : ```npm install express-session``` (in the directory: FDE/cy-love-main)
+
+### fs
+To install fs : 
+   - open your PowerShell terminal
+   - type : ```npm install fs``` (in the directory: FDE/cy-love-main)
+
+### path
+To install path : 
+   - open your PowerShell terminal
+   - type : ```npm install path``` (in the directory: FDE/cy-love-main)
 
 
 
@@ -46,6 +65,7 @@ To use the website and install it, please launch your Windows OS and read the ne
       - choose this file in the project : ".../www/FDE/Database/**fde_database.sql**"
 
 Now the database is installed and you can use the website.
+The use of Wampserver is easy to see the database via phpmyadmin and to launch sql.
 
 **Information** : we have actually a new database but the old is in */Database/OLD_database/* because web pages are still based on this old database. It will change in a few time ...
 
