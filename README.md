@@ -120,7 +120,7 @@ This component is responsible for requesting all APIs of the IoT devices to upda
 1. Install **Node.js** (if not already installed) → [Download Node.js](https://nodejs.org/)
 2. Install the required dependencies:
    ```sh
-   npm install axios express
+   npm install
    ```
 
 ### **Running the IoT Server**
@@ -129,6 +129,6 @@ After installing the dependencies, start the Express.js server:
 node server.js
 ```
 
-**Note:** Make sure you are in the `iot-device` folder before running the command.
+**Note:** Make sure you are in the `iot-server` folder before running the command.
 
 ---
