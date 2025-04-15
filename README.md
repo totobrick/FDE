@@ -137,3 +137,26 @@ For the database, use the exported one in the database folder. If you enconter a
 **Note:** Make sure you are in the `iot-server` folder before running the command.
 
 ---
+
+## 🌐 IoT Client (Node.js)
+### **Purpose**
+Acessing the website.
+
+### **Prerequisites**
+1. Install **Node.js** (if not already installed) → [Download Node.js](https://nodejs.org/)
+2. Go in the prod directory
+```sh
+cd prod
+```
+3. Install the required dependencies:
+   ```sh
+   npm install
+   ```
+
+### **Running the IoT Client**
+After installing the dependencies, start the Express.js server:
+```sh
+node server.js
+```
+
+---
