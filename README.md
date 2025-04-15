@@ -129,6 +129,11 @@ After installing the dependencies, start the Express.js server:
 node server.js
 ```
 
+### Database
+This module connect to the database. Further informations comming soon. 
+For dev: make sur mysql is on running no your computer. (with wamp for windows) 
+For the database, use the exported one in the database folder. If you enconter any trouble related to the connection with the database, checks the credentials of the database.
+
 **Note:** Make sure you are in the `iot-server` folder before running the command.
 
 ---
