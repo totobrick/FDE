@@ -131,7 +131,7 @@
                                     <div class="Profile_picture_area" id="Profile_picture_area">
                                         <div class="PP_block_img" id="PP_block_img">
                                             <div class="profile-img vertical-img" id="PP_img_container">
-                                                <img id="PP_img_actual" src="Accounts/ID_2/profile_picture/profile_picture_ID_8.jpg" alt="IMG"><!--"<%= path_profile_picture %>?t= . $_SESSION['cache_buster'] . "-->
+                                                <img id="PP_img_actual" src="<%= path_profile_picture %>" alt="IMG"><!--"<%= path_profile_picture %>?t= . $_SESSION['cache_buster'] . "-->
                                             </div>
                                         </div>
                                         <div class="PP_block_btn">
@@ -212,7 +212,6 @@
         img.src = document.getElementById('PP_img_actual').getAttribute('src');
         const img_container = document.getElementById('PP_img_container');
         img.onload = function(){
-            alert("Width : " + img.width + ", Height : " + img.height);
             // image verticale
             if (img.height >= img.width){
                 img_container.classList.remove("horizontal-img");

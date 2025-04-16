@@ -93,6 +93,8 @@ app.post("/verif_login", (req, res) => {
             req.session.user_id = response[0].ID;
             req.session.login = login;
             req.session.password = pwd;
+            req.session.connection_time = Date.now();
+            req.session.cache_buster = Date.now();  // used to refresh profile picture img (if it changes) without refresh the window
             /*
             res.cookie('sessionID','007', {
                 expires: new Date(Date.now() + 3)
@@ -169,7 +171,7 @@ app.get('/personal-account', (req, res) => {
             console.error("Une erreur est survenue", err);
         }
         if (response.length <= 1){
-            /*const user_id = response[0].ID;
+            const user_id = response[0].ID;
             const login = response[0].login;
             const password = response[0].password;
             const f_name = response[0].first_name;
@@ -181,8 +183,9 @@ app.get('/personal-account', (req, res) => {
             const gender = response[0].gender;
             const job = response[0].job;
             const admin = response[0].admin;
-            const score = response[0].score;*/
+            const score = response[0].score;
             
+            /*
             const user_id = "user";
             const login = "login";
             const password = "pwd";
@@ -195,7 +198,7 @@ app.get('/personal-account', (req, res) => {
             const gender = "gender";
             const job = "job";
             //const admin = response[0].admin;
-            const score = 1557;
+            const score = 1557;*/
 
             /*
             console.log("gender : " + response[0].gender);
@@ -212,6 +215,8 @@ app.get('/personal-account', (req, res) => {
                 console.log("Le fichier " + path_profile_picture + " n'existe pas.");
                 path_profile_picture = path.join(__dirname, "Logos/profile_picture.svg");      //TO COMPLETE the path
             }
+            console.log("path_profile_picture : " + path_profile_picture);
+            path_profile_picture = path_profile_picture + "?t=" + req.session.cache_buster;
             console.log("path_profile_picture : " + path_profile_picture);
             res.render(filePath, { loginBtn: "Se déconnecter",
                                     path_loginBtn: "/logout",
