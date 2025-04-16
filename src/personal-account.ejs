@@ -31,8 +31,8 @@
             -> session_lifespan.js ne fonctionne pas sans 
             -> le script en bas de page ne fonctionne pas sans
     -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="session_lifespan.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="session_lifespan.js"></script>-->
     <title>FDE : Mes informations</title>
 </head>
 <body style="background-image: url('Images/Background_images.jpg');">
@@ -78,12 +78,16 @@
                         ?>-->
                         <fieldset>
                             <header>Vos informations <?php echo $_SESSION['login'];?></header>
-                            <div class='error_msg'>
+                            <div class='error_msg' id='error_msg'>
                                 <% if (typeof error_msg !== 'undefined'){ %>
                                     <%= error_msg %>
                                 <% } %>
                             </div>
                             <form action="/register_modification_account" method="post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
+                                <div class="input-box">
+                                    <div>Points</div>
+                                    <div class="info-field"><%= score %></div>
+                                </div>
                                 <div class="input-box" id="gender">
                                     <label for="Gender">Genre</label>
                                     <div class="select-gender">
@@ -111,11 +115,11 @@
                                 </div>
                                 <div class="input-box">
                                     <label for="Firstname">Prénom</label>
-                                    <input type="text" name="Firstname" id="Firstname" class="input-field" value="<%= firstname %>">
+                                    <input type="text" name="Firstname" id="Firstname" class="input-field" value="<%= f_name %>">
                                 </div>
                                 <div class="input-box">
                                     <label for="Name">Nom</label>
-                                    <input type="text" name="Name" id="Name" class="input-field" value="<%= lastname %>">
+                                    <input type="text" name="Name" id="Name" class="input-field" value="<%= l_name %>">
                                 </div>
                                 <div class="input-box">
                                     <label for="Email">Email</label>
@@ -126,8 +130,8 @@
                                     <input type="file" name="Profile_picture" id="Profile_picture" accept="image/jpeg">
                                     <div class="Profile_picture_area" id="Profile_picture_area">
                                         <div class="PP_block_img" id="PP_block_img">
-                                            <div class="profile-img vertical-img">
-                                                <img id="PP_img_actual" src="<%= profile_picture %>?t= . $_SESSION['cache_buster'] . " alt="IMG">
+                                            <div class="profile-img vertical-img" id="PP_img_container">
+                                                <img id="PP_img_actual" src="Accounts/ID_2/profile_picture/profile_picture_ID_8.jpg" alt="IMG"><!--"<%= path_profile_picture %>?t= . $_SESSION['cache_buster'] . "-->
                                             </div>
                                         </div>
                                         <div class="PP_block_btn">
@@ -204,6 +208,28 @@
         </main>
     </div>
     <script>
+        const img= new Image();
+        img.src = document.getElementById('PP_img_actual').getAttribute('src');
+        const img_container = document.getElementById('PP_img_container');
+        img.onload = function(){
+            alert("Width : " + img.width + ", Height : " + img.height);
+            // image verticale
+            if (img.height >= img.width){
+                img_container.classList.remove("horizontal-img");
+                img_container.classList.add("vertical-img");
+                alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg verticale.");
+            }
+            // image horizontale
+            else {
+                img_container.classList.remove("vertical-img");
+                img_container.classList.add("horizontal-img");
+                alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg horizontale.");
+            }
+        }
+        /*
+
+
+
         $(document).ready(function(){
             const InputImg = document.getElementById("Profile_picture");
             var fileSelected = false;
@@ -235,12 +261,13 @@
             }
 
             // Delete personal picture
-            $(document).on('click', '#delete_actual_PP', function(event){
+            $(document).on('click', '#delete_actual_PP', function(event){*/
                 /*  -> Le click est rattaché au document, donc si le bouton '#delete_actual_PP' est rechargé en AJAX/Jquery,
                     on pourra cliquer dessus et cette fonction s'exécutera.
                     -> Cela ne marcherait pas avec $('#delete_actual_PP').on('click', function(event){ où la fonction ne
                     s'exécuterait pas et le bouton enverrait le formulaire (fonction du bouton par défaut).
                 */
+               /*
                 event.preventDefault(); // empêche rafraichissement de page, ici empeche surtout l'envoi du formulaire en cliquant sur ce btn
                 InputImg.value = "";  // efface le fichier img sélectionné auparavant (s'il y en avait un)
                 $.ajax({
@@ -256,20 +283,20 @@
                         console.error(xhr.responseText);
                         alert('Erreur survenue lors de la suppression de la photo de profil.');
                     }
-                });
+                });*/
                 // DEBUG affichage : $_SESSION['last_activity_time'] (variable qui déconnecte après un certain temps d'inactivité)
                 /*$('#account_icon_bar').load(window.location.href + ' #account_icon_bar > *');*/
-            });
+            /*});
 
             //changeImgBtn.addEventListener('click', function(event){
             $(document).on('click', '#change_actual_PP', function(event){
                 event.preventDefault(); // empêche rafraichissement de page, ici empeche surtout l'envoi du formulaire en cliquant sur ce btn
                 InputImg.value = "";  // efface le fichier img sélectionné auparavant (s'il y en avait un)
                 InputImg.click();
-                
+                */
                 // DEBUG affichage : $_SESSION['last_activity_time'] (variable qui déconnecte après un certain temps d'inactivité)
                 /*$('#account_icon_bar').load(window.location.href + ' #account_icon_bar > *');*/
-            });
+            /*});
             
             //Affiche la nouvelle img de profil
             $('#Profile_picture').on('change', function(){ // change : détecte qd #Profile_picture change de valeurs (ici qd un fichier est mis)
@@ -306,7 +333,7 @@
                     }
                 }
             });
-        });
+        });*/
     </script>
 </body>
 </html>

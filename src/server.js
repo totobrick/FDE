@@ -168,8 +168,8 @@ app.get('/personal-account', (req, res) => {
         if (err){
             console.error("Une erreur est survenue", err);
         }
-        if (response.length == 1){
-            const user_id = response[0].ID;
+        if (response.length <= 1){
+            /*const user_id = response[0].ID;
             const login = response[0].login;
             const password = response[0].password;
             const f_name = response[0].first_name;
@@ -181,10 +181,27 @@ app.get('/personal-account', (req, res) => {
             const gender = response[0].gender;
             const job = response[0].job;
             const admin = response[0].admin;
-            const score = response[0].score;
+            const score = response[0].score;*/
+            
+            const user_id = "user";
+            const login = "login";
+            const password = "pwd";
+            const f_name = "f_name";
+            const l_name = "l_name";
+            const date_birth = "date_birth";
+            const mail = "mail";
+            const region = "region";
+            const profile_picture = "Logos/profile_picture.svg";
+            const gender = "gender";
+            const job = "job";
+            //const admin = response[0].admin;
+            const score = 1557;
+
+            /*
             console.log("gender : " + response[0].gender);
             console.log("__dirname : " + __dirname);
             console.log("profile_picture : " + profile_picture);
+            */
 
             //const profile_picture = "Accounts/ID_" + req.session.user_id + "/profile_picture/profile_picture_ID_" + req.session.user_id + ".jpg";
             var path_profile_picture = path.join(profile_picture);
@@ -201,14 +218,15 @@ app.get('/personal-account', (req, res) => {
                                     welcome_msg: "Bienvenue " + req.session.user_id + " " + req.session.login + " "+ req.session.password + ".",
                                     account_menu : "yes",
 
-                                    login: login,
-                                    password: password,
-                                    firstname: f_name,
-                                    lastname: l_name,
-                                    mail: mail,
-                                    profile_picture: path_profile_picture,
-                                    gender: gender,
-                                    job: job
+                                    score,
+                                    login,
+                                    password,
+                                    f_name,
+                                    l_name,
+                                    mail,
+                                    path_profile_picture,
+                                    gender,
+                                    job
                                 });
         }
         else {
