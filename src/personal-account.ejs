@@ -43,47 +43,14 @@
             <div class="container">
                 <div class="form-box">
                     <div class="login-container" id="modify-account">
-                        <!--<?php
-                            $servername = "localhost";
-                            $database = "FDE_database";
-                            $login_server = "root";
-                            $pass = "";
-
-                            if( isset($_SESSION['login']) && isset($_SESSION['is_connected']) && $_SESSION['is_connected']=='oui' ){
-                                //affiche les infos de compte
-                            }
-                            else{
-                                echo "<p>Vous n'êtes pas connecté(e) à votre session.<br>
-                                    Connectez vous en cliquant <a href='login.php'>ici</a>.</p>";
-                                exit;
-                            }
-
-                            //server connexion test
-                            try{
-                                $connexion = new PDO("mysql:host=$servername;dbname=$database", $login_server, $pass);
-                                $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDO error mode
-
-                                $query_info_account = $connexion->prepare("SELECT * FROM user_info WHERE BINARY login = :login"); //BINARY : permet de tenir compte de la casse des caractères
-                                $query_info_account->bindParam(':login', $login, PDO::PARAM_STR);
-                                $query_info_account->execute();
-                                // array with all info of the user
-                                $array_info_account = $query_info_account->fetchAll(PDO::FETCH_ASSOC); //ou FETCH_NUM
-                                $ID = $array_info_account[0]['ID'];
-                                $_SESSION['ID'] = $ID;
-                            }
-                            catch (PDOException $e){
-                                echo "Connexion impossible à la base de données: " . $e->getMessage();
-                                exit;
-                            }
-                        ?>-->
                         <fieldset>
                             <header>Vos informations <?php echo $_SESSION['login'];?></header>
                             <div class='error_msg' id='error_msg'>
-                                <% if (typeof error_msg !== 'undefined'){ %>
+                                <% if (error_msg != ""){ %>
                                     <%= error_msg %>
                                 <% } %>
                             </div>
-                            <form action="/register_modification_account" method="post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
+                            <form action="/register_modification_account" method="POST"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
                                 <div class="input-box">
                                     <div>Points</div>
                                     <div class="info-field"><%= score %></div>
@@ -106,8 +73,8 @@
                                     </div>
                                 </div>
                                 <div class="input-box">
-                                    <label for="Pseudo">Login</label>
-                                    <input type="text" name="Pseudo" id="Pseudo" class="input-field" value="<%= login %>" >
+                                    <label for="Login">Login</label>
+                                    <input type="text" name="Login" id="Login" class="input-field" value="<%= login %>" >
                                 </div>
                                 <div class="input-box">
                                     <label for="Password">Mot de passe</label>
@@ -191,8 +158,8 @@
                                     </div>
                                 </div>
                                 <div class="input-box">
-                                    <label for="Profession">Profession</label>
-                                    <input type="text" name="Profession" id="Profession" class="input-field" value="<%= job %>">
+                                    <label for="Job">Profession</label>
+                                    <input type="text" name="Job" id="Job" class="input-field" value="<%= job %>">
                                 </div>
                                 <div class="input-box">
                                     <input type="submit" name="submit" class="submit" value="Enregistrer">
