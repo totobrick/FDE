@@ -140,7 +140,7 @@ This component is responsible for requesting all APIs of the IoT devices to upda
 1. Install **Node.js** (if not already installed) → [Download Node.js](https://nodejs.org/)
 2. Install the required dependencies:
    ```sh
-   npm install axios express
+   npm install
    ```
 
 ### **Running the IoT Server**
@@ -149,6 +149,34 @@ After installing the dependencies, start the Express.js server:
 node server.js
 ```
 
-**Note:** Make sure you are in the `iot-device` folder before running the command.
+### Database
+This module connect to the database. Further informations comming soon. 
+For dev: make sur mysql is on running no your computer. (with wamp for windows) 
+For the database, use the exported one in the database folder. If you enconter any trouble related to the connection with the database, checks the credentials of the database.
+
+**Note:** Make sure you are in the `iot-server` folder before running the command.
+
+---
+
+## 🌐 IoT Client (Node.js)
+### **Purpose**
+Acessing the website.
+
+### **Prerequisites**
+1. Install **Node.js** (if not already installed) → [Download Node.js](https://nodejs.org/)
+2. Go in the prod directory
+```sh
+cd prod
+```
+3. Install the required dependencies:
+   ```sh
+   npm install
+   ```
+
+### **Running the IoT Client**
+After installing the dependencies, start the Express.js server:
+```sh
+node server.js
+```
 
 ---
