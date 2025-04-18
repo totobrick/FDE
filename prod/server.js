@@ -2,12 +2,13 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3000;
+const port = 8000;
 const session = require('express-session');
 
 // Set up EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.json());
 
 // Static files (CSS, JS, Images). /!\ Accesible coté client /!\
 app.use(express.static(path.join(__dirname, 'public')));
@@ -40,12 +41,21 @@ app.use('/', personalAccountRouter);
 
 const logoutRouter = require('./routes/requests/logout');
 app.use('/', logoutRouter);
+const PostloginRouter = require('./routes/requests/login');
+app.use('/', PostloginRouter);
+
+const GetSearchRouter = require('./routes/requests/search');
+app.use('/', GetSearchRouter);
 
 //Set the index page (the router defines the path in the index.js file)
 //NE MARCHE PAS
 //const registerModificationAccount = require('./routes/requests/registerModificationAccount');
 //app.use('/', registerModificationAccount);
 
+const logoutdRouter = require('./routes/requests/logout');
+app.use('/', logoutdRouter);
+
+app.use(express.urlencoded({ extended: true })); // pour parser des formulaires HTML
 
 // Start the server
 app.listen(port, () => {
