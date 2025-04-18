@@ -31,11 +31,15 @@ app.use(session({
 const indexRouter = require('./routes/index');
 app.use('/', indexRouter);
 
-//Set the index page (the router defines the path in the index.js file)
+const emptyPathRouter = require('./routes/emptyRoute');
+app.use('/', emptyPathRouter);
+
+const homepageRouter = require('./routes/homepage');
+app.use('/', homepageRouter);
+
 const loginRouter = require('./routes/login');
 app.use('/', loginRouter);
 
-//Set the index page (the router defines the path in the index.js file)
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
 
@@ -44,6 +48,9 @@ app.use('/', logoutRouter);
 
 const GetSearchRouter = require('./routes/requests/search');
 app.use('/', GetSearchRouter);
+
+const verifLoginRouter = require('./routes/requests/verifLogin');
+app.use('/', verifLoginRouter);
 
 //Set the index page (the router defines the path in the index.js file)
 //NE MARCHE PAS
