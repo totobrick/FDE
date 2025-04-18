@@ -1,2 +1,0 @@
-DROP DATABASE IF EXISTS fde_database;
-CREATE DATABASE IF NOT EXISTS fde_database;
