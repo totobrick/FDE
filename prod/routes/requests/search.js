@@ -18,8 +18,8 @@ router.post('/search', (req, res) => {
     }
 
     // Query the database to find the user
-    const query = 'SELECT * FROM user WHERE login = ?';
-    connection.query(query, [username], (err, results) => {
+    const query = 'SELECT * FROM user WHERE login LIKE ?';
+    connection.query(query, ["%" + username + "%"], (err, results) => {
         if (err) {
             console.error('Database query error: ', err);
             return res.redirect('/dashboard?errorMessage=An error occurred. Please try again later.');
