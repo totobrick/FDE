@@ -1,24 +1,28 @@
 import random
 from datetime import datetime
+import time
 
 class GridDemand():
     def __init__(self, population):
         self.population = population 
         self.demand = 0
+        self.timeDemand = 0
 
-    def simulate(self, time, dt):
-        time_of_day_factor = self.get_time_of_day_factor(time%1440)
+    def simulate(self, time_, dt):
+        time_of_day_factor = self.get_time_of_day_factor(time_%1440)
         
         self.demand = time_of_day_factor * self.population * 0.001
         
         random_fluctuation = random.uniform(-0.1, 0.1)
         self.demand *= (1 + random_fluctuation)
+
+        self.timeDemand = time.time()
         
         if self.demand < 0:
             self.demand = 0
 
     def getDemand(self):
-        return self.demand
+        return self.demand, self.timeDemand
     
 
     ######################################

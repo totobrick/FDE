@@ -2,15 +2,20 @@ const express = require('express');
 const sql = require('mysql2');
 const router = express.Router();
 
-//A centraliser qq part
-const connection = sql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'fde_database',
-});
+
+
 
 router.post('/login', (req, res) => {
+
+    //A centraliser qq part
+    const connection = sql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'fde_database',
+    });
+
+
     const { username, password } = req.body; // Retrieve username and password from the form
 
     // Check if username and password are provided
