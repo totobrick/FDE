@@ -10,22 +10,22 @@ from model.simulation.WindTurbine import WindTurbine
 from model.simulation.HydroelectricDam import HydroelectricDam
 from model.simulation.BatteryStorage import BatteryStorage
 
-grid = GridDemand(population=100000)
+grid = GridDemand(population=2500000)
 tab = []
 for i in range(1):
     tab.append(Nuclear(i, "")) 
 
-for i in range(2):
+for i in range(10):
     tab.append(SolarPanel(i, "")) 
 
-for i in range(20):
+for i in range(50):
     tab.append(WindTurbine(i, ""))
 
-for i in range(1):
+for i in range(3):
     tab.append(HydroelectricDam(i, ""))
 
 
-for i in range(1):
+for i in range(10):
     tab.append(BatteryStorage(i, ""))
 
 
@@ -48,11 +48,11 @@ y_data_hydro = []
 
 
 sliders = []
-ax_slider_pos = 0.05 
+ax_slider_pos = 0.00 
 
 def create_slider(facility, ax_slider_pos):
-    ax_slider = plt.axes([0.15, ax_slider_pos, 0.7, 0.03], facecolor='lightgoldenrodyellow')
-    slider = Slider(ax_slider, f'{facility.name} Adjustment', 0, 1, valinit=0.5)
+    ax_slider = plt.axes([0.15, ax_slider_pos, 0.7, 0.01], facecolor='lightgoldenrodyellow')
+    slider = Slider(ax_slider, f'{type(facility)}{facility.name}', 0, 1, valinit=0.5)
     
     def update(val):
         facility.setTarget(slider.val)
@@ -63,15 +63,15 @@ def create_slider(facility, ax_slider_pos):
 for i, facility in enumerate(tab):
     if type(facility) is Nuclear:
         create_slider(facility, ax_slider_pos)
-        ax_slider_pos += 0.05 
+        ax_slider_pos += 0.02 
 
     if type(facility) is HydroelectricDam:
         create_slider(facility, ax_slider_pos)
-        ax_slider_pos += 0.05 
+        ax_slider_pos += 0.02
 
     if type(facility) is BatteryStorage:
         create_slider(facility, ax_slider_pos)
-        ax_slider_pos += 0.05  
+        ax_slider_pos += 0.02  
 
 dt = 10 #10minutes
 iteration = 0
@@ -96,7 +96,6 @@ for facility in tab:
 
 dataHistory = {}
 for elt in data:
-    print(elt)
     dataHistory[elt] = []
 dataHistory["total_production"] = []
 dataHistory["total_grid"] = []
@@ -114,8 +113,6 @@ while True:
         facility.simulate(iteration, dt) 
         data["total_production"] += facility.getLastProd()["production"]
         data[type(facility).__name__] += facility.getLastProd()["production"]
-        if type(facility) == BatteryStorage:
-            print(int(facility.getLastProd()["production"]), " - ", int(facility.getLastProd()["charge"]))
             
         
     grid.simulate(iteration, dt)
@@ -138,8 +135,6 @@ while True:
 
         if(config.get(elt)): #Cas ou type non prévu
             ax.plot(x_data, dataHistory[elt], label=config[elt]["label"], color=config[elt]["color"])  
-    
-    #print(dataHistory["HydroelectricDam"][-1])
 
     ax.set_xlabel('Temps / Itération')
     ax.set_ylabel('Production / Demande (MW)')

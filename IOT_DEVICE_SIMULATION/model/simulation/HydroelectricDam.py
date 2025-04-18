@@ -9,12 +9,13 @@ class HydroelectricDam(PowerSource):
         self.flow_to_power_factor = 0.1  
 
         # Water storage in the dam (
+        self.maxWater = 5000000
         self.water_volume = 100  
         self.water_used_per_second = 0 
         self.waterIn_per_sec = 500
         self.target_exploitation = 0
 
-        self.max_flow_rate = 2000
+        self.max_flow_rate = 5000
 
 
     def getInfo(self):
@@ -39,7 +40,7 @@ class HydroelectricDam(PowerSource):
 
 
         power = self.flow_to_power_factor * min(self.water_volume, flow_rate)
-        return min(power, self.max_power) 
+        return power 
 
     def simulate(self, time, dt):
         
@@ -49,6 +50,8 @@ class HydroelectricDam(PowerSource):
 
         if(self.water_volume<0):
                 self.water_volume=0
+        elif (self.water_volume>self.maxWater) :
+             self.water_volume = self.maxWater
 
         
 
@@ -60,7 +63,5 @@ class HydroelectricDam(PowerSource):
                 #Complementary data
                 "opt": self.water_volume,
         }
-
-        print(prodData)
 
         self.addProdData(prodData)

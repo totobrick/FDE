@@ -49,4 +49,12 @@ CONFIG = [
         "apiKey": "key7",
         "port": 8006
     },
+
+    {
+        "type": "GridDemand",
+        "name": "Grid_01",
+        "apiKey": "key8",
+        "population": 2500000,
+        "port": 8007
+    },
 ]

@@ -1,9 +1,10 @@
 const axios = require('axios');
-const express = require('express');
+//const express = require('express');
 const mysql = require('mysql2/promise');
 
-var dataHistory = {};
-var data = {};
+
+const sql_prod = 'INSERT INTO production SET ?';
+const sql_cons = 'INSERT INTO electricity_sensor SET ?';
 
 const getAndPushData = async () => {
     const connection = await mysql.createConnection({
@@ -13,27 +14,47 @@ const getAndPushData = async () => {
         database: 'fde_database',
     });
 
-    const [apis] = await connection.execute('SELECT id, name, link as url, apiKey FROM connected_object');
-
-    
-    apis.forEach(api => {
-        data[api.id] = [];
-
-        if (!dataHistory[api.id]) {
-            dataHistory[api.id] = [];
-        }
-    });
-
+    const [apis] = await connection.execute('SELECT id, type, name, link as url, apiKey FROM connected_object');
 
     for (const api of apis) {
         try {
-            const response = await axios.get(`${api.url}/getProdData`, {
-                //params: { lastDataTime: api.lastDataTime },
-                headers: { Authorization: api.apikey }
-            });
+            if(api.type == "production" ?? false) {
+                const response = await axios.get(`${api.url}/getProdData`, {
+                    headers: { Authorization: api.apikey }
+                });
 
-            data[api.id].push(response.data);
-            dataHistory[api.id].push(response.data);
+                entry = response.data;
+
+                if (!entry || entry.length === 0) continue;
+
+                const prod = {
+                    ID_power_source: api.id,
+                    date_prod: entry.date,
+                    targeted_prod: entry.targeted_exploitation ?? null,
+                    actual_prod: entry.actual_exploitation ?? null,
+                    production: entry.production ?? null,
+                    quantity: entry.opt ?? null
+                };
+
+                await connection.query(sql_prod, prod);
+
+            } else if (api.type == "cons" ?? false) {
+                const response = await axios.get(`${api.url}/getDemand`, {
+                    headers: { Authorization: api.apikey }
+                });
+
+                entry = response.data;                
+
+                if (!entry || entry.length === 0) continue;
+
+                const demand = {
+                    ID_object: api.id,
+                    date_need: entry.date,
+                    electricity_need: entry.cons,
+                }
+
+                await connection.query(sql_cons, demand);
+            }
 
         } catch (error) {
             console.error(`Error fetching from ${api.url}`);
@@ -41,36 +62,6 @@ const getAndPushData = async () => {
             console.error("Details:", error.response?.data || error.message);
         }
     }
-
-
-    const sql = 'INSERT INTO production SET ?';
-
-    for (const api of apis) {
-        const entries = data[api.id];
-        if (!entries || entries.length === 0) continue;
-
-        for (const entry of entries) {
-            const prod = {
-                ID_power_source: api.id,
-                date_prod: entry.date,
-                targeted_prod: entry.targeted_exploitation ?? null,
-                actual_prod: entry.actual_exploitation ?? null,
-                production: entry.production ?? null,
-                opt: entry.opt ?? null
-            };
-
-            try {
-                await connection.query(sql, prod);
-            } catch (err) {
-                console.error(`Insert error for API ID ${api.id}:`, err.message);
-            }
-        }
-    }
-
-    data = {};
-    apis.forEach(api => {
-        data[api.id] = [];
-    });
 
     await connection.end();
 };
@@ -81,7 +72,9 @@ const getAndPushData = async () => {
 
 setInterval(getAndPushData, 5000);
 
-const app = express();
+
+//used for debug
+/*const app = express();
 const PORT = 3000;
 
 app.get('/', (req, res) => {
@@ -90,4 +83,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
-});
+});*/

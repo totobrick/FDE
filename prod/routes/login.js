@@ -8,7 +8,7 @@ router.get('/login', (req, res) => {
         return res.redirect('/dashboard');
     }
 
-  res.render('login', { title: 'Login', errorMessage });
+  res.render('login', { title: "login", errorMessage });
 });
 
 module.exports = router;
