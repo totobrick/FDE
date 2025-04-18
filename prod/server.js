@@ -30,23 +30,22 @@ app.use(session({
 const indexRouter = require('./routes/index');
 app.use('/', indexRouter);
 
-const contactRouter = require('./routes/contact');
-app.use('/', contactRouter);
-
-const aboutRouter = require('./routes/about');
-app.use('/', aboutRouter);
-
+//Set the index page (the router defines the path in the index.js file)
 const loginRouter = require('./routes/login');
 app.use('/', loginRouter);
 
-const PostloginRouter = require('./routes/requests/login');
-app.use('/', PostloginRouter);
+//Set the index page (the router defines the path in the index.js file)
+const personalAccountRouter = require('./routes/personalAccount');
+app.use('/', personalAccountRouter);
 
-const dashBoardRouter = require('./routes/dashboard');
-app.use('/', dashBoardRouter);
+const logoutRouter = require('./routes/requests/logout');
+app.use('/', logoutRouter);
 
-const logoutdRouter = require('./routes/requests/logout');
-app.use('/', logoutdRouter);
+//Set the index page (the router defines the path in the index.js file)
+//NE MARCHE PAS
+//const registerModificationAccount = require('./routes/requests/registerModificationAccount');
+//app.use('/', registerModificationAccount);
+
 
 // Start the server
 app.listen(port, () => {

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style2.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDE : Mes informations</title>
+</head>
+<body style="background-image: url('Images/Background_images.jpg');">
+    <div class="wrapper">
+        <%- include('partials/header') %>
+        <main>
+            <%- include('account_icon_bar.html'); %>
+            <div class="container">
+                <div class="form-box">
+                    <div class="login-container" id="modify-account">
+                        <fieldset>
+                            <header>Vos informations <?php echo $_SESSION['login'];?></header>
+                            <div class='error_msg' id='error_msg'>
+                                <% if (error_msg != ""){ %>
+                                    <%= error_msg %>
+                                <% } %>
+                            </div>
+                            <form action="/register_modification_account" method="POST"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
+                                <div class="input-box">
+                                    <div>Points</div>
+                                    <div class="info-field"><%= score %></div>
+                                </div>
+                                <div class="input-box" id="gender">
+                                    <label for="Gender">Genre</label>
+                                    <div class="select-gender">
+                                        <div>
+                                            <input type="radio" name="Gender" value="Madame" <% if(gender ==="Madame"){ %> checked <% } %> >Madame
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="Gender" value="Monsieur"<% if(gender ==="Monsieur"){ %> checked <% } %> >Monsieur
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="Gender" value="Non binaire" <% if(gender ==="Non binaire"){ %> checked <% } %> >Non binaire
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="Gender" value="Non défini" <% if(gender ==="Non défini"){ %> checked <% } %> >Non défini
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label for="Login">Login</label>
+                                    <input type="text" name="Login" id="Login" class="input-field" value="<%= login %>" >
+                                </div>
+                                <div class="input-box">
+                                    <label for="Password">Mot de passe</label>
+                                    <input type="text" name="Password" id="Password" class="input-field" value="<%= password %>" >
+                                </div>
+                                <div class="input-box">
+                                    <label for="Firstname">Prénom</label>
+                                    <input type="text" name="Firstname" id="Firstname" class="input-field" value="<%= f_name %>">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Name">Nom</label>
+                                    <input type="text" name="Name" id="Name" class="input-field" value="<%= l_name %>">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Email">Email</label>
+                                    <input type="text" name="Email" id="Email" class="input-field" value="<%= mail %>">
+                                </div>
+                                <div class="input-box">
+                                    <label>Photo de profil</label>
+                                    <input type="file" name="Profile_picture" id="Profile_picture" accept="image/jpeg">
+                                    <div class="Profile_picture_area" id="Profile_picture_area">
+                                        <div class="PP_block_img" id="PP_block_img">
+                                            <div class="profile-img vertical-img" id="PP_img_container">
+                                                <img id="PP_img_actual" src="<%= path_profile_picture %>" alt="IMG">
+                                            </div>
+                                        </div>
+                                        <div class="PP_block_btn">
+                                            <div class="PP_add-img_btn">
+                                                <button id="change_actual_PP">Ajouter une photo</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label for="Job">Profession</label>
+                                    <input type="text" name="Job" id="Job" class="input-field" value="<%= job %>">
+                                </div>
+                                <div class="input-box">
+                                    <input type="submit" name="submit" class="submit" value="Enregistrer">
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        const img= new Image();
+        img.src = document.getElementById('PP_img_actual').getAttribute('src');
+        const img_container = document.getElementById('PP_img_container');
+        img.onload = function(){
+            // image verticale
+            if (img.height >= img.width){
+                img_container.classList.remove("horizontal-img");
+                img_container.classList.add("vertical-img");
+                alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg verticale.");
+            }
+            // image horizontale
+            else {
+                img_container.classList.remove("vertical-img");
+                img_container.classList.add("horizontal-img");
+                alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg horizontale.");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,24 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style2.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>FDE : Accueil</title>
 </head>
 <body>
-    <%- include('partials/header') %>
+    <div class="wrapper">
+        <%- include('partials/header') %>
+        <main>
+            <% if (typeof account_menu !== 'undefined'){ %>
+                <%- include('account_icon_bar.html'); %>
+            <% } %>
+            <div class="container">
+                <div class="box">
+                    <div class="box-container">
+                        <div class="top">
+                            <header>Courbe</header>
+                            <span>Cette courbe est fixe, elle sera à retravailler avec les données de Donatien.</span>
+                            <div class='error_msg'><%= welcome_msg %></div>
+                        </div>
+                        
+                        <canvas id="myChart" style="width:100%; background-color : rgba(255,255,255,0.5); border-radius : 5px; padding: 5px;"></canvas>
+                        <script>
+                            //const xValues = [100,200,300,400,500,600,700,800,900,1000];
+                            var xValues = [];
+                            var yValues_sin = [];
+                            generateData("Math.sin(x) * 2000", 0, 10, 1);
 
-    <h1>Bienvenue sur le site de la FDE</h1>
+                            new Chart("myChart", {
+                                type: "line",
+                                data: {
+                                    labels: xValues,
+                                    datasets: [{ 
+                                        label : "Courbe 1",
+                                        data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478,56],
+                                        borderColor: "red",
+                                        fill: false
+                                        }, { 
+                                        label : "Courbe 2",
+                                        data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000,1000],
+                                        borderColor: "green",
+                                        fill: false
+                                        }, { 
+                                        label : "Courbe 3",
+                                        data: [300,700,2000,5000,6000,4000,2000,1000,200,100,835],
+                                        borderColor: "blue",
+                                        fill: false
+                                        },
+                                        {
+                                        label : "Sin(x)",
+                                        data : yValues_sin,
+                                        borderColor: "yellow",
+                                        fill: false
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    legend: {
+                                        display: true,
+                                        position: 'right'
+                                    },
+                                    title: {
+                                        display: true,
+                                        position: 'top',
+                                        text: "y = sin(x)",
+                                        fontSize: 20
+                                    }
+                                }
+                            });
 
-    <h2>Le site est actuellement en maintenance. Merci de revenir le 29 Mars 2025.</h2>
 
-    <form action="/login" method="GET" style="margin-top: 20px;">
-        <button type="submit" style="padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-            Se connecter
-        </button>
-    </form>
-
-    <%- include('partials/footer') %>
+                            function generateData(value, i1, i2, step = 1) {
+                                for (let x = i1; x <= i2; x += step) {
+                                    yValues_sin.push(eval(value));
+                                    xValues.push(x);
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
