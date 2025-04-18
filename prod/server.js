@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 8000;
+const port = 3000;
 const session = require('express-session');
 
 // Set up EJS
@@ -41,8 +41,6 @@ app.use('/', personalAccountRouter);
 
 const logoutRouter = require('./routes/requests/logout');
 app.use('/', logoutRouter);
-const PostloginRouter = require('./routes/requests/login');
-app.use('/', PostloginRouter);
 
 const GetSearchRouter = require('./routes/requests/search');
 app.use('/', GetSearchRouter);
