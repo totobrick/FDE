@@ -19,6 +19,21 @@
         </form>
     </main>
 
+    <div id="UserSearch">
+        <form action="/search" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter a username" name="username">
+            <button id="search" type="submit">Search</button>
+        </form>
+    </div>
+    
+
+    <div id="users">
+        Hello
+    </div>
+
+    <script src="/js/search.js"></script>
+
     <%- include('partials/footer') %>
 </body>
 </html>
