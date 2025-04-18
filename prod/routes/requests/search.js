@@ -10,35 +10,24 @@ const connection = sql.createConnection({
 });
 
 router.post('/search', (req, res) => {
-    const { username } = req.body; // Retrieve username from the form
+    console.log('BODY:', req); 
+    const { username } = req.body;
 
-    // Check if username is provided
     if (!username) {
-        return res.redirect('/dashboard?errorMessage=Please provide a username to search.');
+        return res.status(400).json({ error: 'Please provide a username to search.' });
     }
 
-    // Query the database to find the user
     const query = 'SELECT * FROM user WHERE login LIKE ?';
     connection.query(query, ["%" + username + "%"], (err, results) => {
         if (err) {
             console.error('Database query error: ', err);
-            return res.redirect('/dashboard?errorMessage=An error occurred. Please try again later.');
+            return res.status(500).json({ error: 'An error occurred. Please try again later.' });
         }
-        // If a user is found
+
         if (results.length > 0) {
-            // Success: Debug
-            console.log(results)
-            // Non :(
-            /*const container = document.getElementById("users")
-            container.innerHTML = results.map(item => {
-                return `
-                    <div class="result-user">
-                        <h3>${item.login}</h3>
-                    </div>
-                `;
-            }).join('');*/
+            return res.json(results); // ✅ renvoie les données au frontend
         } else {
-            return res.redirect('/dashboard?errorMessage=No one was found.');
+            return res.status(404).json({ error: 'No user found.' });
         }
     });
 });

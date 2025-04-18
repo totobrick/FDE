@@ -8,6 +8,7 @@ const session = require('express-session');
 // Set up EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.json());
 
 // Static files (CSS, JS, Images). /!\ Accesible coté client /!\
 app.use(express.static(path.join(__dirname, 'public')));
@@ -50,6 +51,8 @@ app.use('/', dashBoardRouter);
 
 const logoutdRouter = require('./routes/requests/logout');
 app.use('/', logoutdRouter);
+
+app.use(express.urlencoded({ extended: true })); // pour parser des formulaires HTML
 
 // Start the server
 app.listen(port, () => {
