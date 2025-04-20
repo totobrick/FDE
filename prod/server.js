@@ -59,6 +59,7 @@ app.get('/logout', (req, res) => {
           }
           res.clearCookie('connect.sid');   // supprime les cookies cote client
           console.log("ID de cookie nettoyé avec succès : res.clearCookie('connect.sid');");
+          console. log("Utilisateur déconnecté.")
           return res.redirect('/');
       });
   }
@@ -72,65 +73,6 @@ app.get('/logout', (req, res) => {
 const logoutRouter = require('./routes/logout');
 app.use('/', logoutRouter);*/
 
-
-
-
-// ******* DEBUG *******
-app.get('/logoutD', (req, res) => {
-  console.log("*************** NIQUE TA MERE ********");
-  console.log("\nPage : /logoutD");
-  console.log("Variables de session : ", req.session);
-  
-  //console.log("req.session.id : ", req.session.id);
-  
-  if (req.session) {
-      console.log("Tentative de déconnexion.");
-      req.session.destroy(err => {
-          if (err) {
-            console.error('Erreur lors de la destruction de la session :', err);
-            return res.status(500).send('Erreur serveur');
-          }
-      
-          // Optionnel : supprimer le cookie côté client
-          res.clearCookie('connect.sid'); // nom par défaut du cookie de session
-          //res.send('Déconnecté');
-          console.log('Déconnecté');
-          console.log("Variables de session : ", req.session);
-          res.redirect('/login'); // ou autre page
-      });
-  }
-  else {
-      console.log("Echec déconnexion.");
-      res.send('Pas de session à détruire');
-  }
-});
-
-app.get('/logoutDP', (req, res) => {
-  console.log("*************** NIQUE TA MERE ********");
-  console.log("\nPage : /logoutDP");
-  console.log("Variables de session : ", req.session);
-  
-  if (req.session) {
-      console.log("Tentative de déconnexion.");
-      req.session.destroy(err => {
-          if (err) {
-            console.error('Erreur lors de la destruction de la session :', err);
-            return res.status(500).send('Erreur serveur');
-          }
-          // Optionnel : supprimer le cookie côté client
-          res.clearCookie('connect.sid'); // nom par défaut du cookie de session
-          //res.send('Déconnecté');
-          console.log('Déconnecté');
-          console.log("Variables de session : ", req.session);
-      });
-  }
-  else {
-      console.log("Echec déconnexion.");
-      res.send('Pas de session à détruire');
-  }
-});
-
-// ******* DEBUG_END *******
 
 
 const GetSearchRouter = require('./routes/requests/search');
