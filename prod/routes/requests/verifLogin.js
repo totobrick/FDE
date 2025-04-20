@@ -5,6 +5,7 @@ const router = express.Router();
 
 
 router.post('/requests/verifLogin', (req, res) => {
+    // Create connection to database
     const connection = sql.createConnection({
         host: 'localhost',
         user: 'root',
@@ -23,9 +24,8 @@ router.post('/requests/verifLogin', (req, res) => {
         if (err){
             console.error("Une erreur est survenue", err);
         }
-        console.log(response);
-        console.log("ID : " + response[0].ID);
         console.log("Nb lignes : ", response.length);
+        console.log("response", response);
 
         if (response.length == 1){
             console.log(`Bonjour ${login}, vous êtes connecté.`);
@@ -51,8 +51,15 @@ router.post('/requests/verifLogin', (req, res) => {
             }
             res.redirect(301, "/homepage");        // 301 : http status for permanent redirection
         }
+        else if (response.length >= 2){
+            console.log("Erreur anormal : 2 utilisateurs possèdent le même login et mot de passe.");
+            req.session.error_msg = "Erreur anormal : 2 utilisateurs possèdent le même login et mot de passe.";
+            res.redirect("/login");
+        }
         else{
-            res.send("Non connecté.");
+            console.log("Login ou mot de passe incorrect !");
+            req.session.error_msg = "Login ou mot de passe incorrect !";
+            res.redirect("/login");
         }
     });
 });

@@ -14,11 +14,14 @@
             <div class="container">
                 <div class="form-box_login">
                     <div class="login-container">
-                        <form action="requests/verifLogin" method="post">
+                        <form name="login-form" action="requests/verifLogin" method="post" onsubmit="return validateForm()">
                             <div class="top">
                                 <header>Se connecter</header>
                                 <span>Vous ne possédez pas de compte ? <a href="register.php" onclick="register()">S'inscrire</a></span>
                                 <div class="error_msg" id="error_msg">
+                                    <% if (error_msg != ""){ %>
+                                        <%= error_msg %>
+                                    <% } %>
                                 </div>
                             </div>
                             <div class="input-box">
@@ -30,7 +33,7 @@
                                 <i class="bx bx-lock-alt"></i>
                             </div>
                             <div class="input-box">
-                                <button class="submit" id="submit123" onclick="submit()">Connexion</button>
+                                <button class="submit" id="submit">Connexion</button>
                             </div>
                             <div class="two-col">
                                 <div class="one">
@@ -46,31 +49,20 @@
         </main>
     
     <script>
-
-        function sendData(){
-            const login = document.getElementById("login").value;
-            const password = document.getElementById("password").value;
-            document.getElementById("error_msg").innerHTML = "Bonjour," + login +","+ password +".";
-            
-            const test = fetch('/verif_login',{
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({login, password})
-            });
-            document.getElementById("error_msg").innerHTML = test.text();
-
-            
+        // Check if form fields are empty
+        function validateForm(){
+            var login_field = document.forms["login-form"]["login"].value;
+            var pwd_field = document.forms["login-form"]["password"].value;
+            if (login_field == ""){
+                alert("Le champ \"Login\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            else if (pwd_field == ""){
+                alert("Le champ \"Mot de passe\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            //return true;
         }
-
-        /*const express = require('express');
-        const app = express();
-        app.use(express.json());
-        
-        app.get("/verif_login", (req,res)=>{
-            res.send("Bien reçu !");
-        })*/
-        
     </script>
-
 </body>
 </html>
