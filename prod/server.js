@@ -10,24 +10,26 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 
-// Static files (CSS, JS, Images). /!\ Accesible coté client /!\
+// Static files (CSS, JS, Images, Logos). /!\ Accessible coté client /!\
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Pour comprendre les caracteres encodés dans l'URL
+// Pour comprendre les caracteres encodés dans l'URL
 app.use(express.urlencoded({ extended: true }));
 
-//configure les sessions
+// configure les sessions
 app.use(session({
     secret: 'mdp', // à changer
     resave: false,
-    saveUninitialized: false, //car pas en https
+    saveUninitialized: false, // ne crée pas de session ( et dc pas de cookie) tant que rien n'a été écrit dans req.session
     cookie: {
-      maxAge: 1000 * 60 * 60 // durée de la session - 1h
+      //secure: false,
+      //maxAge: 1000 * 60 * 60 // durée de la session - 1h
+      maxAge: 1000 * 60 * 10 // durée de la session - 10min
     }
   }));
 
 
-//Set the index page (the router defines the path in the index.js file)
+// Set the index page (the router defines the path in the index.js file)
 const indexRouter = require('./routes/index');
 app.use('/', indexRouter);
 
@@ -43,8 +45,93 @@ app.use('/', loginRouter);
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
 
-const logoutRouter = require('./routes/requests/logout');
-app.use('/', logoutRouter);
+app.get('/logout', (req, res) => {
+  console.log("\nPage : /logout");
+  //console.log("Variables de session : ", req.session);
+  
+  if (req.session) {
+      console.log("Tentative de déconnexion.");
+      req.session.destroy(err => {
+          if (err) {
+              req.session.error_msg = "Erreur destruction session !";
+              console.log(req.session.error_msg);
+              return res.redirect('/homepage');
+          }
+          res.clearCookie('connect.sid');   // supprime les cookies cote client
+          console.log("ID de cookie nettoyé avec succès : res.clearCookie('connect.sid');");
+          return res.redirect('/');
+      });
+  }
+  else {
+      console.log("Pas de session à détruire");
+      res.send('Pas de session à détruire');
+  }
+});
+
+/*
+const logoutRouter = require('./routes/logout');
+app.use('/', logoutRouter);*/
+
+
+
+
+// ******* DEBUG *******
+app.get('/logoutD', (req, res) => {
+  console.log("*************** NIQUE TA MERE ********");
+  console.log("\nPage : /logoutD");
+  console.log("Variables de session : ", req.session);
+  
+  //console.log("req.session.id : ", req.session.id);
+  
+  if (req.session) {
+      console.log("Tentative de déconnexion.");
+      req.session.destroy(err => {
+          if (err) {
+            console.error('Erreur lors de la destruction de la session :', err);
+            return res.status(500).send('Erreur serveur');
+          }
+      
+          // Optionnel : supprimer le cookie côté client
+          res.clearCookie('connect.sid'); // nom par défaut du cookie de session
+          //res.send('Déconnecté');
+          console.log('Déconnecté');
+          console.log("Variables de session : ", req.session);
+          res.redirect('/login'); // ou autre page
+      });
+  }
+  else {
+      console.log("Echec déconnexion.");
+      res.send('Pas de session à détruire');
+  }
+});
+
+app.get('/logoutDP', (req, res) => {
+  console.log("*************** NIQUE TA MERE ********");
+  console.log("\nPage : /logoutDP");
+  console.log("Variables de session : ", req.session);
+  
+  if (req.session) {
+      console.log("Tentative de déconnexion.");
+      req.session.destroy(err => {
+          if (err) {
+            console.error('Erreur lors de la destruction de la session :', err);
+            return res.status(500).send('Erreur serveur');
+          }
+          // Optionnel : supprimer le cookie côté client
+          res.clearCookie('connect.sid'); // nom par défaut du cookie de session
+          //res.send('Déconnecté');
+          console.log('Déconnecté');
+          console.log("Variables de session : ", req.session);
+      });
+  }
+  else {
+      console.log("Echec déconnexion.");
+      res.send('Pas de session à détruire');
+  }
+});
+
+// ******* DEBUG_END *******
+
 
 const GetSearchRouter = require('./routes/requests/search');
 app.use('/', GetSearchRouter);
@@ -57,8 +144,8 @@ app.use('/', verifLoginRouter);
 //const registerModificationAccount = require('./routes/requests/registerModificationAccount');
 //app.use('/', registerModificationAccount);
 
-const logoutdRouter = require('./routes/requests/logout');
-app.use('/', logoutdRouter);
+/*const logoutdRouter = require('./routes/logout');
+app.use('/', logoutdRouter);*/
 
 app.use(express.urlencoded({ extended: true })); // pour parser des formulaires HTML
 
