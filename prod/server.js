@@ -31,6 +31,9 @@ app.use(session({
 const indexRouter = require('./routes/index');
 app.use('/', indexRouter);
 
+const selectConnectedObectRoutes = require('./routes/requests/selectConnectedObject');
+app.use('/', selectConnectedObectRoutes);
+
 const emptyPathRouter = require('./routes/emptyRoute');
 app.use('/', emptyPathRouter);
 
