@@ -23,8 +23,8 @@ app.use(session({
     saveUninitialized: false, // ne crée pas de session ( et dc pas de cookie) tant que rien n'a été écrit dans req.session
     cookie: {
       //secure: false,
-      //maxAge: 1000 * 60 * 60 // durée de la session - 1h
-      maxAge: 1000 * 60 * 10 // durée de la session - 10min
+      //maxAge: 1000 * 60 * 60  // durée de la session - 1h
+      maxAge: 1000 * 60 * 10    // durée de la session - 10min
     }
   }));
 
@@ -41,6 +41,19 @@ app.use('/', homepageRouter);
 
 const loginRouter = require('./routes/login');
 app.use('/', loginRouter);
+
+// TODO
+//const forgotPwdRouter = require('./routes/forgot_pwd');
+//app.use('/', forgotPwdRouter);
+
+const registerRouter = require('./routes/register');
+app.use('/', registerRouter);
+
+const verifRegisterRouter = require('./routes/verifRegister');
+app.use('/', verifRegisterRouter);
+
+const verifRegisterEnterMailCodeRouter = require('./routes/verifRegisterEnterMailCode');
+app.use('/', verifRegisterEnterMailCodeRouter);
 
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image" href="Logos/logo_FDE.svg">
+    <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/style4.css">
+    <title>FDE : Inscription</title>
+</head>
+
+<body>
+    <div class="wrapper">
+    <%- include('partials/header') %>
+        <main>
+            <div class="container">
+                <div class="form-box_register">
+                    <div class="register-container" id="register">
+                        <form name="register-form" action="/verifRegister" method="POST" onsubmit="return validateForm()">
+                            <div class="top">
+                                <header>S'inscrire</header>
+                                <span>J'ai déjà un compte ? <a href="/login">Se connecter</a></span>
+                                <div class="error_msg" id="error_msg">
+                                    <% if (error_msg != ""){ %>
+                                        <%= error_msg %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="input-box" id="gender">
+                                <label for="Gender">Genre</label>
+                                <div class="select-gender">
+                                    <div>
+                                        <input type="radio" name="Gender" value="Madame" required>Madame
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Gender" value="Monsieur" required>Monsieur
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Gender" value="Non binaire" required>Non binaire
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Gender" value="Non défini" required>Non défini
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="Firstname" class="input-field" placeholder="Prénom" required>
+                                <i class="bx bx-user"></i>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="Name" class="input-field" placeholder="Nom" required>
+                                <i class="bx bx-user"></i>
+                            </div>
+                            <div class="input-box">
+                                <label for="date_birth">Date de naissance</label>
+                                <input type="date" name="Date_birth" class="input-field" min="1920-01-01" max="<%= date_today %>" required>
+                                <i class="bx bx-user"></i>
+                            </div>
+                            <div class="input-box">
+                                <input type="email" name="Email" class="input-field" placeholder="Email" required>
+                                <i class="bx bx-envelope"></i>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="Login" class="input-field" placeholder="Login" required>
+                                <i class="bx bx-user"></i>
+                            </div>
+                            <div class="input-box">
+                                <input type="password" name="Password" class="input-field" placeholder="Mot de passe" required>
+                                <i class="bx bx-lock-alt"></i>
+                            </div>
+                            <div class="input-box">
+                                <input type="submit" class="submit" value="Valider">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+       function register() {
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+
+            x.style.left = "-510px";
+            y.style.right = "5px";
+            x.style.opacity = 0;
+            y.style.opacity = 1;
+       }
+    </script>
+    <script>
+        // Check if form fields are empty
+        function validateForm(){
+            var fname_field = document.forms["register-form"]["Firstname"].value;
+            var lname_field = document.forms["register-form"]["Name"].value;
+            var date_field = document.forms["register-form"]["Date_birth"].value;
+            var mail_field = document.forms["register-form"]["Email"].value;
+            var login_field = document.forms["register-form"]["Login"].value;
+            var pwd_field = document.forms["register-form"]["Password"].value;
+
+            if (fname_field == ""){
+                alert("Le champ \"Prénom\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            else if (lname_field == ""){
+                alert("Le champ \"Nom\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            else if (date_field == ""){
+                alert("Le champ \"Email\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            else if (mail_field == ""){
+                alert("Le champ \"Email\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            else if (login_field == ""){
+                alert("Le champ \"Login\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            else if (pwd_field == ""){
+                alert("Le champ \"Mot de passe\" est vide.\nVeuillez le remplir.");
+                return false;
+            }
+            //return true;
+        }
+    </script>
+</body>
+</html>
