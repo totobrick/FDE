@@ -5,7 +5,8 @@
     <link rel="icon" type="image" href="Logos/logo_FDE.svg">
     <link rel="stylesheet" href="css/style2.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <title>FDE : Accueil</title>
 </head>
 <body>
@@ -18,7 +19,7 @@
                     <div class="box-container">
                         <div class="top">
                             <header>Courbe</header>
-                            <span>Cette courbe est fixe, elle sera à retravailler avec les données de Donatien.</span>
+                            <span>Cette courbe est générée dynamiquement à partir des objets connectés.</span>
                             <div class="error_msg" id="error_msg">
                                 <% if (error_msg != ""){ %>
                                     <%= error_msg %>
@@ -26,63 +27,195 @@
                             </div>
                         </div>
                         
-                        <canvas id="myChart" style="width:100%; background-color : rgba(255,255,255,0.5); border-radius : 5px; padding: 5px;"></canvas>
+                        <canvas id="myChart" style="width:100%; background-color: rgba(255,255,255,0.5); border-radius: 5px; padding: 5px;"></canvas>
+                        
+                        <div id="sensor-controls" style="margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 5px;">
+                            <p>Sélectionne les objets connectés à afficher :</p>
+                        
+                            <details open>
+                                <summary><strong><input type="checkbox" id="parent-production"> Production</strong></summary>
+                                <div id="production-checkboxes" style="margin-left: 20px;"></div>
+                            </details>
+                            
+                            <details open>
+                                <summary><strong><input type="checkbox" id="parent-consumption"> Consommation</strong></summary>
+                                <div id="consumption-checkboxes" style="margin-left: 20px;"></div>
+                            </details>
+                            
+                        </div>
+
                         <script>
-                            //const xValues = [100,200,300,400,500,600,700,800,900,1000];
-                            var xValues = [];
-                            var yValues_sin = [];
-                            generateData("Math.sin(x) * 2000", 0, 10, 1);
-
-                            new Chart("myChart", {
-                                type: "line",
-                                data: {
-                                    labels: xValues,
-                                    datasets: [{ 
-                                        label : "Courbe 1",
-                                        data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478,56],
-                                        borderColor: "red",
-                                        fill: false
-                                        }, { 
-                                        label : "Courbe 2",
-                                        data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000,1000],
-                                        borderColor: "green",
-                                        fill: false
-                                        }, { 
-                                        label : "Courbe 3",
-                                        data: [300,700,2000,5000,6000,4000,2000,1000,200,100,835],
-                                        borderColor: "blue",
-                                        fill: false
-                                        },
-                                        {
-                                        label : "Sin(x)",
-                                        data : yValues_sin,
-                                        borderColor: "yellow",
-                                        fill: false
-                                        }
-                                    ]
-                                },
-                                options: {
-                                    legend: {
-                                        display: true,
-                                        position: 'right'
-                                    },
-                                    title: {
-                                        display: true,
-                                        position: 'top',
-                                        text: "y = sin(x)",
-                                        fontSize: 20
+                            function getRandomColor() {
+                                const letters = '0123456789ABCDEF';
+                                let color = '#';
+                                for (let i = 0; i < 6; i++) {
+                                    color += letters[Math.floor(Math.random() * 16)];
+                                }
+                                return color;
+                            }
+                        
+                            let myChart;
+                            let datasetRefs = {};
+                        
+                            fetch('/data')
+                                .then(response => response.json())
+                                .then(data => {
+                                    const datasets = [];
+                                    const grouped = {};
+                                    const objectMap = {};
+                        
+                                    if (<%= userConnected %>) {
+                                        data.forEach(entry => {
+                                            if (!grouped[entry.connected_object]) {
+                                                grouped[entry.connected_object] = [];
+                                                objectMap[entry.connected_object] = entry.type;
+                                            }
+                                            grouped[entry.connected_object].push({
+                                                x: new Date(entry.date),
+                                                y: entry.value
+                                            });
+                                        });
+                                    } else {
+                                        data.forEach(entry => {
+                                            if (entry.type !== "consumption") return;
+                                            if (!grouped[entry.connected_object]) {
+                                                grouped[entry.connected_object] = [];
+                                                objectMap[entry.connected_object] = entry.type;
+                                            }
+                                            grouped[entry.connected_object].push({
+                                                x: new Date(entry.date),
+                                                y: entry.value
+                                            });
+                                        });
                                     }
-                                }
-                            });
-
-
-                            function generateData(value, i1, i2, step = 1) {
-                                for (let x = i1; x <= i2; x += step) {
-                                    yValues_sin.push(eval(value));
-                                    xValues.push(x);
-                                }
+                        
+                                    for (const [object, values] of Object.entries(grouped)) {
+                                        const dataset = {
+                                            label: object,
+                                            data: values,
+                                            fill: false,
+                                            borderColor: getRandomColor(),
+                                            tension: 0.1
+                                        };
+                                        datasets.push(dataset);
+                                        datasetRefs[object] = dataset;
+                                    }
+                        
+                                    const ctx = document.getElementById('myChart').getContext('2d');
+                                    myChart = new Chart(ctx, {
+                                        type: 'line',
+                                        data: { datasets },
+                                        options: {
+                                            responsive: true,
+                                            elements: {
+                                                line: { spanGaps: true }
+                                            },
+                                            scales: {
+                                                x: {
+                                                    type: 'time',
+                                                    time: {
+                                                        unit: 'minute',
+                                                        displayFormats: {
+                                                            minute: 'HH:mm',
+                                                            hour: 'HH:mm'
+                                                        }
+                                                    },
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                },
+                                                y: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Production/Consommation'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                        
+                                    const productionContainer = document.getElementById('production-checkboxes');
+                                    const consumptionContainer = document.getElementById('consumption-checkboxes');
+                        
+                                    Object.keys(datasetRefs).forEach(objectName => {
+                                        const checkbox = document.createElement('input');
+                                        checkbox.type = 'checkbox';
+                                        checkbox.value = objectName;
+                                        checkbox.checked = true;
+                                        checkbox.className = 'objectCheckbox';
+                                        checkbox.id = `checkbox-${objectName}`;
+                        
+                                        const label = document.createElement('label');
+                                        label.htmlFor = checkbox.id;
+                                        label.textContent = objectName;
+                        
+                                        const div = document.createElement('div');
+                                        div.appendChild(checkbox);
+                                        div.appendChild(label);
+                        
+                                        const type = objectMap[objectName];
+                                        if (type === "production") {
+                                            productionContainer.appendChild(div);
+                                        } else if (type === "consumption") {
+                                            consumptionContainer.appendChild(div);
+                                        }
+                        
+                                        checkbox.addEventListener('change', () => {
+                                            updateChartVisibility();
+                                            updateParentCheckboxes(); 
+                                        });
+                                    });
+                        
+                                    document.getElementById('parent-production').addEventListener('change', function () {
+                                        setAllCheckboxesInGroup('production-checkboxes', this.checked);
+                                    });
+                        
+                                    document.getElementById('parent-consumption').addEventListener('change', function () {
+                                        setAllCheckboxesInGroup('consumption-checkboxes', this.checked);
+                                    });
+                        
+                                    updateChartVisibility();
+                                    updateParentCheckboxes();
+                                });
+                        
+                            function updateChartVisibility() {
+                                const checkedLabels = Array.from(document.querySelectorAll('.objectCheckbox:checked'))
+                                    .map(cb => cb.value);
+                        
+                                myChart.data.datasets.forEach(dataset => {
+                                    dataset.hidden = !checkedLabels.includes(dataset.label);
+                                });
+                        
+                                myChart.update();
+                            }
+                        
+                            function updateParentCheckboxes() {
+                                updateParentCheckbox('production-checkboxes', 'parent-production');
+                                updateParentCheckbox('consumption-checkboxes', 'parent-consumption');
+                            }
+                        
+                            function updateParentCheckbox(groupId, parentId) {
+                                const group = document.getElementById(groupId);
+                                const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+                                const parent = document.getElementById(parentId);
+                        
+                                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                                const noneChecked = Array.from(checkboxes).every(cb => !cb.checked);
+                        
+                                parent.indeterminate = !allChecked && !noneChecked;
+                                parent.checked = allChecked;
+                            }
+                        
+                            function setAllCheckboxesInGroup(groupId, checked) {
+                                const group = document.getElementById(groupId);
+                                const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+                                checkboxes.forEach(cb => cb.checked = checked);
+                                updateChartVisibility();
+                                updateParentCheckboxes();
                             }
                         </script>
+                        
                     </div>
                 </div>
             </div>

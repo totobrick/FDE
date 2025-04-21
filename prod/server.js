@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const port = 3000;
+const sql = require('mysql2');
 const session = require('express-session');
 
 // Set up EJS
@@ -32,6 +33,9 @@ app.use(session({
 // Set the index page (the router defines the path in the index.js file)
 const indexRouter = require('./routes/index');
 app.use('/', indexRouter);
+
+const selectConnectedObectRoutes = require('./routes/requests/selectConnectedObject');
+app.use('/', selectConnectedObectRoutes);
 
 const emptyPathRouter = require('./routes/emptyRoute');
 app.use('/', emptyPathRouter);
@@ -64,13 +68,24 @@ app.use('/', verifCodeRegisterAccountRouter);
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
 
+const userSearchRouter = require('./routes/userSearch');
+app.use('/', userSearchRouter);
+
+const objectSearchRouter = require('./routes/objectSearch');
+app.use('/', objectSearchRouter);
+
 const logoutRouter = require('./routes/logout');
 app.use('/', logoutRouter);
 
+const centralCreationRouter = require('./routes/centralCreation');
+app.use('/', centralCreationRouter);
 
 
-const GetSearchRouter = require('./routes/requests/search');
-app.use('/', GetSearchRouter);
+const GetUserSearchRouter = require('./routes/requests/uSearch');
+app.use('/', GetUserSearchRouter);
+
+const GetObjSearchRouter = require('./routes/requests/oSearch');
+app.use('/', GetObjSearchRouter);
 
 const verifLoginRouter = require('./routes/requests/verifLogin');
 app.use('/', verifLoginRouter);
@@ -88,4 +103,39 @@ app.use(express.urlencoded({ extended: true })); // pour parser des formulaires 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+});
+
+// Connexion à la base de données
+const db = sql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'fde_database'
+});
+
+// Connexion test
+db.connect((err) => {
+  if (err) throw err;
+  console.log('Connecté à la base de données MySQL');
+});
+
+app.get('/profile', (req, res) => {
+  res.render('index', { loginBtn: "Se connecter",
+    path_loginBtn: "/login",
+    welcome_msg: "",
+    account_menu : true
+  });
+});
+
+app.get('/profile/:id', (req, res) => {
+  const userId = req.params.id;
+
+  db.query('SELECT * FROM user WHERE id = ?', [userId], (err, results) => {
+      if (err || results.length === 0) {
+          return res.redirect('/');
+      }
+
+      const user = results[0];
+      res.render('profile', { user });
+  });
 });
