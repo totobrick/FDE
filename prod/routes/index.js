@@ -8,7 +8,8 @@ router.get('/index', (req, res) => {
     console.log("\nPage : /index");
     console.log("Variables de session : ", req.session);
 //console.log("req.session.id : ", req.session.id);
-  if(isConnected(req)){
+  userConnected = isConnected(req);
+  if(userConnected){
     console.log("User connected, redirection to : /homepage");
     return res.redirect(301, '/homepage');
   };
@@ -16,7 +17,8 @@ router.get('/index', (req, res) => {
   res.render("index", { loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",
-                          account_menu : false
+                          account_menu : false,
+                          userConnected
                         });
 });
 

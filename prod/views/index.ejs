@@ -5,7 +5,6 @@
     <link rel="icon" type="image" href="Logos/logo_FDE.svg">
     <link rel="stylesheet" href="css/style2.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Chart.js et adaptateur date -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <title>FDE : Accueil</title>
@@ -28,6 +27,17 @@
                         
                         <div id="sensor-controls" style="margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 5px;">
                             <p>Sélectionne les objets connectés à afficher :</p>
+                        
+                            <details open>
+                                <summary><strong><input type="checkbox" id="parent-production"> Production</strong></summary>
+                                <div id="production-checkboxes" style="margin-left: 20px;"></div>
+                            </details>
+                            
+                            <details open>
+                                <summary><strong><input type="checkbox" id="parent-consumption"> Consommation</strong></summary>
+                                <div id="consumption-checkboxes" style="margin-left: 20px;"></div>
+                            </details>
+                            
                         </div>
 
                         <script>
@@ -39,25 +49,42 @@
                                 }
                                 return color;
                             }
-
+                        
                             let myChart;
                             let datasetRefs = {};
-
+                        
                             fetch('/data')
                                 .then(response => response.json())
                                 .then(data => {
                                     const datasets = [];
                                     const grouped = {};
-                                    data.forEach(entry => {
-                                        if (!grouped[entry.connected_object]) {
-                                            grouped[entry.connected_object] = [];
-                                        }
-                                        grouped[entry.connected_object].push({
-                                            x: new Date(entry.date),
-                                            y: entry.value
+                                    const objectMap = {};
+                        
+                                    if (<%= userConnected %>) {
+                                        data.forEach(entry => {
+                                            if (!grouped[entry.connected_object]) {
+                                                grouped[entry.connected_object] = [];
+                                                objectMap[entry.connected_object] = entry.type;
+                                            }
+                                            grouped[entry.connected_object].push({
+                                                x: new Date(entry.date),
+                                                y: entry.value
+                                            });
                                         });
-                                    });
-
+                                    } else {
+                                        data.forEach(entry => {
+                                            if (entry.type !== "consumption") return;
+                                            if (!grouped[entry.connected_object]) {
+                                                grouped[entry.connected_object] = [];
+                                                objectMap[entry.connected_object] = entry.type;
+                                            }
+                                            grouped[entry.connected_object].push({
+                                                x: new Date(entry.date),
+                                                y: entry.value
+                                            });
+                                        });
+                                    }
+                        
                                     for (const [object, values] of Object.entries(grouped)) {
                                         const dataset = {
                                             label: object,
@@ -69,7 +96,7 @@
                                         datasets.push(dataset);
                                         datasetRefs[object] = dataset;
                                     }
-
+                        
                                     const ctx = document.getElementById('myChart').getContext('2d');
                                     myChart = new Chart(ctx, {
                                         type: 'line',
@@ -97,15 +124,16 @@
                                                 y: {
                                                     title: {
                                                         display: true,
-                                                        text: 'Production'
+                                                        text: 'Production/Consommation'
                                                     }
                                                 }
                                             }
                                         }
                                     });
-
-                                    const checkboxContainer = document.getElementById('sensor-controls');
-
+                        
+                                    const productionContainer = document.getElementById('production-checkboxes');
+                                    const consumptionContainer = document.getElementById('consumption-checkboxes');
+                        
                                     Object.keys(datasetRefs).forEach(objectName => {
                                         const checkbox = document.createElement('input');
                                         checkbox.type = 'checkbox';
@@ -113,36 +141,77 @@
                                         checkbox.checked = true;
                                         checkbox.className = 'objectCheckbox';
                                         checkbox.id = `checkbox-${objectName}`;
-
+                        
                                         const label = document.createElement('label');
                                         label.htmlFor = checkbox.id;
                                         label.textContent = objectName;
-
+                        
                                         const div = document.createElement('div');
                                         div.appendChild(checkbox);
                                         div.appendChild(label);
-
-                                        checkboxContainer.appendChild(div);
-
+                        
+                                        const type = objectMap[objectName];
+                                        if (type === "production") {
+                                            productionContainer.appendChild(div);
+                                        } else if (type === "consumption") {
+                                            consumptionContainer.appendChild(div);
+                                        }
+                        
                                         checkbox.addEventListener('change', () => {
                                             updateChartVisibility();
+                                            updateParentCheckboxes(); 
                                         });
                                     });
-
+                        
+                                    document.getElementById('parent-production').addEventListener('change', function () {
+                                        setAllCheckboxesInGroup('production-checkboxes', this.checked);
+                                    });
+                        
+                                    document.getElementById('parent-consumption').addEventListener('change', function () {
+                                        setAllCheckboxesInGroup('consumption-checkboxes', this.checked);
+                                    });
+                        
                                     updateChartVisibility();
+                                    updateParentCheckboxes();
                                 });
-
+                        
                             function updateChartVisibility() {
                                 const checkedLabels = Array.from(document.querySelectorAll('.objectCheckbox:checked'))
                                     .map(cb => cb.value);
-
+                        
                                 myChart.data.datasets.forEach(dataset => {
                                     dataset.hidden = !checkedLabels.includes(dataset.label);
                                 });
-
+                        
                                 myChart.update();
                             }
+                        
+                            function updateParentCheckboxes() {
+                                updateParentCheckbox('production-checkboxes', 'parent-production');
+                                updateParentCheckbox('consumption-checkboxes', 'parent-consumption');
+                            }
+                        
+                            function updateParentCheckbox(groupId, parentId) {
+                                const group = document.getElementById(groupId);
+                                const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+                                const parent = document.getElementById(parentId);
+                        
+                                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                                const noneChecked = Array.from(checkboxes).every(cb => !cb.checked);
+                        
+                                parent.indeterminate = !allChecked && !noneChecked;
+                                parent.checked = allChecked;
+                            }
+                        
+                            function setAllCheckboxesInGroup(groupId, checked) {
+                                const group = document.getElementById(groupId);
+                                const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+                                checkboxes.forEach(cb => cb.checked = checked);
+                                updateChartVisibility();
+                                updateParentCheckboxes();
+                            }
                         </script>
+                        
                     </div>
                 </div>
             </div>
