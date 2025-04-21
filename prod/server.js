@@ -45,6 +45,9 @@ app.use('/', loginRouter);
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
 
+const userSearchRouter = require('./routes/userSearch');
+app.use('/', userSearchRouter);
+
 const logoutRouter = require('./routes/logout');
 app.use('/', logoutRouter);
 
