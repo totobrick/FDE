@@ -14,20 +14,20 @@ router.post('/uSearch', (req, res) => {
     const { username } = req.body;
 
     if (!username) {
-        return res.status(400).json({ error: 'Please provide a username to search.' });
+        return res.status(400).json({ error: "Merci d'entrer un nom" });
     }
 
     const query = 'SELECT * FROM user WHERE login LIKE ?';
     connection.query(query, ["%" + username + "%"], (err, results) => {
         if (err) {
             console.error('Database query error: ', err);
-            return res.status(500).json({ error: 'An error occurred. Please try again later.' });
+            return res.status(500).json({ error: "Une erreur s'est produite. Veuillez réessayer plus tard." });
         }
 
         if (results.length > 0) {
             return res.json(results); // ✅ renvoie les données au frontend
         } else {
-            return res.status(404).json({ error: 'No user found.' });
+            return res.status(404).json({ error: 'Aucun utilisateur trouvé.' });
         }
     });
 });
