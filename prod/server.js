@@ -54,6 +54,8 @@ app.use('/', userSearchRouter);
 const logoutRouter = require('./routes/logout');
 app.use('/', logoutRouter);
 
+const centralCreationRouter = require('./routes/centralCreation');
+app.use('/', centralCreationRouter);
 
 
 const GetSearchRouter = require('./routes/requests/search');

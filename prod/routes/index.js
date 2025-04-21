@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {isConnected} = require("./isConnected.js");
 
-//const isConnected = require('./isConnected.js');
 
 router.get('/index', (req, res) => {
     console.log("\nPage : /index");

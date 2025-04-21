@@ -27,10 +27,11 @@ router.get('/data', async (req, res) => {
             SELECT 
             p.date_prod AS date,
             co.name AS connected_object,
-            p.actual_prod AS value,
+            p.production AS value,
             'production' AS type
             FROM production p
             JOIN connected_object co ON p.ID_power_source = co.id
+            HAVING date>TIMESTAMP(NOW()) - 120960000000000  
 
             ORDER BY date ASC;
 
