@@ -9,7 +9,7 @@ const connection = sql.createConnection({
     database: 'fde_database',
 });
 
-router.post('/search', (req, res) => {
+router.post('/uSearch', (req, res) => {
     console.log('BODY:', req); 
     const { username } = req.body;
 

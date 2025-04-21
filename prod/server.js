@@ -51,13 +51,19 @@ app.use('/', personalAccountRouter);
 const userSearchRouter = require('./routes/userSearch');
 app.use('/', userSearchRouter);
 
+const objectSearchRouter = require('./routes/objectSearch');
+app.use('/', objectSearchRouter);
+
 const logoutRouter = require('./routes/logout');
 app.use('/', logoutRouter);
 
 
 
-const GetSearchRouter = require('./routes/requests/search');
-app.use('/', GetSearchRouter);
+const GetUserSearchRouter = require('./routes/requests/uSearch');
+app.use('/', GetUserSearchRouter);
+
+const GetObjSearchRouter = require('./routes/requests/oSearch');
+app.use('/', GetObjSearchRouter);
 
 const verifLoginRouter = require('./routes/requests/verifLogin');
 app.use('/', verifLoginRouter);
