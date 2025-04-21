@@ -30,7 +30,7 @@
             flex-direction: column;
             overflow: auto;
             
-            border: 4px dashed green;
+            /*border: 4px dashed green;*/
         }
 
         .struct_page{
@@ -42,7 +42,7 @@
             height: 20vh;
             width: 100%;
             
-            border: 3px solid orange;
+            /*border: 3px solid orange;*/
         }
         .nav{
             display: flex;
@@ -60,7 +60,7 @@
             max-height: 100px;
             max-width: 40%;
             
-            border: 2px solid brown;
+            /*border: 2px solid brown;*/
         }
         .nav-logo img{
             height: 100%;
@@ -69,14 +69,14 @@
             max-height: 300px;  /*security*/
             object-fit: contain; /*keep the original ratio img*/
             
-            border: 1px solid black;
+            /*border: 1px solid black;*/
         }
 
         .struct_page .line_2{
             width: 100%;
             height: 80vh;
             
-            border: 3px solid red;
+            /*border: 3px solid red;*/
         }
         .mail_infos_box {
             display: block;
@@ -88,7 +88,7 @@
             background: rgba(0, 0, 0, 0.8);
             border-radius: 10px;
             
-            border: 1px solid yellow;
+            /*border: 1px solid yellow;*/
         }
 
         .mail_infos_box .box_container {
@@ -96,12 +96,12 @@
             width: 100%;
             padding: 0;
 
-            border: 1px solid orange;
+            /*border: 1px solid orange;*/
         }
 
-        .top{
+        /*.top{
             border: 1px solid green;
-        }
+        }*/
         .top header{
             color: #fff;
             font-size: 2.5em;
@@ -109,7 +109,7 @@
             padding: 10px 0 ;
             margin-bottom: 25px;
             
-            border: 1px solid blue;
+            /*border: 1px solid blue;*/
         }
 
         .table{
@@ -122,7 +122,7 @@
             border-radius: 10px;
             max-width: 100%;
             
-            border: 1px solid violet;
+            /*border: 1px solid violet;*/
         }
         .table tr{
             max-width: 100%;
@@ -130,7 +130,7 @@
         .table tr th {
             word-break: break-word; /*coupe les mots trop longs (plus de 1 ligne) pour les mettre sur plusieurs lignes*/
             
-            border: 1px solid pink;
+            /*border: 1px solid pink;*/
         }
         .table tr td {
             display: block;
@@ -140,15 +140,14 @@
             background: rgba(255, 255, 255, 0.2);
             padding: 10px;
 
-            border: 1px solid red;
+            /*border: 1px solid red;*/
         }
         .table tr td:hover {
             background: rgba(255, 255, 255, 0.25);
         }
     </style>
-    <title>FDE : Mot de passe oublié</title>
+    <title>FDE : Code de vérification</title>
 </head>
-<!--<body style="background-image: url('../Images/Background_images.jpg');">-->
 <body>
     <div class="wrapper">
         <table class="struct_page">
@@ -167,20 +166,15 @@
                     <div class="mail_infos_box">
                         <div class="box_container">
                             <div class="top">
-                                <header>Mot de passe oublié</header>
+                                <header>Vérification</header>
+                                <span>Ce code doit être saisi <b>sans espaces</b>.</span>
                             </div>
                             <table class="table">
                                 <tr>
-                                    <th>ID&ensp;:</th>
-                                    <td>{ID_utilisateur}</td>
+                                    <th>Code&ensp;:</th>
                                 </tr>
                                 <tr>
-                                    <th>Pseudo&ensp;:</th>
-                                    <td>{Pseudo_utilisateur}</td>
-                                </tr>
-                                <tr>
-                                    <th>Mot de passe&ensp;:</th>
-                                    <td>{MDP_utilisateur}</td>
+                                    <td>{Code_verif}</td>
                                 </tr>
                             </table>
                         </div>

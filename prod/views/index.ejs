@@ -19,7 +19,11 @@
                         <div class="top">
                             <header>Courbe</header>
                             <span>Cette courbe est fixe, elle sera à retravailler avec les données de Donatien.</span>
-                            <div class='error_msg'><%= welcome_msg %></div>
+                            <div class="error_msg" id="error_msg">
+                                <% if (error_msg != ""){ %>
+                                    <%= error_msg %>
+                                <% } %>
+                            </div>
                         </div>
                         
                         <canvas id="myChart" style="width:100%; background-color : rgba(255,255,255,0.5); border-radius : 5px; padding: 5px;"></canvas>

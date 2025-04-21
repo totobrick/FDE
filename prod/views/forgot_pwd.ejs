@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image" href="Logos/logo_FDE.svg">
+    <link rel="stylesheet" href="css/style2.css">
+    <title>FDE : Mot de passe oublié</title>
+</head>
+
+<body>
+    <div class="wrapper">
+    <%- include('partials/header') %>
+        <main>
+            <div class="container">
+                <div class="form-box_login">
+                    <div class="login-container" id="login">
+                        <form method="post" action="/checkLoginExists" class="login-form">
+                            <div class="top">
+                                <header>Récupération de mot de passe</header>
+                                <span>
+                                    Pour récupérer votre compte, saisissez votre login ci-dessous.<br>
+                                    Le mot de passe sera envoyé à l'adresse mail rattachée à votre compte.
+                                </span>
+                                <div class="error_msg" id="error_msg">
+                                    <% if (error_msg != ""){ %>
+                                        <%= error_msg %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label class="label-hidden" for="Login"></label>
+                                <input type="text" id="Login" name="Login" class="input-field" placeholder="Votre login" required>
+                            </div>
+                            <!--<div class="input-box">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" class="input-field" required>
+                            </div>-->
+                            <div class="input-box">
+                                <input type="submit" class="submit" value="Récupérer le mot de passe">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

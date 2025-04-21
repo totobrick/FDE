@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {isConnected} = require("./isConnected.js");
+const {isConnected} = require("./functions/functions.js");
 
 router.get('/verifRegisterEnterMailCode', (req, res) => {
     console.log("\nPage : /verifRegisterEnterMailCode");

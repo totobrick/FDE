@@ -1,30 +1,12 @@
 const sql = require('mysql2');
 const express = require('express');
 const router = express.Router();
-const {isConnected} = require("./isConnected.js");
+const {isConnected, queryPromise} = require("./functions/functions.js");
 
-// Function used for page : /register_modification_account
-function queryPromise(sql_query, values){
-    // Create connection to database
-    const connection = sql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'fde_database'
-    });
 
-    return new Promise((resolve, reject) => {
-        connection.query(sql_query, values, (err, results) => {
-            if (err){
-                console.error("Une erreur est survenue", err);
-                return reject(err);
-            };
-            resolve(results);
-        });
-    });
-}
 
 router.post('/verifRegister', async (req, res) => {
+    // try/catch : used in case of failure for the database connection or bad request
     try{
         console.log("\nPage : /verifRegister");
         console.log("Variables de form : ", req.body);
@@ -35,6 +17,7 @@ router.post('/verifRegister', async (req, res) => {
             return res.redirect(301, '/homepage');
         };
 
+        // Vérification login unique
         const query = "SELECT ID FROM user WHERE BINARY login=?";
         const response = await queryPromise(query, [req.body.Login]);
                 // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
@@ -55,13 +38,14 @@ router.post('/verifRegister', async (req, res) => {
         req.session.gender = req.body.Gender;         //name of the input field
         req.session.fname = req.body.Firstname;       //name of the input field
         req.session.lname = req.body.Name;            //name of the input field
-        req.session.date_birth = req.body.Date_Birth; //name of the input field
+        req.session.date_birth = req.body.Date_birth; //name of the input field
         req.session.mail = req.body.Email;            //name of the input field
         req.session.login = req.body.Login;           //name of the input field
         req.session.pwd = req.body.Password;          //name of the input field
         req.session.code = code;
 
-        return res.redirect(301, '/verifRegisterEnterMailCode');
+        return res.redirect(301, '/send_registerMailCode');
+        //return res.redirect(301, '/verifRegisterEnterMailCode');
     }
     catch (err) {
         console.error("Erreur dans la route :", err);

@@ -41,19 +41,25 @@ app.use('/', homepageRouter);
 
 const loginRouter = require('./routes/login');
 app.use('/', loginRouter);
+const forgotPwdRouter = require('./routes/forgot_pwd');
+app.use('/', forgotPwdRouter);
+const checkLoginExistsRouter = require('./routes/checkLoginExists');
+app.use('/', checkLoginExistsRouter);
+const sendMailForgotPwdRouter = require('./routes/mails/send_mail_forgot_pwd');
+app.use('/', sendMailForgotPwdRouter);
 
-// TODO
-//const forgotPwdRouter = require('./routes/forgot_pwd');
-//app.use('/', forgotPwdRouter);
-
+// Paths for register
 const registerRouter = require('./routes/register');
 app.use('/', registerRouter);
-
 const verifRegisterRouter = require('./routes/verifRegister');
 app.use('/', verifRegisterRouter);
-
+const sendRegisterMailCodeRouter = require('./routes/mails/send_registerMailCode');
+app.use('/', sendRegisterMailCodeRouter);
 const verifRegisterEnterMailCodeRouter = require('./routes/verifRegisterEnterMailCode');
 app.use('/', verifRegisterEnterMailCodeRouter);
+//NEW
+const verifCodeRegisterAccountRouter = require('./routes/requests/verifCode_registerAccount');
+app.use('/', verifCodeRegisterAccountRouter);
 
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);

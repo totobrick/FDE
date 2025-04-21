@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
-const {isConnected} = require("./isConnected.js");
+const {isConnected} = require("./functions/functions.js");
 
 
 router.get('/personalAccount', (req, res) => {
