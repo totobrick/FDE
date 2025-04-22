@@ -136,7 +136,7 @@ app.get('/profile', (req, res) => {
         loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",
-                          account_menu : false,
+                          account_menu : true,
                           userConnected,
                           error_msg : ""
       });
