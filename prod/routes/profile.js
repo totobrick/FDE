@@ -4,7 +4,7 @@ const {isConnected} = require("./isConnected.js");
 
 //const isConnected = require('./isConnected.js');
 
-router.get('/profile', (req, res) => {
+router.get('/profile?user=', (req, res) => {
     console.log("\nPage : /index");
     console.log("Variables de session : ", req.session);
 //console.log("req.session.id : ", req.session.id);
@@ -16,7 +16,8 @@ router.get('/profile', (req, res) => {
   res.render("profile", { loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",
-                          account_menu : false
+                          account_menu : false,
+                          error_msg : ""
                         });
 });
 

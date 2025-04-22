@@ -12,7 +12,9 @@
 </head>
 <body>
     <div class="wrapper">
+        <%- include('partials/header') %>
         <main>
+            <%- include('account_icon_bar.html'); %>
             <h1>Profil de <%= user.login %></h1>
 
             <div class="profile-card">

@@ -120,22 +120,25 @@ db.connect((err) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.render('index', { loginBtn: "Se connecter",
-    path_loginBtn: "/login",
-    welcome_msg: "",
-    account_menu : true
-  });
-});
+  const userId = req.query.user;
 
-app.get('/profile/:id', (req, res) => {
-  const userId = req.params.id;
+  if (!userId) {
+      return res.redirect('/');
+  }
 
-  db.query('SELECT * FROM user WHERE id = ?', [userId], (err, results) => {
+  db.query('SELECT * FROM user WHERE ID = ?', [userId], (err, results) => {
       if (err || results.length === 0) {
           return res.redirect('/');
       }
 
       const user = results[0];
-      res.render('profile', { user });
+      res.render('profile', { user,
+        loginBtn: "Se connecter",
+                          path_loginBtn: "/login",
+                          welcome_msg: "",
+                          account_menu : false,
+                          userConnected,
+                          error_msg : ""
+      });
   });
 });
