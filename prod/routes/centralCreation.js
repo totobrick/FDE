@@ -1,5 +1,5 @@
 const express = require('express');
-const {isConnected} = require("./isConnected.js");
+const {isConnected} = require("./functions/functions.js");
 const router = express.Router();
 
 router.get('/centralCreation', (req, res) => {
