@@ -18,7 +18,7 @@ router.get('/login', (req, res) => {
   console.log("User not connected.");
   res.render("login", { loginBtn: "Se connecter",
                           path_loginBtn: "/login",
-                          error_msg});
+                          error_msg: error_msg});
 });
 
 module.exports = router;

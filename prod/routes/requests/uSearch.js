@@ -10,7 +10,6 @@ const connection = sql.createConnection({
 });
 
 router.post('/uSearch', (req, res) => {
-    console.log('BODY:', req); 
     const { username } = req.body;
 
     if (!username) {
@@ -23,7 +22,6 @@ router.post('/uSearch', (req, res) => {
             console.error('Database query error: ', err);
             return res.status(500).json({ error: "Une erreur s'est produite. Veuillez réessayer plus tard." });
         }
-
         if (results.length > 0) {
             return res.json(results); // ✅ renvoie les données au frontend
         } else {

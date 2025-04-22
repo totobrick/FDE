@@ -23,7 +23,8 @@ router.get('/index', (req, res) => {
                           path_loginBtn: "/login",
                           welcome_msg: "",
                           account_menu : false,
-                          userConnected
+                          userConnected,
+                          error_msg : error_msg
                         });
 });
 

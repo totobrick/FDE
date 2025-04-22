@@ -16,7 +16,8 @@ router.get('/homepage', (req, res) => {
                             path_loginBtn: "/logout",
                             welcome_msg: "Bienvenue " + req.session.login + ".",
                             account_menu : true, 
-                            userConnected});
+                            userConnected,
+                            error_msg: ""});
 });
 
 module.exports = router;
