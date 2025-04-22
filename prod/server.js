@@ -142,3 +142,27 @@ app.get('/profile', (req, res) => {
       });
   });
 });
+
+app.get('/object', (req, res) => {
+  const objID = req.query.obj;
+
+  if (!objID) {
+      return res.redirect('/');
+  }
+
+  db.query('SELECT * FROM connected_object WHERE ID = ?', [objID], (err, results) => {
+      if (err || results.length === 0) {
+          return res.redirect('/');
+      }
+
+      const obj = results[0];
+      res.render('object', { obj,
+                          loginBtn: "Se connecter",
+                          path_loginBtn: "/login",
+                          welcome_msg: "",
+                          account_menu : true,
+                          userConnected,
+                          error_msg : ""
+      });
+  });
+});
