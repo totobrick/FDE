@@ -5,6 +5,8 @@ const router = express.Router();
 
 
 router.post('/requests/verifLogin', (req, res) => {
+    console.log("\nPage : /verifLogin");
+
     // Create connection to database
     const connection = sql.createConnection({
         host: 'localhost',
@@ -17,21 +19,29 @@ router.post('/requests/verifLogin', (req, res) => {
     console.log("Formulaire login recu.");
     const login = req.body.login;   //name of the input field
     const pwd = req.body.password;  //name of the input field
-    console.log(`login: ${login},\npwd : ${pwd}.`);
 
-    const query_1 = "SELECT ID FROM user WHERE login=? AND password=?";
-    connection.query(query_1, [login, pwd], (err, response) => {
+    const query = "SELECT ID, isValidated FROM user WHERE login=? AND password=?";
+    connection.query(query, [login, pwd], (err, response) => {
         if (err){
             console.error("Une erreur est survenue", err);
         }
         console.log("Nb lignes : ", response.length);
         console.log("response", response);
 
+        // Un utilisateur trouvé dans la database
         if (response.length == 1){
-            console.log(`Bonjour ${login}, vous êtes connecté.`);
+            console.log("RESPONSE : ", response);
+            // Vérifie si le compte a été validé par le superAdministrateur
+            if (response[0].isValidated == 0){
+                req.session.error_msg = "Votre compte n'a pas encore été validé par l'Administrateur. Un peu de patience ...";
+                console.log(req.session.error_msg);
+                return res.redirect(301, '/');
+            }
+
+            // Variables de session utilisateur
             req.session.user_id = response[0].ID;
             req.session.login = login;
-            req.session.password = pwd;
+            //req.session.password = pwd;
             req.session.connection_time = Date.now();
             req.session.cache_buster = Date.now();
 
@@ -41,13 +51,6 @@ router.post('/requests/verifLogin', (req, res) => {
             }
             else{
                 console.log("LOGIN : variable de session existante.");
-            }
-            if (! req.session.password){
-                console.log("PASSWORD : Pas de variable de session.");
-                return;
-            }
-            else{
-                console.log("PASSWORD : variable de session existante.");
             }
             res.redirect(301, "/homepage");        // 301 : http status for permanent redirection
         }
