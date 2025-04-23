@@ -41,13 +41,14 @@ router.get('/personalAccount', (req, res) => {
             const password = response[0].password;
             const f_name = response[0].first_name;
             const l_name = response[0].last_name;
-            const date_birth = response[0].date_of_birth;
+            const date = response[0].date_of_birth;
+            const date_birth = date.toLocaleDateString();
             const mail = response[0].mail;
             const region = response[0].id_region;
             var profile_picture = response[0].profile_picture;
             const gender = response[0].gender;
             const job = response[0].job;
-            const admin = response[0].admin;
+            const isSuperAdmin = response[0].isSuperAdmin;
             const score = response[0].score;
 
             console.log(profile_picture)
@@ -79,6 +80,7 @@ router.get('/personalAccount', (req, res) => {
                                     password,
                                     f_name,
                                     l_name,
+                                    date_birth,
                                     mail,
                                     path_profile_picture,
                                     gender,
