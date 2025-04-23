@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 18 avr. 2025 à 21:45
--- Version du serveur : 9.1.0
--- Version de PHP : 8.3.14
+-- Généré le : mer. 23 avr. 2025 à 19:48
+-- Version du serveur : 8.3.0
+-- Version de PHP : 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `power_source` (
   `max_prod` int NOT NULL,
   `min_prod` int DEFAULT '0',
   PRIMARY KEY (`ID_object`)
-) ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `power_source`
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `production` (
   `production` int DEFAULT NULL,
   `quantity` int DEFAULT NULL,
   PRIMARY KEY (`ID_power_source`,`date_prod`)
-) ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `production`
@@ -2535,18 +2535,35 @@ DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `admin_id` int,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `name` (`name`),
+  FOREIGN KEY (`admin_id`) REFERENCES user(`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `region`
 --
 
-INSERT INTO `region` (`ID`, `name`) VALUES
-(1, 'IDF'),
-(2, 'Nord'),
-(3, 'PACA');
+INSERT INTO `region` (`ID`, `name`, `admin_id`) VALUES
+(1, 'Auvergne-Rhône-Alpes', 1),
+(2, 'Bourgogne-Franche-Comté', 1),
+(3, 'Bretagne', 1),
+(4, 'Centre-Val de Loire', 1),
+(5, 'Corse', 1),
+(6, 'Grand Est', 1),
+(7, 'Guadeloupe', 1),
+(8, 'Guyane', 1),
+(9, 'Hauts-de-France', 1),
+(10, 'Ile-de-France', 1),
+(11, 'La Réunion', 1),
+(12, 'Martinique', 1),
+(13, 'Mayotte', 1),
+(14, 'Normandie', 1),
+(15, 'Nouvelle-Aquitaine', 1),
+(16, 'Occitanie', 1),
+(17, 'Pays de la Loire', 1),
+(18, "Provence-Alpes-Côte d'Azur", 1);
 
 -- --------------------------------------------------------
 
@@ -2567,7 +2584,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `profile_picture` varchar(255) DEFAULT '',
   `gender` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `job` varchar(255) DEFAULT NULL,
-  `admin` varchar(255) DEFAULT 'no',
+  `isSuperAdmin` BOOLEAN DEFAULT '0',
+  `isValidated` BOOLEAN DEFAULT '0',
   `score` int DEFAULT '0',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `login` (`login`),
@@ -2579,10 +2597,10 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`ID`, `login`, `password`, `first_name`, `last_name`, `date_of_birth`, `mail`, `id_region`, `profile_picture`, `gender`, `job`, `admin`, `score`) VALUES
-(1, 'Toto', 'a', 'Thomas', 'toto', '2000-01-29', 'totovadordlp@gmail.com', 1, '', 'Monsieur', 'JSP', 'yes', 0),
-(2, 'david_guetta', 'MDPdg', 'David', 'Guetta', '1967-11-07', 'david.guetta@gmail.com', 2, 'Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', 'no', 0),
-(3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 'no', 0);
+INSERT INTO `user` (`ID`, `login`, `password`, `first_name`, `last_name`, `date_of_birth`, `mail`, `id_region`, `profile_picture`, `gender`, `job`, `isSuperAdmin`, `isValidated`, `score`) VALUES
+(1, 'Toto', 'a', 'Thomas', 'toto', '2000-01-29', 'totovadordlp@gmail.com', 1, '', 'Monsieur', 'JSP', 1, 1, 0),
+(2, 'david_guetta', 'MDPdg', 'David', 'Guetta', '1967-11-07', 'david.guetta@gmail.com', 2, 'Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', 0, 1, 0),
+(3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 0, 1, 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
