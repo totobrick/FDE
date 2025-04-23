@@ -37,13 +37,9 @@ router.post('/verifCode_registerAccount', async (req, res) => {
         // Check si le code entré est correct
         if (user_code == code){
             // Code correct
+
             // Suppresion des variables de session
-            delete req.session.gender;
-            delete req.session.fname;
-            delete req.session.lname;
-            delete req.session.date_birth;
-            delete req.session.mail;
-            delete req.session.login;
+            // (les autres seront supprimés dans send_mail_verifAdmin.js)
             delete req.session.pwd;
             delete req.session.code;
 
@@ -65,12 +61,14 @@ router.post('/verifCode_registerAccount', async (req, res) => {
             // Insertion de l'utilisateur
             const query_2 = "INSERT INTO user (login, password, first_name, last_name, date_of_birth, mail, gender) VALUES (?,?,?,?,?,?,?)";
             const response_2 = await queryPromise(query_2, [user_login, user_pwd, user_fname, user_lname, user_date, user_mail, user_gender]);
-                    // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
+                    // await :  -> attend la fin de l'execution de la fct pour passer a la suite
                     //          -> fonctionne avec async
             
-            req.session.error_msg = "Votre compte a été créé avec succès !";
+            req.session.error_msg = "Votre compte a été créé avec succès ! Veuillez attendre que l'Administrateur vous accepte.";
             console.log(req.session.error_msg);
-            return res.redirect(301, '/');
+            // Envoi du mail au superAdmin pour qu'il valide le compte
+            // En attendant le compte est enregistré mais l'utilisateur ne peut pas se connecter.
+            return res.redirect(301, '/send_mail_verifAdmin');
         }
         else {
             req.session.error_msg = "Code entré incorrect.";

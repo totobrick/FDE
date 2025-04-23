@@ -61,9 +61,11 @@ const sendRegisterMailCodeRouter = require('./routes/mails/send_registerMailCode
 app.use('/', sendRegisterMailCodeRouter);
 const verifRegisterEnterMailCodeRouter = require('./routes/verifRegisterEnterMailCode');
 app.use('/', verifRegisterEnterMailCodeRouter);
-//NEW
 const verifCodeRegisterAccountRouter = require('./routes/requests/verifCode_registerAccount');
 app.use('/', verifCodeRegisterAccountRouter);
+// Used for admin verification account
+const sendMailVerifAdminRouter = require('./routes/mails/send_mail_verifAdmin');
+app.use('/', sendMailVerifAdminRouter);
 
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
@@ -120,49 +122,22 @@ db.connect((err) => {
 });
 
 app.get('/profile', (req, res) => {
-  const userId = req.query.user;
+  res.render('index', { loginBtn: "Se connecter",
+    path_loginBtn: "/login",
+    welcome_msg: "",
+    account_menu : true
+  });
+});
 
-  if (!userId) {
-      return res.redirect('/');
-  }
+app.get('/profile/:id', (req, res) => {
+  const userId = req.params.id;
 
-  db.query('SELECT * FROM user WHERE ID = ?', [userId], (err, results) => {
+  db.query('SELECT * FROM user WHERE id = ?', [userId], (err, results) => {
       if (err || results.length === 0) {
           return res.redirect('/');
       }
 
       const user = results[0];
-      res.render('profile', { user,
-        loginBtn: "Se connecter",
-                          path_loginBtn: "/login",
-                          welcome_msg: "",
-                          account_menu : true,
-                          userConnected,
-                          error_msg : ""
-      });
-  });
-});
-
-app.get('/object', (req, res) => {
-  const objID = req.query.obj;
-
-  if (!objID) {
-      return res.redirect('/');
-  }
-
-  db.query('SELECT * FROM connected_object WHERE ID = ?', [objID], (err, results) => {
-      if (err || results.length === 0) {
-          return res.redirect('/');
-      }
-
-      const obj = results[0];
-      res.render('object', { obj,
-                          loginBtn: "Se connecter",
-                          path_loginBtn: "/login",
-                          welcome_msg: "",
-                          account_menu : true,
-                          userConnected,
-                          error_msg : ""
-      });
+      res.render('profile', { user });
   });
 });
