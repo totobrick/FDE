@@ -25,7 +25,7 @@
                             <form action="/register_modification_account" method="POST"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
                                 <div class="input-box">
                                     <div>Points</div>
-                                    <div class="info-field"><%= score %></div>
+                                    <div class="info-field" id="score"><%= score %></div>
                                 </div>
                                 <div class="input-box" id="gender">
                                     <label for="Gender">Genre</label>
@@ -60,9 +60,11 @@
                                     <label for="Name">Nom</label>
                                     <input type="text" name="Name" id="Name" class="input-field" value="<%= l_name %>">
                                 </div>
-                                <div>Date de naissance</div>
-                                <div class="info-field">
-                                    <%= date_birth %>
+                                <div class="input-box">
+                                    <div>Date de naissance</div>
+                                    <div class="info-field">
+                                        <%= date_birth %>
+                                    </div>
                                 </div>
                                 <div class="input-box">
                                     <label for="Email">Email</label>

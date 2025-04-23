@@ -300,7 +300,7 @@ header{
     transition: .3s ease;
 }
 
-.info-field{
+.info-field#score{
     justify-content : center;       /*center horizontally*/
     color: rgb(0, 220, 0);
     font-weight: bold;
