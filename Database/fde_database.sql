@@ -2580,7 +2580,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_name` varchar(100) NOT NULL,
   `date_of_birth` date NOT NULL,
   `mail` varchar(100) DEFAULT NULL,
-  `id_region` int DEFAULT NULL,
+  `id_region` int NOT NULL,
   `profile_picture` varchar(255) DEFAULT '',
   `gender` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `job` varchar(255) DEFAULT NULL,
@@ -2600,7 +2600,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`ID`, `login`, `password`, `first_name`, `last_name`, `date_of_birth`, `mail`, `id_region`, `profile_picture`, `gender`, `job`, `isSuperAdmin`, `isValidated`, `score`) VALUES
 (1, 'Toto', 'a', 'Thomas', 'toto', '2000-01-29', 'totovadordlp@gmail.com', 1, '', 'Monsieur', 'JSP', 1, 1, 0),
 (2, 'david_guetta', 'MDPdg', 'David', 'Guetta', '1967-11-07', 'david.guetta@gmail.com', 2, 'Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', 0, 1, 0),
-(3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 0, 1, 0);
+(3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 0, 1, 0),
+(4, 'HoHo', 'a', 'Santa', 'Claus', '1955-12-25', 'totovadordlp@gmail.com', NULL, '', 'Monsieur', NULL, 0, 0, 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
