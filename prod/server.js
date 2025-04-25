@@ -67,6 +67,10 @@ app.use('/', verifCodeRegisterAccountRouter);
 const sendMailVerifAdminRouter = require('./routes/mails/send_mail_verifAdmin');
 app.use('/', sendMailVerifAdminRouter);
 
+// Admin page
+const adminRouter = require('./routes/admin');
+app.use('/', adminRouter);
+
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
 
