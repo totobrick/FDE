@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="-10 -10 120 120" width="500" height="500" style="box-sizing: border-box;"><!--viewBox = "min-x min-y width height"-->
-    <path fill="transparent"
-        stroke="black"
-        stroke-opacity="0.7"
-        stroke-width="10"
-        stroke-linejoin="round"
-        stroke-linecap="round"
-        d="M58,59 a 25,25 0 1 1 1,-1 l-1,1 l25,25 l-25,-25 Z"/><!--fill="rgb(150,150,150)"-->
-</svg>

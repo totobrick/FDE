@@ -1,3 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 100" width="500" height="500" style="box-sizing: border-box;"><!--viewBox = "min-x min-y width height"-->
-    <path fill="rgb(150,150,150)" stroke="black" stroke-opacity="0.5" stroke-width="8" stroke-linejoin="round" d="M20,20 l60,30 l-60,30 v-20 l20,-10 l-20,-10 v-20 Z"/>
-</svg>

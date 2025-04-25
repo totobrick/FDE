@@ -342,7 +342,7 @@ app.post('/register_modification_account', async (req, res) => {
             
             // Login incorrect : it exists in database
             if (response_0.length > 0){
-                req.session.error_msg = "Le login " + new_login + " est déjà pris par un autre utilisateur !"
+                req.session.error_msg = "Le login " + new_login + " est déjà pris par un autre utilisateur !";
                 console.log(req.session.error_msg);
                 return res.redirect(301, '/personal-account');  // 301 : http status for permanent redirection
             }
@@ -399,5 +399,3 @@ app.get('/logout', (req, res) => {
         res.redirect(301, '/');     // 301 : http status for permanent redirection
     });
 });
-
-

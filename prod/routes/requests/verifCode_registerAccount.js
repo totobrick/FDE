@@ -19,15 +19,18 @@ router.post('/verifCode_registerAccount', async (req, res) => {
         const user_lname = req.session.lname;
         const user_date = req.session.date_birth;
         const user_mail = req.session.mail;
+        const user_region = req.session.region;
         const user_login = req.session.login;
         const user_pwd = req.session.pwd;
         const user_code = req.body.Code;
         const code = req.session.code;
 
+        // Affichage console
         console.log("user_gender = " + user_gender);
         console.log("user_fname = " + user_fname);
         console.log("user_lname = " + user_lname);
         console.log("user_date = " + user_date);
+        console.log("user_region = " + user_region);
         console.log("user_mail = " + user_mail);
         console.log("user_login = " + user_login);
         console.log("user_pwd = " + user_pwd);
@@ -59,8 +62,8 @@ router.post('/verifCode_registerAccount', async (req, res) => {
             }
 
             // Insertion de l'utilisateur
-            const query_2 = "INSERT INTO user (login, password, first_name, last_name, date_of_birth, mail, gender) VALUES (?,?,?,?,?,?,?)";
-            const response_2 = await queryPromise(query_2, [user_login, user_pwd, user_fname, user_lname, user_date, user_mail, user_gender]);
+            const query_2 = "INSERT INTO user (login, password, first_name, last_name, date_of_birth, mail, id_region, gender) VALUES (?,?,?,?,?,?,?,?)";
+            await queryPromise(query_2, [user_login, user_pwd, user_fname, user_lname, user_date, user_mail, user_region, user_gender]);
                     // await :  -> attend la fin de l'execution de la fct pour passer a la suite
                     //          -> fonctionne avec async
             
