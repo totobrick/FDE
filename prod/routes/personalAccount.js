@@ -1,40 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
-const {isConnected} = require("./functions/functions.js");
+const {isConnected, queryPromise} = require("./functions/functions.js");
 
 
-router.get('/personalAccount', (req, res) => {
-    console.log("\nPage : /personalAccount");
-    console.log("Variables de session : ", req.session);
-//console.log("req.session.id : ", req.session.id);
+router.get('/personalAccount', async (req, res) => {
+    // try/catch : used in case of failure for the database connection or bad request
+    try{
+        console.log("\nPage : /personalAccount");
+        console.log("Variables de session : ", req.session);
 
-    // Check user is connected
-    if(! isConnected(req)){
-        console.log("User not connected, redirection to : /index");
-        return res.redirect('/index');
-    };
-    console.log("User connected.");
+        // Check user is connected
+        if(! isConnected(req)){
+            console.log("User not connected, redirection to : /index");
+            return res.redirect('/index');
+        };
+        console.log("User connected.");
 
-    // Connection to database
-    const connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'fde_database'
-    });
+        // Get error_msg in session var and delete session var content
+        const error_msg = req.session.error_msg;
+        delete req.session.error_msg;
 
-    // Get error_msg in session var and delete session var content
-    const error_msg = req.session.error_msg;
-    delete req.session.error_msg;
+        // Get all user datas and show it int the page
+        const query = "SELECT * FROM user WHERE ID=?";
+        const response = await queryPromise(query, [req.session.user_id]);
+            // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
+            //          -> fonctionne avec async
 
-    // Get all user datas and show it int the page
-    const query = "SELECT * FROM user WHERE ID=?";
-    connection.query(query, [req.session.user_id], (err, response) => {
-        if (err){
-            console.error("Une erreur est survenue", err);
-            return;
-        }
         if (response.length == 1){
             const user_id = response[0].ID;
             const login = response[0].login;
@@ -44,23 +36,30 @@ router.get('/personalAccount', (req, res) => {
             const date = response[0].date_of_birth;
             const date_birth = date.toLocaleDateString();
             const mail = response[0].mail;
-            const region = response[0].id_region;
+            const region_id = response[0].id_region;
             var profile_picture = response[0].profile_picture;
             const gender = response[0].gender;
             const job = response[0].job;
             const isSuperAdmin = response[0].isSuperAdmin;
             const score = response[0].score;
 
-            console.log(profile_picture)
+            // Récupération du nom de région
+            const query_2 = "SELECT name FROM region WHERE ID=?";
+            const response_2 = await queryPromise(query_2, [region_id]);
+                // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
+                //          -> fonctionne avec async
 
-            //var path_profile_picture = path.join(profile_picture);
-            /*if (fs.existsSync(path_profile_picture)) {
-                console.log("Le fichier " + path_profile_picture + " existe.");
+            if (response_2.length != 1){
+                req.session.error_msg = "Un problème a été rencontré dans l'accès à votre région de rattachement !";
+                console.log("Table region : aucune ou plusieurs régions possédent l'id : ", region_id);
+                console.log(req.session.error_msg);
+                return res.redirect(301, '/homepage');
             }
-            else{
-                console.log("Le fichier " + path_profile_picture + " n'existe pas.");
-                path_profile_picture = path.join(__dirname, "Logos/profile_picture.svg");      //TO COMPLETE the path
-            }*/
+            const region = response_2[0].name;
+            console.log("region : ", region);
+
+
+            // Photo de profil (ou image par défaut si non existante)
             console.log("profile_picture : ", profile_picture);
             if( profile_picture === ""){
                 profile_picture = "Logos/profile_picture.svg";
@@ -76,6 +75,8 @@ router.get('/personalAccount', (req, res) => {
                                     error_msg,
 
                                     score,
+                                    region,
+                                    gender,
                                     login,
                                     password,
                                     f_name,
@@ -83,7 +84,6 @@ router.get('/personalAccount', (req, res) => {
                                     date_birth,
                                     mail,
                                     path_profile_picture,
-                                    gender,
                                     job
                                 });
 
@@ -98,7 +98,11 @@ router.get('/personalAccount', (req, res) => {
             console.error("reponse : " + response);
             return;
         }
-    });
+    }
+    catch (err) {
+        console.error("Erreur dans la route :", err);
+        res.status(500).send("Erreur serveur");
+    }
 });
 
 module.exports = router;
