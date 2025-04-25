@@ -12,6 +12,7 @@ router.get('/send_mail_verifAdmin', (req, res) => {
     const user_lname = req.session.lname;
     const user_date_birth = req.session.date_birth;
     const user_mail = req.session.mail;
+    const user_region = req.session.region;
     const user_login = req.session.login;
 
     // Suppresion des variables de session
@@ -19,6 +20,7 @@ router.get('/send_mail_verifAdmin', (req, res) => {
     delete req.session.fname;
     delete req.session.lname;
     delete req.session.date_birth;
+    delete req.session.region;
     delete req.session.mail;
     delete req.session.login;
 
@@ -41,6 +43,7 @@ router.get('/send_mail_verifAdmin', (req, res) => {
             .replace('{Prenom_utilisateur}', user_fname)
             .replace('{Nom_utilisateur}', user_lname)
             .replace('{Naissance_utilisateur}', user_date_birth)
+            .replace('{Region_utilisateur}', user_region)
             .replace('{Genre_utilisateur}', user_gender)
             .replace('{Mail_utilisateur}', user_mail);
 
@@ -51,6 +54,7 @@ router.get('/send_mail_verifAdmin', (req, res) => {
             Prénom : ${user_fname}
             Nom : ${user_lname}
             Date de naissance : ${user_date_birth}
+            Région de rattachement : ${user_region}
             Genre : ${user_gender}
             Adresse mail : ${user_mail}
         `;

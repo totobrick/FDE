@@ -60,7 +60,7 @@ router.get('/send_registerMailCode', (req, res) => {
         });
     }
     catch(err){
-        console.error("Erreur dans a l'envoi de l'email :", err);
+        console.error("Erreur lors de l'envoi de l'email :", err);
         req.session.error_msg = "Erreur : une erreur est survenue lors de l'envoi de l'email. Le mail n'a pas été envoyé.";
         return res.redirect(301, '/');
     }
