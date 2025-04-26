@@ -26,7 +26,7 @@ router.post('/requests/verifLogin', async (req, res) => {
             if (response[0].isValidated == 0){
                 req.session.error_msg = "Votre compte n'a pas encore été validé par l'Administrateur. Un peu de patience ...";
                 console.log(req.session.error_msg);
-                return res.redirect(301, '/');
+                return res.redirect(301, '/login');
             }
 
             // Enregistre si l'utilisateur est un superAdmin
