@@ -6,18 +6,23 @@ router.get('/homepage', (req, res) => {
     console.log("\nPage : /homepage");
   console.log("Variables de session : ", req.session);
   userConnected = isConnected(req);
-//console.log("req.session.id : ", req.session.id);
+
     if(!userConnected){
         console.log("User not connected, redirection to : /index");
         return res.redirect('/index');
     };
     console.log("User connected.");
+
+    // Get error_msg in session var and delete session var content
+    const error_msg = req.session.error_msg;
+    delete req.session.error_msg;
+
     res.render("index", { loginBtn: "Se déconnecter",
                             path_loginBtn: "/logout",
                             welcome_msg: "Bienvenue " + req.session.login + ".",
                             account_menu : true, 
                             userConnected,
-                            error_msg: ""});
+                            error_msg});
 });
 
 module.exports = router;

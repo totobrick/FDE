@@ -1,12 +1,23 @@
 const sql = require('mysql2');
 
 function isConnected(req){
-  console.log("Fonction isConnected.");
-  console.log("Variables de session : ", req.session);
-//console.log("req.session.id : ", req.session.id);
+  /*console.log("Fonction isConnected.");
+  console.log("Variables de session : ", req.session);*/
+
   // if user_id session var exists
   if (req.session.user_id){
-    console.log("req.session.user_id = " + req.session.user_id);
+    console.log("req.session.user_id = ", req.session.user_id);
+    return true;
+  }
+  else{
+    return false;
+  }
+};
+
+function isSuperAdmin(req){
+  // if isSuperAdmin session var exists
+  if (req.session.isSuperAdmin && req.session.isSuperAdmin=="1"){
+    console.log("req.session.isSuperAdmin = ", req.session.isSuperAdmin);
     return true;
   }
   else{
@@ -35,4 +46,4 @@ function queryPromise(sql_query, values){
     });
 }
 
-module.exports = {isConnected, queryPromise};
+module.exports = {isConnected, isSuperAdmin, queryPromise};

@@ -25,7 +25,11 @@
                             <form action="/register_modification_account" method="POST"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
                                 <div class="input-box">
                                     <div>Points</div>
-                                    <div class="info-field"><%= score %></div>
+                                    <div class="info-field" id="score"><%= score %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Ma région</div>
+                                    <div class="info-field"><%= region %></div>
                                 </div>
                                 <div class="input-box" id="gender">
                                     <label for="Gender">Genre</label>
@@ -59,6 +63,12 @@
                                 <div class="input-box">
                                     <label for="Name">Nom</label>
                                     <input type="text" name="Name" id="Name" class="input-field" value="<%= l_name %>">
+                                </div>
+                                <div class="input-box">
+                                    <div>Date de naissance</div>
+                                    <div class="info-field">
+                                        <%= date_birth %>
+                                    </div>
                                 </div>
                                 <div class="input-box">
                                     <label for="Email">Email</label>
@@ -103,13 +113,13 @@
             if (img.height >= img.width){
                 img_container.classList.remove("horizontal-img");
                 img_container.classList.add("vertical-img");
-                alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg verticale.");
+                //alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg verticale.");
             }
             // image horizontale
             else {
                 img_container.classList.remove("vertical-img");
                 img_container.classList.add("horizontal-img");
-                alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg horizontale.");
+                //alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg horizontale.");
             }
         }
     </script>

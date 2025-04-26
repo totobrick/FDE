@@ -38,6 +38,7 @@ router.post('/verifRegister', async (req, res) => {
         req.session.gender = req.body.Gender;         //name of the input field
         req.session.fname = req.body.Firstname;       //name of the input field
         req.session.lname = req.body.Name;            //name of the input field
+        req.session.region = req.body.Region;         //name of the input field
         req.session.date_birth = req.body.Date_birth; //name of the input field
         req.session.mail = req.body.Email;            //name of the input field
         req.session.login = req.body.Login;           //name of the input field
