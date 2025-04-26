@@ -1,24 +1,43 @@
 const express = require('express');
 const router = express.Router();
-const {isConnected} = require("./isConnected.js");
+const sql = require('mysql2');
+const {isConnected} = require("./functions/functions.js");
 
-//const isConnected = require('./isConnected.js');
+const db = sql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'fde_database',
+});
 
-router.get('/profile?user=', (req, res) => {
-    console.log("\nPage : /index");
-    console.log("Variables de session : ", req.session);
-//console.log("req.session.id : ", req.session.id);
+router.get('/profile', (req, res) => {
+  const userId = req.query.user;
+
+  if (!userId) {
+      return res.redirect('/');
+  }
+
   if(isConnected(req)){
     console.log("User connected, redirection to : /homepage");
     return res.redirect(301, '/homepage');
   };
   console.log("User not connnected.");
-  res.render("profile", { loginBtn: "Se connecter",
+
+  db.query('SELECT * FROM user WHERE ID = ?', [userId], (err, results) => {
+      if (err || results.length === 0) {
+          return res.redirect('/');
+      }
+
+      const user = results[0];
+      res.render('profile', { user,
+        loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",
-                          account_menu : false,
+                          account_menu : true,
+                          userConnected,
                           error_msg : ""
-                        });
+      });
+  });
 });
 
 module.exports = router;
