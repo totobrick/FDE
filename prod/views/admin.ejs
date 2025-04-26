@@ -22,7 +22,7 @@
                     
                     <div class="form_search">
                         <div class="top">
-                            <header>Liste de tous les profils</header>
+                            <header>Comptes en attente de validation</header>
                             <div class="error_msg" id="error_msg">
                                 <% if (error_msg != ""){ %>
                                     <%= error_msg %>
@@ -44,44 +44,43 @@
                     </div>
 
                     <div class="profiles-list">
+                        <% if(typeof user_list !== 'undefined'){ %>
+                            <% for (var i=0 ; i < user_list.length ; i++){ %>
+                                <div class='profile-box'>
+                                    <div class='profile-container'>
+                                        <div class='profile-pseudo'><%= user_list[i].login %></div>
+                                        <div class='profile-infos'>
+                                            <table class='profile-table'>
+                                                <tr>
+                                                    <td class='col1'>ID&ensp;: </td>
+                                                    <td class='col2'><%= user_list[i].ID %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='col1'>Prénom&ensp;: </td>
+                                                    <td class='col2'><%= user_list[i].first_name %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='col1'>Nom&ensp;: </td>
+                                                    <td class='col2'><%= user_list[i].last_name %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='col1'>Genre&ensp;: </td>
+                                                    <td class='col2'><%= user_list[i].gender %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='col1'>Mail&ensp;: </td>
+                                                    <td class='col2'><%= user_list[i].mail %></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% } %>
+
+
+                        <!--
                         <?php
-                            // Connexion à la base de données
-                            $servername = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $database = "cy_love_database";
-
-                            try {
-                                $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-                                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                                if(isset($_GET['keyword'])) {
-                                    // Récupération du mot-clé de recherche
-                                    $keyword = $_GET['keyword'];
-                                    // Recherche profils correspondant à la recherche (on recherche dans pseudo, nom, prénom ...)
-                                    $sql = "SELECT * FROM user_info WHERE Genre LIKE :keyword
-                                                OR Preference LIKE :keyword
-                                                OR Pseudo LIKE :keyword
-                                                OR Profession LIKE :keyword
-                                                OR Nom LIKE :keyword
-                                                OR Prénom LIKE :keyword
-                                                OR Email LIKE :keyword
-                                                OR ID LIKE :keyword"; //LIKE permet de comparer la présence de caractères ou chaines de caractères
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->bindValue(':keyword', "%$keyword%", PDO::PARAM_STR);
-                                    $stmt->execute();
-                                    // array with all infos of all users
-                                    $array_info_account = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                }
-                                else {
-                                    // Requête SQL pour récupérer les profils (et infos liées)
-                                    $query = "SELECT * FROM user_info ORDER BY ID ASC"; //LIMIT 40
-                                    $stmt = $conn->prepare($query);
-                                    $stmt->execute();
-                                    // array with all infos of all users
-                                    $array_info_account = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                }
-
                                 // Vérifier s'il y a des résultats
                                 for ($i=0; $i<count($array_info_account); $i++) {
                                     // Affichage des profils
@@ -197,6 +196,7 @@
                                 echo "<p>Erreur de connexion à la base de données: " . htmlspecialchars($e->getMessage()) . "</p>";
                             }
                         ?>
+                        -->
                     </div>
                 </div>
             </div>
