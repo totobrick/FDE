@@ -73,6 +73,18 @@
                                                 </tr>
                                             </table>
                                         </div>
+                                        <form action='/admin_validateAccount' method='post'>
+                                            <input type='hidden' name='id_user_validate' value='<%= user_list[i].ID %>'>
+                                            <button type='submit' class='validate_account btn'>
+                                                <span>Valider le compte</span>
+                                                <div class="green_check">
+                                                    <div class="green_check_contain">
+                                                        <div class="bar1"></div>
+                                                        <div class="bar2"></div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             <% } %>
