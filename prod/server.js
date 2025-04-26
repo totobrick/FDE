@@ -70,7 +70,10 @@ app.use('/', sendMailVerifAdminRouter);
 // Admin page
 const adminRouter = require('./routes/admin');
 app.use('/', adminRouter);
+const adminValidateAccountRouter = require('./routes/requests/admin_validateAccount');
+app.use('/', adminValidateAccountRouter);
 
+// Personal account page
 const personalAccountRouter = require('./routes/personalAccount');
 app.use('/', personalAccountRouter);
 
