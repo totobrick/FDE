@@ -11,30 +11,31 @@ const db = sql.createConnection({
 });
 
 router.get('/profile', (req, res) => {
+  console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
   const userId = req.query.user;
 
   if (!userId) {
       return res.redirect('/');
   }
 
-  if(isConnected(req)){
-    console.log("User connected, redirection to : /homepage");
+  if(!isConnected(req)){
+    console.log("User not connected, redirection to : /homepage");
     return res.redirect(301, '/homepage');
   };
-  console.log("User not connnected.");
 
   db.query('SELECT * FROM user WHERE ID = ?', [userId], (err, results) => {
       if (err || results.length === 0) {
+        console.log("ERROR")
           return res.redirect('/');
       }
-
+      console.log("IT WENT WELL")
       const user = results[0];
       res.render('profile', { user,
         loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",
                           account_menu : true,
-                          userConnected,
+                          userConnected: true,
                           error_msg : ""
       });
   });
