@@ -12,15 +12,24 @@
         <%- include('partials/header') %>
         <main>
             <%- include('account_icon_bar.html'); %>
-            <form id="searchForm">
-                <input type="text" id="username" placeholder="Nom d'utilisateur">
-                <button type="submit">Rechercher</button>
-            </form>
-            
-            <div id="users">
-                Hello
+
+            <div class="form-box">
+                <div class="login-container">
+                    <form id="searchForm">
+                        <div class="input-box">
+                            <label for="username">Login de l'utilisateur</label>
+                            <input type="text" id="username" placeholder="Nom d'utilisateur" class="input-field">
+                        </div>
+                        <div class="input-box">
+                            <input type="submit" class="submit" value="Rechercher">
+                        </div>
+                    </form>
+                    <div id="users">
+                        Results...
+                    </div>
+                </div>
             </div>
-            
+
             <script>
                 document.getElementById('searchForm').addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -44,6 +53,7 @@
                                 div.classList.add('result-user');
                                 div.innerHTML = `<h3><a href="/profile?user=${user.ID}">${user.login}</a></h3>`;
                                 container.appendChild(div);
+                                container.appendChild(document.createElement('br'))
                             });
                         } else {
                             container.innerHTML = `<p>${data.error}</p>`;
