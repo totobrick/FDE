@@ -1,43 +1,65 @@
 const express = require('express');
 const router = express.Router();
+const {isConnected, queryPromise} = require("./../functions/functions.js");
 
 router.get('/registerModificationAccount', (req, res) => {
-    /*try{
-        const user_ID = req.session.user_id;
-        console.log("ID : " + user_ID);
-        console.log('POST parameter received are: ',req.body);
+    console.log("\nPage : /registerModificationAccount");
+    req.session.error_msg = "Accès refusé.";
+    console.log(req.session.error_msg);
+    console.log("isConnected(req) : ", isConnected(req));
 
-        const new_gender = req.body.Gender;
-        const new_login = req.body.Login;
-        const new_pwd = req.body.Password;
-        const new_fname = req.body.Firstname;
-        const new_lname = req.body.Name;
-        const new_mail = req.body.Email ;
-        const new_PP = req.body.Profile_picture;
-        const new_job = req.body.Job;
+    if (isConnected(req)){
+        return res.redirect(301, '/homepage');
+    }
+    return res.redirect(301, '/');
+});
 
-        // Show infos in console
-        console.log("***** NEW INFOS *****");
-        console.log("new_gender = " + new_gender);
-        console.log("new_login = " + new_login);
-        console.log("new_pwd = " + new_pwd);
-        console.log("new_fname = " + new_fname);
-        console.log("new_lname = " + new_lname);
-        console.log("new_mail = " + new_mail);
-        console.log("new_PP = " + new_PP);
-        console.log("new_job = " + new_job);
+router.post('/registerModificationAccount', async (req, res) => {
+    console.log("\nPage : /registerModificationAccount");
 
-        
+    const user_ID = req.session.user_id;
+    console.log("ID : " + user_ID);
+    console.log('POST parameter received are: ', req.body);
+
+    // if form not submitted
+    if (! req.body ){
+        return res.redirect(301, "/personalAccount");
+    }
+    
+    const new_gender = req.body.Gender;
+    const new_login = req.body.Login;
+    const new_pwd = req.body.Password;
+    const new_fname = req.body.Firstname;
+    const new_lname = req.body.Name;
+    const new_mail = req.body.Email ;
+    const new_PP = req.body.Profile_picture;
+    const new_job = req.body.Job;
+
+    // Show infos in console
+    console.log("***** NEW INFOS *****");
+    console.log("new_gender = " + new_gender);
+    console.log("new_login = " + new_login);
+    console.log("new_pwd = " + new_pwd);
+    console.log("new_fname = " + new_fname);
+    console.log("new_lname = " + new_lname);
+    console.log("new_mail = " + new_mail);
+    console.log("new_PP = " + new_PP);
+    console.log("new_job = " + new_job);
+
+    console.log("TEST 01");
+    try{
+        console.log("TEST 02");
         const query = "SELECT * FROM user WHERE ID=? ";
         const response = await queryPromise(query, [user_ID]);
             // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
             //          -> fonctionne avec async
 
+        console.log("TEST 03");
         // ERROR case
         if (response.length > 1){
             var err_msg = "ERREUR : plusieurs utilisateurs avec le meme ID ont ete trouves dans la table user.";
             console.error(err_msg);
-            console.error("reponse : " + response);
+            console.error("reponse : ", response);
             req.session.error_msg = err_msg;
             return;
         }
@@ -45,11 +67,12 @@ router.get('/registerModificationAccount', (req, res) => {
         else if (response.length == 0) {
             var err_msg = "ERREUR : aucun utilisateur trouvé dans la table user.";
             console.error(err_msg);
-            console.error("reponse : " + response);
+            console.error("reponse : ", response);
             req.session.error_msg = err_msg;
             return;
         }
-        
+
+        console.log("TEST 04");
         // Check if mail has changed
         console.log("response : ", response);
         console.log("response[0] : ", response[0]);
@@ -73,9 +96,9 @@ router.get('/registerModificationAccount', (req, res) => {
             
             // Login incorrect : it exists in database
             if (response_0.length > 0){
-                req.session.error_msg = "Le login " + new_login + " est déjà pris par un autre utilisateur !"
+                req.session.error_msg = "Le login " + new_login + " est déjà pris par un autre utilisateur !";
                 console.log(req.session.error_msg);
-                return res.redirect(301, '/personal-account');  // 301 : http status for permanent redirection
+                return res.redirect(301, '/personalAccount');  // 301 : http status for permanent redirection
             }
 
             // Login is valid
@@ -103,7 +126,7 @@ router.get('/registerModificationAccount', (req, res) => {
             //          -> fonctionne avec async
         console.log("response_2 : ", response_2);
         console.log("Infos mises à jour avec succès !");
-        res.redirect(301, '/personal-account');     // 301 : http status for permanent redirection
+        res.redirect(301, '/personalAccount');     // 301 : http status for permanent redirection
         
         // process.nextTick : DOES NOT WORK
         //  -> delete req.session.error_msg after last command
@@ -112,12 +135,11 @@ router.get('/registerModificationAccount', (req, res) => {
         process.nextTick(() => {
             delete req.session.error_msg;
         });*/
-    /*}
+    }
     catch (err) {
         console.error("Erreur dans la route :", err);
         res.status(500).send("Erreur serveur");
-    }*/
-
+    }
 });
 
 
