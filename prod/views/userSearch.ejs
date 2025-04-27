@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image" href="Logos/logo_FDE.svg">
     <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/style4.css">
+    <link rel="stylesheet" href="css/style5_admin.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FDE : Mes informations</title>
 </head>
@@ -50,10 +52,26 @@
                         if (Array.isArray(data)) {
                             data.forEach(user => {
                                 const div = document.createElement('div');
-                                div.classList.add('result-user');
-                                div.innerHTML = `<h3><a href="/profile?user=${user.ID}">${user.login}</a></h3>`;
+                                div.classList.add('profiles-list');
+                                div.innerHTML = `<div class="profile-box">\
+                                    <div class="profile-container">\
+                                        <div class="profile-pseudo"><a href="/profile?user=${user.ID}">${user.login}</a></div>\
+                                        <div class="profile-infos">\
+                                            <table class="profile-table">\
+                                                <tr>\
+                                                    <td class="col1">Prénom&ensp;: </td>\
+                                                    <td class="col2">${user.first_name}</td>\
+                                                </tr>\
+                                                <tr>\
+                                                    <td class="col1">Nom&ensp;: </td>\
+                                                    <td class="col2">${user.last_name}</td>\
+                                                </tr>\
+                                            </table>\
+                                        </div>\
+                                    </div>\
+                                </div>`
+                                
                                 container.appendChild(div);
-                                container.appendChild(document.createElement('br'))
                             });
                         } else {
                             container.innerHTML = `<p>${data.error}</p>`;

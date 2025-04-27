@@ -86,6 +86,9 @@ app.use('/', objectSearchRouter);
 const profileRouter = require('./routes/profile');
 app.use('/', profileRouter);
 
+const centralRouter = require('./routes/central');
+app.use('/', centralRouter);
+
 const logoutRouter = require('./routes/logout');
 app.use('/', logoutRouter);
 
