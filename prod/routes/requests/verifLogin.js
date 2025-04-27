@@ -2,6 +2,7 @@ const express = require('express');
 const sql = require('mysql2');
 const router = express.Router();
 const {queryPromise} = require("./../functions/functions.js");
+const bcrypt = require('bcrypt');
 
 
 
@@ -12,14 +13,22 @@ router.post('/requests/verifLogin', async (req, res) => {
     const pwd = req.body.password;  //name of the input field
     // try/catch : used in case of failure for the database connection or bad request
     try {
-        const query = "SELECT ID, isValidated, isSuperAdmin FROM user WHERE BINARY login=? AND BINARY password=?";
-        const response = await queryPromise(query, [login, pwd]);
+        const query = "SELECT ID, isValidated, isSuperAdmin, password FROM user WHERE BINARY login=?";
+        const response = await queryPromise(query, [login]);
         
         console.log("Nb lignes : ", response.length);
         console.log("response", response);
 
         // Un utilisateur trouvé dans la database
         if (response.length == 1){
+            
+            console.log(pwd, response[0].password);
+            const match = await bcrypt.compare(pwd, response[0].password);
+
+            if(!match) {
+                return res.redirect(301, '/login');
+            }
+
             console.log("RESPONSE : ", response);
 
             // Vérifie si le compte a été validé par le superAdministrateur

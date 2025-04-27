@@ -1,6 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const {isConnected, queryPromise} = require("./../functions/functions.js");
+const bcrypt = require('bcrypt');
+
+
+// Hashing function
+async function hashPassword(password) {
+    const saltRounds = 10;  // You can adjust this as needed
+    try {
+      const hash = await bcrypt.hash(password, saltRounds);
+      return hash;
+    } catch (err) {
+      console.error('Error hashing password:', err);
+      return ""
+    }
+  }
 
 router.post('/verifCode_registerAccount', async (req, res) => {
 
@@ -21,7 +35,7 @@ router.post('/verifCode_registerAccount', async (req, res) => {
         const user_mail = req.session.mail;
         const user_region = req.session.region;
         const user_login = req.session.login;
-        const user_pwd = req.session.pwd;
+        const user_pwd = await hashPassword(req.session.pwd);
         const user_code = req.body.Code;
         const code = req.session.code;
 
