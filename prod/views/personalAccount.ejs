@@ -16,13 +16,13 @@
                 <div class="form-box">
                     <div class="login-container" id="modify-account">
                         <fieldset>
-                            <header>Vos informations <?php echo $_SESSION['login'];?></header>
+                            <header>Vos informations</header>
                             <div class='error_msg' id='error_msg'>
                                 <% if (error_msg != ""){ %>
                                     <%= error_msg %>
                                 <% } %>
                             </div>
-                            <form action="/register_modification_account" method="POST"> <!-- enctype="multipart/form-data" allows the form to send file, can be used only if method="post"-->
+                            <form action="/registerModificationAccount" method="POST">
                                 <div class="input-box">
                                     <div>Points</div>
                                     <div class="info-field" id="score"><%= score %></div>
