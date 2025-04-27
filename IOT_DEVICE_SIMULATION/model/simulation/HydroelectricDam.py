@@ -20,7 +20,7 @@ class HydroelectricDam(PowerSource):
 
     def getInfo(self):
         info = {
-            "type": "hydroelectric dam",
+            "type": "HydroelectricDam",
             "name": self.name,
             "area": self.area,
             "max_prod": self.max_power,

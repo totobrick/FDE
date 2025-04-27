@@ -19,7 +19,7 @@ class Nuclear(PowerSource):
 
     def getInfo(self):
         info = {
-            "type": "nuclear power plant",
+            "type": "Nuclear",
             "name": self.name,
             "area": self.area,
             "max_prod": self.max_power,

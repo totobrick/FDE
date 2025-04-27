@@ -15,7 +15,7 @@ class WindTurbine(PowerSource):
 
     def getInfo(self):
         info = {
-            "type": "wind turbine",
+            "type": "WindTurbine",
             "name": self.name,
             "area": self.area,
             "max_prod": self.max_power,
