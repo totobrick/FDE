@@ -53,6 +53,7 @@
                                 }
                                 return color;
                             }
+                            
                         
                             let myChart;
                             let datasetRefs = {};
@@ -71,7 +72,7 @@
                                                 objectMap[entry.connected_object] = entry.type;
                                             }
                                             grouped[entry.connected_object].push({
-                                                x: new Date(entry.date),
+                                                x: new Date(entry.date*1000),
                                                 y: entry.value
                                             });
                                         });
@@ -83,7 +84,7 @@
                                                 objectMap[entry.connected_object] = entry.type;
                                             }
                                             grouped[entry.connected_object].push({
-                                                x: new Date(entry.date),
+                                                x: new Date(entry.date*1000),
                                                 y: entry.value
                                             });
                                         });
@@ -134,6 +135,62 @@
                                             }
                                         }
                                     });
+                                    
+                                    //TODO: factorisation de code possible
+                                    // Function to update the chart with new data
+                                    function updateChart() {
+                                        fetch('/data')
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                const grouped = {};
+                                                const objectMap = {};
+
+                                                if (<%= userConnected %>) {
+                                                    data.forEach(entry => {
+                                                        if (!grouped[entry.connected_object]) {
+                                                            grouped[entry.connected_object] = [];
+                                                            objectMap[entry.connected_object] = entry.type;
+                                                        }
+                                                        grouped[entry.connected_object].push({
+                                                            x: new Date(entry.date * 1000),
+                                                            y: entry.value
+                                                        });
+                                                    });
+                                                } else {
+                                                    data.forEach(entry => {
+                                                        if (entry.type !== "consumption") return;
+                                                        if (!grouped[entry.connected_object]) {
+                                                            grouped[entry.connected_object] = [];
+                                                            objectMap[entry.connected_object] = entry.type;
+                                                        }
+                                                        grouped[entry.connected_object].push({
+                                                            x: new Date(entry.date * 1000),
+                                                            y: entry.value
+                                                        });
+                                                    });
+                                                }
+
+                                                for (const [object, values] of Object.entries(grouped)) {
+                                                    if (datasetRefs[object]) {
+                                                        datasetRefs[object].data = values;
+                                                    } else {
+                                                        const newDataset = {
+                                                            label: object,
+                                                            data: values,
+                                                            fill: false,
+                                                            borderColor: getRandomColor(),
+                                                            tension: 0.1
+                                                        };
+                                                        myChart.data.datasets.push(newDataset);
+                                                        datasetRefs[object] = newDataset;
+                                                    }
+                                                }
+
+                                                myChart.update();
+                                            });
+                                    }
+
+                                    setInterval(updateChart, 1000);
                         
                                     const productionContainer = document.getElementById('production-checkboxes');
                                     const consumptionContainer = document.getElementById('consumption-checkboxes');
