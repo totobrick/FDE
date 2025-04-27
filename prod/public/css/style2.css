@@ -466,3 +466,10 @@ a#first_menu:hover, a#middle_menu:hover, a#last_menu:hover{
         margin-bottom: 15px;
     }
 }
+
+#Search{
+    display: flexbox;
+    align-items:start;
+    padding-left: 30%;
+    padding-top: 5%;
+}
