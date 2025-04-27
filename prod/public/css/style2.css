@@ -300,6 +300,11 @@ header{
     transition: .3s ease;
 }
 
+.input-field option {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+}
+
 .info-field#score{
     justify-content : center;       /*center horizontally*/
     color: rgb(0, 220, 0);

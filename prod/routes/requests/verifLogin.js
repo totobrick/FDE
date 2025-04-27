@@ -12,7 +12,7 @@ router.post('/requests/verifLogin', async (req, res) => {
     const pwd = req.body.password;  //name of the input field
     // try/catch : used in case of failure for the database connection or bad request
     try {
-        const query = "SELECT ID, isValidated, isSuperAdmin FROM user WHERE login=? AND password=?";
+        const query = "SELECT ID, isValidated, isSuperAdmin FROM user WHERE BINARY login=? AND BINARY password=?";
         const response = await queryPromise(query, [login, pwd]);
         
         console.log("Nb lignes : ", response.length);
@@ -26,7 +26,7 @@ router.post('/requests/verifLogin', async (req, res) => {
             if (response[0].isValidated == 0){
                 req.session.error_msg = "Votre compte n'a pas encore été validé par l'Administrateur. Un peu de patience ...";
                 console.log(req.session.error_msg);
-                return res.redirect(301, '/');
+                return res.redirect(301, '/login');
             }
 
             // Enregistre si l'utilisateur est un superAdmin

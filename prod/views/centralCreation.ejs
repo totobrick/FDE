@@ -8,7 +8,50 @@
     <title>FDE : Création Centrale</title>
 </head>
 
-<body>
-    <p>Bonjour !</p>
-</body>
+<body style="background-image: url('Images/Background_images.jpg');">
+    <div class="wrapper"> 
+        <%- include('partials/header') %>
+        <main>
+            <%- include('account_icon_bar.html'); %>
+        <div class="container">
+          <div class="form-box">
+            <div class="login-container">
+              <fieldset>
+                <header>Formulaire de création d'une centrale</header>
+                <form action="/submit_form" method="POST">
+                  <div class="input-box">
+                    <label for="Nom">Nom</label>
+                    <input type="text" name="Nom" class="input-field">
+                  </div>
+  
+                  <div class="input-box">
+                    <label for="Région">Région</label>
+                    <select name="Région" class="input-field" required>
+                      <option value="">-- Sélectionner une région --</option>
+                      <% regions.forEach(region => { %>
+                        <option value="<%= region.id %>"><%= region.name %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+  
+                  <div class="input-box">
+                    <label for="Lien">Lien</label>
+                    <input type="text" name="Lien" class="input-field">
+                  </div>
+  
+                  <div class="input-box">
+                    <label for="Clé">Clé</label>
+                    <input type="text" name="Clé" class="input-field">
+                  </div>
+                  <div class="input-box">
+                    <input type="submit" name="submit" class="submit" value="Enregistrer">
+                  </div>                  
+                </form>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>
