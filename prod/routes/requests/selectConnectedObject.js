@@ -21,6 +21,7 @@ router.get('/data', async (req, res) => {
             'consumption' AS type
             FROM electricity_sensor e
             JOIN connected_object co ON e.ID_object = co.id
+            HAVING date > UNIX_TIMESTAMP(NOW()) - 300
 
             UNION ALL
 
@@ -31,7 +32,7 @@ router.get('/data', async (req, res) => {
             'production' AS type
             FROM production p
             JOIN connected_object co ON p.ID_power_source = co.id
-            HAVING date>TIMESTAMP(NOW()) - 120960000000000  
+            HAVING date > UNIX_TIMESTAMP(NOW()) - 300
 
             ORDER BY date ASC;
 
