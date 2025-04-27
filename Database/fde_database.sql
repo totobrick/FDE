@@ -10,7 +10,7 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
+SET NAMES utf8mb4;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -2574,15 +2574,15 @@ INSERT INTO `region` (`ID`, `name`, `admin_id`) VALUES
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `login` varchar(100) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `login` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `password` varchar(255) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `date_of_birth` date NOT NULL,
-  `mail` varchar(100) DEFAULT NULL,
+  `mail` varchar(255) DEFAULT NULL,
   `id_region` int NOT NULL,
   `profile_picture` varchar(255) DEFAULT '',
-  `gender` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `gender` varchar(30) NOT NULL,
   `job` varchar(255) DEFAULT NULL,
   `isSuperAdmin` BOOLEAN DEFAULT '0',
   `isValidated` BOOLEAN DEFAULT '0',
@@ -2591,7 +2591,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `unique_values` (`first_name`,`last_name`,`date_of_birth`),
   KEY `fk_id_region` (`id_region`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `user`
@@ -2601,7 +2601,9 @@ INSERT INTO `user` (`ID`, `login`, `password`, `first_name`, `last_name`, `date_
 (1, 'Toto', 'a', 'Thomas', 'toto', '2000-01-29', 'totovadordlp@gmail.com', 1, '', 'Monsieur', 'JSP', 1, 1, 0),
 (2, 'david_guetta', 'MDPdg', 'David', 'Guetta', '1967-11-07', 'david.guetta@gmail.com', 2, 'Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', 0, 1, 0),
 (3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 0, 1, 0),
-(4, 'HoHo', 'a', 'Santa', 'Claus', '1955-12-25', 'totovadordlp@gmail.com', NULL, '', 'Monsieur', NULL, 0, 0, 0);
+(4, 'HoHo', 'a', 'Santa', 'Claus', '1955-12-25', 'totovadordlp@gmail.com', NULL, '', 'Monsieur', NULL, 0, 0, 0),
+(6, 't', 't', 't', 't', '1970-09-27', 'totovadordlp@gmail.com', 18, '', 'Non défini', NULL, 0, 0, 0),
+(5, 'alex', 'alex', 'alex', 'ALEX', '1986-03-05', 'totovadordlp@gmail.com', 4, '', 'Non binaire', NULL, 0, 0, 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
