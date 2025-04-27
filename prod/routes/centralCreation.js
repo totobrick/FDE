@@ -1,5 +1,6 @@
 const express = require('express');
 const {isConnected} = require("./functions/functions.js");
+const { addPoints } = require('./functions/functions.js');
 const router = express.Router();
 const mysql = require('mysql2');
 
@@ -38,15 +39,19 @@ router.get('/centralCreation', (req, res) => {
 router.post('/submit_form', (req, res) => {
     const { Nom, Région, Lien, Clé } = req.body;
     const sql = 'INSERT INTO connected_object (name, id_region, link, Apikey, type) VALUES (?, ?, ?, ?, "production")';
-    db.query(sql, [Nom, Région, Lien, Clé], (err, result) => {
+    db.query(sql, [Nom, Région, Lien, Clé], async (err, result) => {
         if (err) {
             console.error("Erreur d'insertion : ", err);
             return res.status(500).send('Erreur lors de l\'enregistrement.');
         }
-        res.send('Données enregistrées avec succès !');
+        try {
+            await addPoints(req.session.user_id, 100); 
+            console.log('Points ajoutés avec succès');
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout des points : ', error);
+        }
+         console.log('Données enregistrées avec succès !'); 
     });
 });
-
-
 
 module.exports = router;
