@@ -10,10 +10,10 @@ const db = sql.createConnection({
   database: 'fde_database',
 });
 
-router.get('/profile', (req, res) => {
-  const userId = req.query.user;
+router.get('/central', (req, res) => {
+  const objectId = req.query.id;
 
-  if (!userId) {
+  if (!objectId) {
       return res.redirect('/');
   }
 
@@ -22,13 +22,13 @@ router.get('/profile', (req, res) => {
     return res.redirect(301, '/homepage');
   };
 
-  db.query('SELECT * FROM user WHERE ID = ?', [userId], (err, results) => {
+  db.query('SELECT * FROM connected_object WHERE ID = ?', [objectId], (err, results) => {
       if (err || results.length === 0) {
         console.log("ERROR")
           return res.redirect('/');
       }
-      const user = results[0];
-      res.render('profile', { user,
+      const obj = results[0];
+      res.render('central', { obj,
         loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",
