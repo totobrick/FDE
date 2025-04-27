@@ -2599,8 +2599,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`ID`, `login`, `password`, `first_name`, `last_name`, `date_of_birth`, `mail`, `id_region`, `profile_picture`, `gender`, `job`, `isSuperAdmin`, `isValidated`, `score`) VALUES
 (1, 'Toto', 'a', 'Thomas', 'toto', '2000-01-29', 'totovadordlp@gmail.com', 1, '', 'Monsieur', 'JSP', 1, 1, 0),
-(2, 'david_guetta', 'MDPdg', 'David', 'Guetta', '1967-11-07', 'david.guetta@gmail.com', 2, 'Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', 0, 1, 0),
-(3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 0, 1, 0),
+(2, 'david_guetta', 'MDPdg', 'David', 'Guetta', '1967-11-07', 'david.guetta@gmail.com', 2, 'images/Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', 0, 1, 0),
+(3, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', '1977-02-02', 'shakira@gmail.com', 2, 'images/Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', 0, 1, 0),
 (4, 'HoHo', 'a', 'Santa', 'Claus', '1955-12-25', 'totovadordlp@gmail.com', NULL, '', 'Monsieur', NULL, 0, 0, 0),
 (6, 't', 't', 't', 't', '1970-09-27', 'totovadordlp@gmail.com', 18, '', 'Non défini', NULL, 0, 0, 0),
 (5, 'alex', 'alex', 'alex', 'ALEX', '1986-03-05', 'totovadordlp@gmail.com', 4, '', 'Non binaire', NULL, 0, 0, 0);
