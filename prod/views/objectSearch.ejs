@@ -12,14 +12,20 @@
         <%- include('partials/header') %>
         <main>
             <%- include('account_icon_bar.html'); %>
-            <div id="Search">
-                <form id="searchForm">
-                    <input type="text" id="name" placeholder="Nom de l'objet">
-                    <button type="submit">Rechercher</button>
-                </form>
-                
-                <div id="objects">
-                    Results...
+            <div class="form-box">
+                <div class="login-container">
+                    <form id="searchForm">
+                        <div class="input-box">
+                            <label for="name">Nom de l'objet</label>
+                            <input type="text" id="name" placeholder="Nom de l'objet" class="input-field">
+                        </div>
+                        <div class="input-box">
+                            <input type="submit" class="submit" value="Rechercher">
+                        </div>
+                    </form>
+                    <div id="objects">
+                        Results...
+                    </div>
                 </div>
             </div>
             
