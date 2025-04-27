@@ -12,13 +12,15 @@
         <%- include('partials/header') %>
         <main>
             <%- include('account_icon_bar.html'); %>
-            <form id="searchForm">
-                <input type="text" id="name" placeholder="Nom de l'objet">
-                <button type="submit">Rechercher</button>
-            </form>
-            
-            <div id="objects">
-                Hello
+            <div id="Search">
+                <form id="searchForm">
+                    <input type="text" id="name" placeholder="Nom de l'objet">
+                    <button type="submit">Rechercher</button>
+                </form>
+                
+                <div id="objects">
+                    Results...
+                </div>
             </div>
             
             <script>
@@ -42,7 +44,7 @@
                             data.forEach(object => {
                                 const div = document.createElement('div');
                                 div.classList.add('result-object');
-                                div.innerHTML = `<h3><a href="/object?obj=${object.ID}">${object.name}</a></h3>`;
+                                div.innerHTML = `<h3><a href="/object?obj=${object.ID}">${object.name}</a></h3><br>`;
                                 container.appendChild(div);
                             });
                         } else {

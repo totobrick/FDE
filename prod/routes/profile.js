@@ -11,7 +11,6 @@ const db = sql.createConnection({
 });
 
 router.get('/profile', (req, res) => {
-  console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
   const userId = req.query.user;
 
   if (!userId) {
