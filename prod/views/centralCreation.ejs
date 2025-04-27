@@ -21,7 +21,7 @@
                 <form action="/submit_form" method="POST">
                   <div class="input-box">
                     <label for="Nom">Nom</label>
-                    <input type="text" name="Nom" class="input-field">
+                    <input type="text" name="Nom" class="input-field" required>
                   </div>
   
                   <div class="input-box">
@@ -29,14 +29,14 @@
                     <select name="Région" class="input-field" required>
                       <option value="">-- Sélectionner une région --</option>
                       <% regions.forEach(region => { %>
-                        <option value="<%= region.id %>"><%= region.name %></option>
+                        <option value="<%= region.ID %>"><%= region.name %></option>
                       <% }) %>
                     </select>
                   </div>
   
                   <div class="input-box">
                     <label for="Lien">Lien</label>
-                    <input type="text" name="Lien" class="input-field">
+                    <input type="text" name="Lien" class="input-field" required>
                   </div>
   
                   <div class="input-box">

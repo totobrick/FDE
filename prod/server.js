@@ -107,8 +107,8 @@ app.use('/', verifLoginRouter);
 
 //Set the index page (the router defines the path in the index.js file)
 //NE MARCHE PAS
-//const registerModificationAccount = require('./routes/requests/registerModificationAccount');
-//app.use('/', registerModificationAccount);
+const registerModificationAccount = require('./routes/requests/registerModificationAccount');
+app.use('/', registerModificationAccount);
 
 /*const logoutdRouter = require('./routes/logout');
 app.use('/', logoutdRouter);*/
