@@ -37,7 +37,6 @@ router.post('/requests/verifLogin', upload.none(), async (req, res) => {
             // Variables de session utilisateur
             req.session.user_id = response[0].ID;
             req.session.login = login;
-            //req.session.password = pwd;
             req.session.connection_time = Date.now();
             req.session.cache_buster = Date.now();
 
