@@ -10,6 +10,7 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed;
     overflow: auto;
+    background-color: #10181D;/*#2F4558*/
 }
 .wrapper {
     display: flex;
@@ -32,16 +33,18 @@ body{
     z-index: 1000;
 }
 main{
+    display: flex;
     flex-grow: 1; /*take all disponible space*/
-    display : flex;
-    border : 5px solid yellow;
-    background-color: lightseagreen;
+    /*display : flex;*/
+    /*border : 5px solid yellow;*/
+    /*background-color: lightseagreen;*/
+    background-color: #0D1B2A;
 }
 .container{
     display: flex;
     flex: 1;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 3px solid violet;
+    /*background-color: rgba(255, 255, 255, 0.5);*/
+    /*border: 3px solid violet;*/
 }
 
 .form-box_login, .form-box_register {
@@ -369,7 +372,7 @@ header{
 .account_icon_bar a{
     display: block;
     width: 100%;
-    padding: 30px min(3%, 15px);
+    padding: 20px min(3%, 15px); /*30px min(3%, 15px);*/
     text-decoration: none;
     text-align: center;
     color: white;
@@ -393,7 +396,7 @@ header{
 }
 
 a#first_menu:hover, a#middle_menu:hover, a#last_menu:hover{
-    background-color: rgba(255,192,203,0.8); /*same pink as the logo*/
+    background-color: rgba(247, 127, 0, 0.8); /* rgba(255,192,203,0.8) : same pink as the logo*/
     width: 130%;
     border-radius: 0px 30px 30px 0px;
 }
