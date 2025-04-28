@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
 const {isConnected, queryPromise} = require("./functions/functions.js");
 
 
 router.get('/personalAccount', async (req, res) => {
+    console.log("\nPage : /personalAccount");
+    console.log("Variables de session : ", req.session);
+    
     // try/catch : used in case of failure for the database connection or bad request
     try{
-        console.log("\nPage : /personalAccount");
-        console.log("Variables de session : ", req.session);
-
         // Check user is connected
         if(! isConnected(req)){
             console.log("User not connected, redirection to : /index");
@@ -61,9 +60,16 @@ router.get('/personalAccount', async (req, res) => {
 
             // Photo de profil (ou image par défaut si non existante)
             console.log("profile_picture : ", profile_picture);
+            var has_PP;
+            // Pas de photo de profil
             if( profile_picture === ""){
+                has_PP = "no";            // has_PP : has profile picture
                 profile_picture = "Logos/profile_picture.svg";
                 console.log("profile_picture : ", profile_picture);
+            }
+            // Avec photo de profil
+            else{
+                has_PP = "yes";           // has_PP : has profile picture
             }
             var path_profile_picture = profile_picture + "?t=" + req.session.cache_buster;
             console.log("path_profile_picture : ", path_profile_picture);
@@ -83,6 +89,7 @@ router.get('/personalAccount', async (req, res) => {
                                     l_name,
                                     date_birth,
                                     mail,
+                                    has_PP,
                                     path_profile_picture,
                                     job
                                 });

@@ -5,8 +5,9 @@
     </div>
     <div class="nav-button">
         <button class="btn white-btn" id="login-btn" onclick="window.location.href='<%= path_loginBtn %>'"><%= loginBtn %></button>
-        <button class="btn" id="register-btn" onclick="window.location.href='/register'">S'inscrire</button>
+        <button class="btn" id="register-btn" onclick="window.location.href='/register'"><span>S'inscrire</span></button>
     </div>
+    <!--
     <div class="nav-right">
         <div class="menu-btn" id="menu-btn" onclick="myMenuFunction()">
             <div class="bar1"></div>
@@ -22,8 +23,37 @@
                 <li><a href="/search" class="link">Rechercher</a></li>
             </ul>
         </div>
-        </nav>
-        </header>
+    </nav>-->
+</header>
+<div class="main_menu">
+    <ul>
+        <li>
+            <a id="menu_option_1" href="/homepage">Accueil</a>
+        </li>
+        <li>
+            <a href="/personalAccount">Mes données</a>
+        </li>
+        <li>
+            <a href="/userSearch">Rechercher d'utilisateur</a>
+        </li>
+        <li>
+            <a href="/objectSearch">Rechercher un objet</a>
+        </li>
+        <li>
+            <a href="/centralCreation">Création d'une centrale</a>
+        </li>
+        <li>
+            <a href="/centralCreation">Admin</a>
+        </li>
+    </ul>
+
+
+</div>
+
+
+
+
+
 <script>
     function myMenuFunction() {
         var i = document.getElementById("menu-btn");

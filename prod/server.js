@@ -103,9 +103,11 @@ const verifLoginRouter = require('./routes/requests/verifLogin');
 app.use('/', verifLoginRouter);
 
 //Set the index page (the router defines the path in the index.js file)
-//NE MARCHE PAS
 const registerModificationAccount = require('./routes/requests/registerModificationAccount');
 app.use('/', registerModificationAccount);
+// Register profile picture
+const registerNewPPAccount = require('./routes/requests/register_new_profile_picture');
+app.use('/', registerNewPPAccount);
 
 /*const logoutdRouter = require('./routes/logout');
 app.use('/', logoutdRouter);*/
