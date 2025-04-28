@@ -15,9 +15,28 @@
         <%- include('partials/header') %>
         <main>
             <%- include('account_icon_bar.html'); %>
-            <h1>Profil de l'objet <%= obj.name %></h1>
-            <div class="profile-card">
-                Pas grand chose
+            <div class="container">
+                <div class="form-box">
+                    <div class="login-container" id="modify-account">
+                        <fieldset>
+                            <header>Informations sur <%= obj.name %></header>
+                            <form>
+                                <div class="input-box">
+                                    <div>Nom</div>
+                                    <div class="info-field" id="display"><%= obj.name %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Type</div>
+                                    <div class="info-field" id="display"><%= obj.type %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Region</div>
+                                    <div class="info-field" id="display"><%= region[0].name %></div>
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+                </div>
             </div>
             <a href="/objectSearch">← Retour à la recherche</a>
         </main>

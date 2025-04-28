@@ -31,14 +31,20 @@ router.get('/object', async (req, res) => {
     let connection;
     connection = await mysql.createConnection(dbConfig);
     const [data] = await connection.query(`SELECT 
-    p.date_prod AS date,
-    co.name AS connected_object,
-    p.production AS value,
-    'production' AS type
-    FROM production p
-    JOIN connected_object co ON p.ID_power_source = co.id
-    AND co.id = ?
-    ORDER BY date ASC`, [objectId]);
+        p.date_prod AS date,
+        co.name AS connected_object,
+        p.production AS value,
+        'production' AS type
+        FROM production p
+        JOIN connected_object co ON p.ID_power_source = co.id
+        AND co.id = ?
+        ORDER BY date ASC`, [objectId]);
+    
+    const [region] = await connection.query(`SELECT r.name 
+        FROM region r, connected_object co
+        WHERE co.ID = ?
+        AND r.ID = co.id_region`, [objectId]);
+
     if(!data){
         data = NaN;
     }
@@ -51,6 +57,7 @@ router.get('/object', async (req, res) => {
         const obj = results[0];
 
         res.render('object', { data,
+                            region,
                             obj,
                             loginBtn: "Se connecter",
                             path_loginBtn: "/login",
