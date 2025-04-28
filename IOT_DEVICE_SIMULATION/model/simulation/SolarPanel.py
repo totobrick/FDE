@@ -15,7 +15,7 @@ class SolarPanel(PowerSource):
 
     def getInfo(self):
         info = {
-            "type": "Solar Panel",
+            "type": "SolarPanel",
             "name": self.name,
             "area": self.area,
             "max_prod": self.max_power,

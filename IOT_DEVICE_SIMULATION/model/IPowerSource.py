@@ -27,7 +27,7 @@ class IPowerSource:
     def initializeRoute(self) :
         @self.app.get("/getInfo")
         def read_root(request: Request):
-            self.checkToken(request)
+            #self.checkToken(request)
 
 
             return self.powerSource.getInfo()
