@@ -31,12 +31,59 @@
                                 </div>
                                 <div class="input-box">
                                     <div>Region</div>
-                                    <div class="info-field" id="display"><% if (region[0] !== undefined ){ %>
-                                        <%= region[0].name %>
-                                    <% } %></div>
+                                    <div class="info-field" id="display"><%= region[0].name %></div>
                                 </div>
                             </form>
                         </fieldset>
+                        <canvas id="myChart" style="width:100%; background-color: rgba(255,255,255,0.5); border-radius: 5px; padding: 5px;"></canvas>
+                            <script>
+                                const dataFromServer = <%- JSON.stringify(data) %>;
+    
+                                const ctx = document.getElementById('myChart').getContext('2d');
+                                const myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                        datasets: [{
+                                            label: "<%= obj.name %>",
+                                            data: dataFromServer.map(item => ({
+                                                x: new Date(item.date),
+                                                y: item.value
+                                            })),
+                                            fill: false,
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                            tension: 0.1
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        elements: {
+                                            line: { spanGaps: true }
+                                        },
+                                        scales: {
+                                            x: {
+                                                type: 'time',
+                                                time: {
+                                                    unit: 'day',
+                                                    displayFormats: {
+                                                        day: 'dd/MM/yyyy'
+                                                    }
+                                                },
+                                                title: {
+                                                    display: true,
+                                                    text: 'Date'
+                                                }
+                                            },
+                                            y: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Production (kWh)' // Ajuste selon ta valeur
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            </script>
                     </div>
                 </div>
             </div>
