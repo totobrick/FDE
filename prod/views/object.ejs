@@ -31,7 +31,9 @@
                                 </div>
                                 <div class="input-box">
                                     <div>Region</div>
-                                    <div class="info-field" id="display"><%= region[0].name %></div>
+                                    <div class="info-field" id="display"><% if (region[0] !== undefined ){ %>
+                                        <%= region[0].name %>
+                                    <% } %></div>
                                 </div>
                             </form>
                         </fieldset>

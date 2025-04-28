@@ -48,6 +48,9 @@ router.get('/object', async (req, res) => {
     if(!data){
         data = NaN;
     }
+    if(region == undefined){
+        region = [{ name: 'Not found' }]
+    }
     if (connection) await connection.end();
     db.query('SELECT * FROM connected_object WHERE ID = ?', [objectId], (err, results) => {
         if (err || results.length === 0) {
