@@ -45,24 +45,6 @@
         </main>
     
     <script>
-        // Check if form fields are empty
-        function validateForm(){
-            var login_field = document.forms["login-form"]["login"].value;
-            var pwd_field = document.forms["login-form"]["password"].value;
-            if (login_field == ""){
-                alert("Le champ \"Login\" est vide.\nVeuillez le remplir.");
-                return false;
-            }
-            else if (pwd_field == ""){
-                alert("Le champ \"Mot de passe\" est vide.\nVeuillez le remplir.");
-                return false;
-            }
-            //return true;
-        }
-
-
-
-
         document.getElementById('login-form').addEventListener('submit', function(event) {
             event.preventDefault();
 
