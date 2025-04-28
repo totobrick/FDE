@@ -111,7 +111,14 @@ app.use('/', registerModificationAccount);
 const changePassword = require('./routes/requests/changePassword');
 app.use('/', changePassword);
 
+const route404 = require('./routes/404');
+app.use('/', route404);
+
 app.use(express.urlencoded({ extended: true })); // pour parser des formulaires HTML
+
+app.use((req, res, next) => {
+  res.redirect("/404");
+});
 
 // Start the server
 app.listen(port, () => {
