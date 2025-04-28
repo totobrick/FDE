@@ -25,7 +25,7 @@ app.use(session({
     cookie: {
       //secure: false,
       //maxAge: 1000 * 60 * 60  // durée de la session - 1h
-      maxAge: 1000 * 60 * 10    // durée de la session - 10min
+      maxAge: 1000 * 60 * 30    // durée de la session - 30min
     }
   }));
 
