@@ -17,12 +17,8 @@
                     <div class="login-container" id="modify-account">
                         <fieldset>
                             <header>Vos informations</header>
-                            <div class='error_msg' id='error_msg'>
-                                <% if (error_msg != ""){ %>
-                                    <%= error_msg %>
-                                <% } %>
-                            </div>
-                            <form action="/registerModificationAccount" method="POST">
+                            <div class='error_msg' id='msgChange'></div>
+                            <form id="changeData">
                                 <div class="input-box">
                                     <div>Points</div>
                                     <div class="info-field" id="score"><%= score %></div>
@@ -51,10 +47,6 @@
                                 <div class="input-box">
                                     <label for="Login">Login</label>
                                     <input type="text" name="Login" id="Login" class="input-field" value="<%= login %>" >
-                                </div>
-                                <div class="input-box">
-                                    <label for="Password">Mot de passe</label>
-                                    <input type="text" name="Password" id="Password" class="input-field" value="<%= password %>" >
                                 </div>
                                 <div class="input-box">
                                     <label for="Firstname">Prénom</label>
@@ -101,7 +93,34 @@
                         </fieldset>
                     </div>
                 </div>
+                <div class="form-box">
+                    <div class="login-container" id="modify-account">
+                        <fieldset>
+                            <header>Changer votre mot de passe</header>
+                            <div class='error_msg' id='msg_pwd'></div>
+                            <form id="changepwd">
+                                <div class="input-box">
+                                    <label for="Password">Mot de passe actuel</label>
+                                    <input type="text" name="actualPassword" id="actualPassword" class="input-field">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Password">Nouveau mot de passe</label>
+                                    <input type="text" name="newPassword" id="newPassword" class="input-field">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Password">Confirmation de votre nouveau mot de passe</label>
+                                    <input type="text" name="newPasswordConfirm" id="newPasswordConfirm" class="input-field">
+                                </div>
+                                <div class="input-box">
+                                    <input type="submit" name="submit" class="submit" value="Enregistrer">
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+                </div>
             </div>
+            
+
         </main>
     </div>
     <script>
@@ -122,6 +141,77 @@
                 //alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg horizontale.");
             }
         }
+
+
+        document.getElementById('changepwd').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/request/changePassword', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+
+                if (!response.ok) {
+                   console.log("Internal Error")
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+                
+                const msgDiv = document.getElementById('msg_pwd');
+                if (data.done) {
+                    msgDiv.style.color = 'green';
+                } else {
+                    msgDiv.style.color = 'red';
+                }
+                msgDiv.textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('changeData').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/registerModificationAccount', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+
+                if (!response.ok) {
+                   console.log("Internal Error")
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+                
+                const msgDiv = document.getElementById('msgChange');
+                if (data.done) {
+                    msgDiv.style.color = 'green';
+                } else {
+                    msgDiv.style.color = 'red';
+                }
+                msgDiv.textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
 </body>
 </html>

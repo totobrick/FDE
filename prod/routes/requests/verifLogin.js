@@ -22,7 +22,6 @@ router.post('/requests/verifLogin', async (req, res) => {
         // Un utilisateur trouvé dans la database
         if (response.length == 1){
             
-            console.log(pwd, response[0].password);
             const match = await bcrypt.compare(pwd, response[0].password);
 
             if(!match) {

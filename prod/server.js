@@ -105,13 +105,11 @@ app.use('/', GetObjSearchRouter);
 const verifLoginRouter = require('./routes/requests/verifLogin');
 app.use('/', verifLoginRouter);
 
-//Set the index page (the router defines the path in the index.js file)
-//NE MARCHE PAS
 const registerModificationAccount = require('./routes/requests/registerModificationAccount');
 app.use('/', registerModificationAccount);
 
-/*const logoutdRouter = require('./routes/logout');
-app.use('/', logoutdRouter);*/
+const changePassword = require('./routes/requests/changePassword');
+app.use('/', changePassword);
 
 app.use(express.urlencoded({ extended: true })); // pour parser des formulaires HTML
 
