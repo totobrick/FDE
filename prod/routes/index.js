@@ -4,15 +4,9 @@ const {isConnected} = require("./functions/functions.js");
 
 
 router.get('/index', (req, res) => {
-    console.log("\nPage : /index");
-    console.log("Variables de session : ", req.session);
-  //console.log("req.session.id : ", req.session.id);
-
-//console.log("req.session.id : ", req.session.id);
   const userConnected = isConnected(req);
 
   if(userConnected){
-    console.log("User connected, redirection to : /homepage");
     return res.redirect(301, '/homepage');
   }
 
@@ -20,7 +14,6 @@ router.get('/index', (req, res) => {
   const error_msg = req.session.error_msg;
   delete req.session.error_msg;
 
-  console.log("User not connnected.");
   res.render("index", { loginBtn: "Se connecter",
                           path_loginBtn: "/login",
                           welcome_msg: "",

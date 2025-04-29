@@ -2,12 +2,8 @@ const sql = require('mysql2');
 const bcrypt = require('bcrypt');
 
 function isConnected(req){
-  /*console.log("Fonction isConnected.");
-  console.log("Variables de session : ", req.session);*/
-
   // if user_id session var exists
   if (req.session.user_id){
-    console.log("req.session.user_id = ", req.session.user_id);
     return true;
   }
   else{
@@ -18,7 +14,6 @@ function isConnected(req){
 function isSuperAdmin(req){
   // if isSuperAdmin session var exists
   if (req.session.isSuperAdmin && req.session.isSuperAdmin=="1"){
-    console.log("req.session.isSuperAdmin = ", req.session.isSuperAdmin);
     return true;
   }
   else{
@@ -62,6 +57,18 @@ async function addPoints(userId, pointsToAdd) {
   }
 }
 
+
+async function generatePassword(){
+  const list_ascii = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const size_pwd = 15;
+  var new_pwd = "";
+  for (var i=0; i<size_pwd; i++){
+    new_pwd += list_ascii[Math.floor(Math.random() * list_ascii.length)];
+  }
+  console.log("New password generated.");
+  return new_pwd;
+}
+
 // Hashing function
 async function hashPassword(password) {
   const saltRounds = 10; 
@@ -70,7 +77,7 @@ async function hashPassword(password) {
     return hash;
   } catch (err) {
     console.error('Error hashing password:', err);
-    return ""
+    return "";
   }
 }
 
@@ -89,7 +96,7 @@ async function checkUserLevel(userId) {
     const rows = await queryPromise(sql_query, values);
 
     if (rows.length === 0) {
-      console.log('Utilisateur non trouvé.');
+      console.error('Utilisateur non trouvé.');
       return null;
     }
 
@@ -107,4 +114,4 @@ async function checkUserLevel(userId) {
 
 
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, hashPassword,getUserLevel, checkUserLevel };
+module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, generatePassword, hashPassword,getUserLevel, checkUserLevel };

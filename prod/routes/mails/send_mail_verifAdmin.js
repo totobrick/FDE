@@ -4,8 +4,6 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/send_mail_verifAdmin', (req, res) => {
-    console.log("\nPage : /send_mail_verifAdmin");
-
     // Récupération des variables de session de l'utilisateur créé
     const user_gender = req.session.gender;
     const user_fname = req.session.fname;
@@ -79,7 +77,6 @@ router.get('/send_mail_verifAdmin', (req, res) => {
             if (err) {
                 return console.error("Erreur lors de l'envoi :", err);
             }
-            console.log("Email envoyé avec succès :", info.response);
             req.session.error_msg+= "Email envoyé avec succès à l'Administrateur ! Ce dernier prendra de validation de valider votre compte (ou non ;) ).";
             return res.redirect(301, "/");
         });

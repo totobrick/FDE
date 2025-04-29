@@ -15,11 +15,8 @@ const db = mysql.createConnection({
 });
 
 router.get('/centralCreation', async (req, res) => {
-    console.log("\nPage : /centralCreation");
-    console.log("Variables de session : ", req.session);
-  
+ 
     if (!isConnected(req)) {
-      console.log("User not connected, redirection to : /index");
       return res.redirect('/index');
     }
   
@@ -35,7 +32,6 @@ router.get('/centralCreation', async (req, res) => {
       const sql = 'SELECT ID, name FROM region';
       const regions = await queryPromise(sql);
   
-      console.log("User connected.");
       res.render("centralCreation", {
         loginBtn: "Se déconnecter",
         path_loginBtn: "/logout",
@@ -45,7 +41,6 @@ router.get('/centralCreation', async (req, res) => {
       });
   
     } catch (err) {
-      console.error("Erreur serveur :", err);
       res.status(500).send("Erreur serveur");
     }
   });

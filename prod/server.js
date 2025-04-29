@@ -43,12 +43,21 @@ app.use('/', emptyPathRouter);
 const homepageRouter = require('./routes/homepage');
 app.use('/', homepageRouter);
 
+// Path for login
 const loginRouter = require('./routes/login');
 app.use('/', loginRouter);
+
+// Paths for forgot password (and new password generated and sent)
 const forgotPwdRouter = require('./routes/forgot_pwd');
 app.use('/', forgotPwdRouter);
+const generatePwdRouter = require('./routes/requests/generatePwd');
+app.use('/', generatePwdRouter);
+
+
 const checkLoginExistsRouter = require('./routes/checkLoginExists');
 app.use('/', checkLoginExistsRouter);
+
+
 const sendMailForgotPwdRouter = require('./routes/mails/send_mail_forgot_pwd');
 app.use('/', sendMailForgotPwdRouter);
 
@@ -108,13 +117,9 @@ app.use('/', verifLoginRouter);
 const deleteObjectRouter = require('./routes/delete');
 app.use('/', deleteObjectRouter);
 
-//Set the index page (the router defines the path in the index.js file)
-//NE MARCHE PAS
+
 const registerModificationAccount = require('./routes/requests/registerModificationAccount');
 app.use('/', registerModificationAccount);
-// Register profile picture
-const registerNewPPAccount = require('./routes/requests/register_new_profile_picture');
-app.use('/', registerNewPPAccount);
 
 const changePassword = require('./routes/requests/changePassword');
 app.use('/', changePassword);
@@ -124,7 +129,7 @@ app.use('/', route404);
 
 app.use(express.urlencoded({ extended: true })); // pour parser des formulaires HTML
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { //Pour gerer erreur 404 de maniere plus propre
   res.redirect("/404");
 });
 

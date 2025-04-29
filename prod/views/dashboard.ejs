@@ -31,9 +31,7 @@
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log("HELLO")
             const username = document.getElementById('username').value;
-            console.log("username")
         
             fetch('/search', {
                 method: 'POST',

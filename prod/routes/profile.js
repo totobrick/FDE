@@ -18,13 +18,11 @@ router.get('/profile', (req, res) => {
   }
 
   if(!isConnected(req)){
-    console.log("User not connected, redirection to : /homepage");
     return res.redirect(301, '/homepage');
   };
 
   db.query('SELECT * FROM user WHERE ID = ?', [userId], (err, results) => {
       if (err || results.length === 0) {
-        console.log("ERROR")
           return res.redirect('/');
       }
       const user = results[0];
