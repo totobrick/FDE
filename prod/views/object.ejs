@@ -39,7 +39,7 @@
                                             <label for="range">Production</label>
                                             <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
                                         </div>
-                                        <form action = "/submit_form" method = "POST">
+                                        <form>
                                             <button id="submitBtn">Enregistrer</button>
                                         </form> 
                                         <script>
@@ -77,7 +77,7 @@
                                             <label for="range">Production</label>
                                             <input type="checkbox" id="switch"> Activer la production
                                         </div>
-                                        <form action = "/submit_form" method = "POST">
+                                        <form>
                                             <button id="submitBtn">Enregistrer</button>
                                         </form> 
                                         <script>
@@ -90,6 +90,8 @@
                                                 if(checkInput.checked){
                                                     value = 1;
                                                 }
+
+                                                await addPoints(req.session.user_id, 100); 
                                             
                                                 fetch("<%= obj.link %>/setTarget?targetedValue=" + value, {
                                                     method: "GET",
