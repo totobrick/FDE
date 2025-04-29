@@ -26,11 +26,10 @@ router.post('/uSearch', (req, res) => {
         if (results.length > 0) {
             try {
                 await addPoints(req.session.user_id, 100); 
-                console.log('Points ajoutés avec succès');
             } catch (error) {
                 console.error('Erreur lors de l\'ajout des points : ', error);
             }
-            return res.json(results); // ✅ renvoie les données au frontend
+            return res.json(results); 
         } else {
             return res.status(404).json({ error: 'Aucun utilisateur trouvé.' });
         }

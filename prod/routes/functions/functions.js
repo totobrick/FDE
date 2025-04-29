@@ -75,4 +75,36 @@ async function hashPassword(password) {
 }
 
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, hashPassword};
+function getUserLevel(points) {
+  if (points >= 4000) return 3;
+  if (points >= 1000) return 2;
+  return 1;
+}
+
+async function checkUserLevel(userId) {
+  const sql_query = 'SELECT score FROM user WHERE id = ?';
+  const values = [userId];
+
+  try {
+    const rows = await queryPromise(sql_query, values);
+
+    if (rows.length === 0) {
+      console.log('Utilisateur non trouvé.');
+      return null;
+    }
+
+    const points = rows[0].score;
+    const level = getUserLevel(points);
+
+    console.log(`L'utilisateur ${userId} a ${points} points et est au niveau ${level}.`);
+    return level;
+
+  } catch (err) {
+    console.error('Erreur lors de la récupération des données :', err);
+    return null;
+  }
+}
+
+
+
+module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, hashPassword,getUserLevel, checkUserLevel };
