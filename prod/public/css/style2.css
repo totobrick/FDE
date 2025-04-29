@@ -41,8 +41,13 @@ main{
     background-color: #0D1B2A;
 }
 .container{
-    display: flex;
     flex: 1;
+    /*  equivalent to : 
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0%;
+    */
+
     /*background-color: rgba(255, 255, 255, 0.5);*/
     /*border: 3px solid violet;*/
 }
