@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="css/style_header.css">
+<header class="nav">
+    <div class="nav-logo">
+        <img src="Logos/logo_FDE.svg" alt="Logo FDE" onclick="document.location='/'">
+    </div>
+    <div class="nav-button">
+        <button class="btn white-btn" id="login-btn" onclick="window.location.href='<%= path_loginBtn %>'"><%= loginBtn %></button>
+        <button class="btn" id="register-btn" onclick="window.location.href='/register'"><span>S'inscrire</span></button>
+    </div>
+    <!--
+    <div class="nav-right">
+        <div class="menu-btn" id="menu-btn" onclick="myMenuFunction()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+    </div>
+    <nav class="nav-menu" id="navMenu">
+        <div class="nav-menu-content">
+            <ul>
+                <li><a href="/" class="link active">Menu principal</a></li>
+                <li><a href="/personalAccount" class="link">Compte</a></li>
+                <li><a href="/search" class="link">Rechercher</a></li>
+            </ul>
+        </div>
+    </nav>-->
+</header>
+<script>
+    function myMenuFunction() {
+        var i = document.getElementById("menu-btn");
+        var j = document.getElementById("navMenu");
+        if(i.className === "menu-btn") {
+            i.className += " responsive";
+            j.className += " responsive";
+        } else {
+            i.className = "menu-btn";
+            j.className = "nav-menu";
+        }
+    }
+</script>

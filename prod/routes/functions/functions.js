@@ -1,4 +1,5 @@
 const sql = require('mysql2');
+const bcrypt = require('bcrypt');
 
 function isConnected(req){
   /*console.log("Fonction isConnected.");
@@ -61,5 +62,17 @@ async function addPoints(userId, pointsToAdd) {
   }
 }
 
+// Hashing function
+async function hashPassword(password) {
+  const saltRounds = 10; 
+  try {
+    const hash = await bcrypt.hash(password, saltRounds);
+    return hash;
+  } catch (err) {
+    console.error('Error hashing password:', err);
+    return ""
+  }
+}
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints};
+
+module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, hashPassword};

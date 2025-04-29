@@ -14,20 +14,15 @@
 </head>
 <body>
     <div class="wrapper">
-        <%- include('partials/header') %>
+        <%- include('partials/header_connected') %>
         <main>
-            <%- include('account_icon_bar.html'); %>
             <div class="container">
                 <div class="form-box">
                     <div class="login-container" id="modify-account">
                         <fieldset>
                             <header>Vos informations</header>
-                            <div class='error_msg' id='error_msg'>
-                                <% if (error_msg != ""){ %>
-                                    <%= error_msg %>
-                                <% } %>
-                            </div>
-                            <form action="/registerModificationAccount" method="POST" enctype="multipart/form-data">
+                            <div class='error_msg' id='msgChange'></div>
+                            <form id="changeData">
                                 <div class="input-box">
                                     <div>Points</div>
                                     <div class="info-field" id="score"><%= score %></div>
@@ -58,10 +53,6 @@
                                     <input type="text" name="Login" id="Login" class="input-field" value="<%= login %>" >
                                 </div>
                                 <div class="input-box">
-                                    <label for="Password">Mot de passe</label>
-                                    <input type="text" name="Password" id="Password" class="input-field" value="<%= password %>" >
-                                </div>
-                                <div class="input-box">
                                     <label for="Firstname">Prénom</label>
                                     <input type="text" name="Firstname" id="Firstname" class="input-field" value="<%= f_name %>">
                                 </div>
@@ -77,7 +68,7 @@
                                 </div>
                                 <div class="input-box">
                                     <label for="Email">Email</label>
-                                    <input type="text" name="Email" id="Email" class="input-field" value="<%= mail %>">
+                                    <input type="text" name="Email" id="Email" class="input-field" value="<%= mail %>" disabled>
                                 </div>
                                 <div class="input-box">
                                     <label>Photo de profil</label>
@@ -119,7 +110,34 @@
                         </fieldset>
                     </div>
                 </div>
+                <div class="form-box">
+                    <div class="login-container" id="modify-account">
+                        <fieldset>
+                            <header>Changer votre mot de passe</header>
+                            <div class='error_msg' id='msg_pwd'></div>
+                            <form id="changepwd">
+                                <div class="input-box">
+                                    <label for="Password">Mot de passe actuel</label>
+                                    <input type="text" name="actualPassword" id="actualPassword" class="input-field">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Password">Nouveau mot de passe</label>
+                                    <input type="text" name="newPassword" id="newPassword" class="input-field">
+                                </div>
+                                <div class="input-box">
+                                    <label for="Password">Confirmation de votre nouveau mot de passe</label>
+                                    <input type="text" name="newPasswordConfirm" id="newPasswordConfirm" class="input-field">
+                                </div>
+                                <div class="input-box">
+                                    <input type="submit" name="submit" class="submit" value="Enregistrer">
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+                </div>
             </div>
+            
+
         </main>
     </div>
     <script>
@@ -143,107 +161,73 @@
         }
 
 
-        $(document).ready(function(){
-            const InputImg = document.getElementById("Profile_picture");
-            var fileSelected = false;
+        document.getElementById('changepwd').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-            //var x = setInterval(refreshProfilePicture, 5000);  //refresh messages every 2000 milliseconds (2s)
-        
-            // (re)Load profile picture img
-            //refreshProfilePicture();
-            function refreshProfilePicture() {
-                $.ajax({
-                    url: 'update_cache_buster.php',
-                    method: 'GET',
-                    success: function(response){
-                        //alert(response);
-                        console.log(response);
-                        $("#test").load(window.location.href + " #test > #azerty");
-                        
-                        // 1. in .nav : Head of page
-                        $('#Profile_picture_area').load(window.location.href + " #Profile_picture_area > *");
+            const form = event.target;
+            const formData = new FormData(form);
 
-                        // 2. in personal-account form
-                        $('.menu-profile-picture').load(window.location.href + " .menu-profile-picture > *");
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                        alert("Erreur lors de la mise à jour du cache-buster ($_SESSION['cache_buster'], du fichier update_cache_buster.php) : ", error);
-                    }
-                });
-            }
+            fetch('/request/changePassword', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
 
-            // Delete personal picture
-            $(document).on('click', '#delete_actual_PP', function(event){
-                /*  -> Le click est rattaché au document, donc si le bouton '#delete_actual_PP' est rechargé en AJAX/Jquery,
-                    on pourra cliquer dessus et cette fonction s'exécutera.
-                    -> Cela ne marcherait pas avec $('#delete_actual_PP').on('click', function(event){ où la fonction ne
-                    s'exécuterait pas et le bouton enverrait le formulaire (fonction du bouton par défaut).
-                */
-                event.preventDefault(); // empêche rafraichissement de page, ici empeche surtout l'envoi du formulaire en cliquant sur ce btn
-                InputImg.value = "";  // efface le fichier img sélectionné auparavant (s'il y en avait un)
-                $.ajax({
-                    url: 'delete_profile_picture.php',
-                    method: 'GET',
-                    processData: false,
-                    contentType: false,
-                    success: function(response){
-                        alert(response);
-                        refreshProfilePicture();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                        alert('Erreur survenue lors de la suppression de la photo de profil.');
-                    }
-                });
-                // DEBUG affichage : $_SESSION['last_activity_time'] (variable qui déconnecte après un certain temps d'inactivité)
-                /*$('#account_icon_bar').load(window.location.href + ' #account_icon_bar > *');*/
-            });
-
-            //changeImgBtn.addEventListener('click', function(event){
-            $(document).on('click', '#change_actual_PP', function(event){
-                event.preventDefault(); // empêche rafraichissement de page, ici empeche surtout l'envoi du formulaire en cliquant sur ce btn
-                //InputImg.value = "";  // efface le fichier img sélectionné auparavant (s'il y en avait un)
-                InputImg.click();
+                if (!response.ok) {
+                   console.log("Internal Error")
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
                 
-                // DEBUG affichage : $_SESSION['last_activity_time'] (variable qui déconnecte après un certain temps d'inactivité)
-                /*$('#account_icon_bar').load(window.location.href + ' #account_icon_bar > *');*/
+                const msgDiv = document.getElementById('msg_pwd');
+                if (data.done) {
+                    msgDiv.style.color = 'green';
+                } else {
+                    msgDiv.style.color = 'red';
+                }
+                msgDiv.textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
-            
-            //Affiche la nouvelle img de profil
-            $('#Profile_picture').on('change', function(){ // change : détecte qd #Profile_picture change de valeurs (ici qd un fichier est mis)
-                if (this.files.length > 0){ // this : vaut ici $('#Profile_picture')[0]
-                    fileSelected = true;
+        });
+
+        document.getElementById('changeData').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/registerModificationAccount', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+
+                if (!response.ok) {
+                   console.log("Internal Error")
                 }
-                if(fileSelected){
-                    if ($('#Profile_picture')[0].files[0].type !== 'image/jpeg'){
-                        alert("Seuls les fichiers JPG sont acceptés.");
-                        return;
-                    }
-                    else{
-                        //alert("Fichier sélectionné : " + this.files[0].name + "\n AJAX à suivre");
-                        var formdata = new FormData();
-                        formdata.append('PP-image', this.files[0]);
-                        
-                        // Envoie les données du formulaire en AJAX
-                        $.ajax({                            //requête asynchrone au serveur
-                            type: 'POST',
-                            url: '/register_new_profile_picture',   //URL où on envoie la requête
-                            data: formdata,                 //données envoyées avec la requête
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                alert("Réponse :" + response);
-                                refreshProfilePicture();
-                                //$("#PP_img_actual").load(window.location.href + " #PP_img_actual");
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(xhr.responseText);
-                                alert('Une erreur est survenue.');
-                            }
-                        });
-                    }
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
                 }
+                
+                const msgDiv = document.getElementById('msgChange');
+                if (data.done) {
+                    msgDiv.style.color = 'green';
+                } else {
+                    msgDiv.style.color = 'red';
+                }
+                msgDiv.textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         });
     </script>

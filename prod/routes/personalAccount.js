@@ -21,7 +21,7 @@ router.get('/personalAccount', async (req, res) => {
         delete req.session.error_msg;
 
         // Get all user datas and show it int the page
-        const query = "SELECT * FROM user WHERE ID=?";
+        const query = "SELECT ID, login,first_name,last_name, date_of_birth, gender, job, isSuperAdmin,id_region,score,profile_picture,mail FROM user WHERE ID=?";
         const response = await queryPromise(query, [req.session.user_id]);
             // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
             //          -> fonctionne avec async
@@ -42,6 +42,7 @@ router.get('/personalAccount', async (req, res) => {
             const isSuperAdmin = response[0].isSuperAdmin;
             const score = response[0].score;
 
+            console.log(region_id);
             // Récupération du nom de région
             const query_2 = "SELECT name FROM region WHERE ID=?";
             const response_2 = await queryPromise(query_2, [region_id]);
