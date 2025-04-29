@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 28 avr. 2025 à 20:32
--- Version du serveur : 8.0.39
+-- Généré le : mar. 29 avr. 2025 à 21:56
+-- Version du serveur : 8.3.0
 -- Version de PHP : 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -50,10 +50,8 @@ INSERT INTO `connected_object` (`ID`, `name`, `type`, `id_region`, `link`, `Apik
 (12, 'Nuc_03', 'production', 1, 'http://127.0.0.1:8002', 'key3'),
 (13, 'Wind_01', 'production', 2, 'http://127.0.0.1:8004', 'key5'),
 (14, 'Sol_01', 'production', 2, 'http://127.0.0.1:8003', 'key4'),
-(15, 'Dam_01', 'production', 3, 'http://localhost:8005', 'key6'),
 (16, 'Battery_01', 'production', 0, 'http://127.0.0.1:8006', 'key7'),
-(19, 'cons-01', 'cons', NULL, 'http://localhost:8007', 'key7'),
-(39, 'ykjhgjgj', 'production', 10, 'http://localhost:8000', 'ad');
+(19, 'cons-01', 'cons', NULL, 'http://localhost:8007', 'key7');
 
 -- --------------------------------------------------------
 
@@ -1157,7 +1155,182 @@ INSERT INTO `electricity_sensor` (`ID_object`, `date_need`, `electricity_need`) 
 (19, 1745764302, 1815),
 (19, 1745764307, 1879),
 (19, 1745764317, 2444),
-(19, 1745764327, 1142);
+(19, 1745764327, 1142),
+(19, 1745962731, 1722),
+(19, 1745962741, 2016),
+(19, 1745962746, 2186),
+(19, 1745962756, 1825),
+(19, 1745962761, 1122),
+(19, 1745962766, 871),
+(19, 1745962776, 1061),
+(19, 1745962781, 1397),
+(19, 1745962791, 1815),
+(19, 1745962796, 2226),
+(19, 1745962801, 1811),
+(19, 1745962811, 1639),
+(19, 1745962816, 2018),
+(19, 1745962826, 2184),
+(19, 1745962831, 1495),
+(19, 1745962836, 874),
+(19, 1745962846, 922),
+(19, 1745962851, 1258),
+(19, 1745962861, 1852),
+(19, 1745962866, 2078),
+(19, 1745962871, 1993),
+(19, 1745962881, 1744),
+(19, 1745962886, 2066),
+(19, 1745962901, 1749),
+(19, 1745962911, 943),
+(19, 1745962916, 946),
+(19, 1745962921, 1173),
+(19, 1745962931, 1711),
+(19, 1745962936, 1872),
+(19, 1745962946, 1936),
+(19, 1745962951, 1547),
+(19, 1745962956, 1803),
+(19, 1745962966, 2201),
+(19, 1745962971, 1694),
+(19, 1745962981, 893),
+(19, 1745962986, 846),
+(19, 1745962991, 1058),
+(19, 1745963001, 1504),
+(19, 1745963006, 1741),
+(19, 1745963016, 1692),
+(19, 1745963021, 1776),
+(19, 1745963026, 1717),
+(19, 1745963036, 2291),
+(19, 1745963041, 2295),
+(19, 1745963051, 1048),
+(19, 1745963056, 838),
+(19, 1745963061, 961),
+(19, 1745963071, 1340),
+(19, 1745963076, 1656),
+(19, 1745963086, 2127),
+(19, 1745963091, 1839),
+(19, 1745963096, 1684),
+(19, 1745963106, 2240),
+(19, 1745963111, 2299),
+(19, 1745963121, 1127),
+(19, 1745963126, 859),
+(19, 1745963136, 1014),
+(19, 1745963141, 1226),
+(19, 1745963146, 1589),
+(19, 1745963156, 1938),
+(19, 1745963161, 1758),
+(19, 1745963171, 1768),
+(19, 1745963176, 2102),
+(19, 1745963181, 2101),
+(19, 1745963191, 1415),
+(19, 1745963196, 893),
+(19, 1745963206, 927),
+(19, 1745963211, 1147),
+(19, 1745963216, 1511),
+(19, 1745963226, 2026),
+(19, 1745963231, 1740),
+(19, 1745963241, 1747),
+(19, 1745963246, 2023),
+(19, 1745963251, 2026),
+(19, 1745963261, 1526),
+(19, 1745963266, 1197),
+(19, 1745963276, 981),
+(19, 1745963281, 1217),
+(19, 1745963286, 1474),
+(19, 1745963296, 2080),
+(19, 1745963301, 1802),
+(19, 1745963311, 1543),
+(19, 1745963316, 1732),
+(19, 1745963321, 2064),
+(19, 1745963331, 1770),
+(19, 1745963336, 1370),
+(19, 1745963346, 899),
+(19, 1745963351, 920),
+(19, 1745963356, 1263),
+(19, 1745963366, 1919),
+(19, 1745963371, 1884),
+(19, 1745963381, 1796),
+(19, 1745963386, 1656),
+(19, 1745963391, 2092),
+(19, 1745963401, 2030),
+(19, 1745963406, 1517),
+(19, 1745963416, 849),
+(19, 1745963421, 971),
+(19, 1745963426, 1248),
+(19, 1745963436, 1924),
+(19, 1745963441, 2148),
+(19, 1745963451, 1936),
+(19, 1745963456, 1752),
+(19, 1745963461, 1679),
+(19, 1745963471, 2022),
+(19, 1745963476, 1591),
+(19, 1745963486, 933),
+(19, 1745963491, 822),
+(19, 1745963496, 1102),
+(19, 1745963506, 1542),
+(19, 1745963511, 2055),
+(19, 1745963521, 1765),
+(19, 1745963526, 1874),
+(19, 1745963531, 1810),
+(19, 1745963541, 2189),
+(19, 1745963546, 2161),
+(19, 1745963556, 869),
+(19, 1745963561, 887),
+(19, 1745963566, 885),
+(19, 1745963576, 1522),
+(19, 1745963581, 1891),
+(19, 1745963591, 1776),
+(19, 1745963596, 1637),
+(19, 1745963601, 1814),
+(19, 1745963611, 2259),
+(19, 1745963616, 2142),
+(19, 1745963626, 996),
+(19, 1745963631, 965),
+(19, 1745963636, 818),
+(19, 1745963646, 1554),
+(19, 1745963651, 1537),
+(19, 1745963661, 1965),
+(19, 1745963666, 1851),
+(19, 1745963671, 1615),
+(19, 1745963681, 2133),
+(19, 1745963686, 1975),
+(19, 1745963696, 1420),
+(19, 1745963701, 868),
+(19, 1745963706, 815),
+(19, 1745963716, 1403),
+(19, 1745963721, 1626),
+(19, 1745963731, 2002),
+(19, 1745963736, 1976),
+(19, 1745963741, 1876),
+(19, 1745963751, 1836),
+(19, 1745963756, 1989),
+(19, 1745963766, 1588),
+(19, 1745963771, 1020),
+(19, 1745963776, 877),
+(19, 1745963786, 1300),
+(19, 1745963791, 1403);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `employees`
+--
+
+DROP TABLE IF EXISTS `employees`;
+CREATE TABLE IF NOT EXISTS `employees` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `employees`
+--
+
+INSERT INTO `employees` (`ID`, `first_name`, `last_name`) VALUES
+(10, 'A', 'A'),
+(11, 'B', 'B2'),
+(12, 'C', 'C2'),
+(13, 'D', 'D2');
 
 -- --------------------------------------------------------
 
@@ -15627,33 +15800,35 @@ DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `admin_id` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`),
+  KEY `admin_id` (`admin_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `region`
 --
 
-INSERT INTO `region` (`ID`, `name`) VALUES
-(1, 'Auvergne-Rhône-Alpes'),
-(2, 'Bourgogne-Franche-Comté'),
-(3, 'Bretagne'),
-(4, 'Centre-Val de Loire'),
-(5, 'Corse'),
-(6, 'Grand Est'),
-(7, 'Guadeloupe'),
-(8, 'Guyane'),
-(9, 'Hauts-de-France'),
-(10, 'Ile-de-France'),
-(11, 'La Réunion'),
-(12, 'Martinique'),
-(13, 'Mayotte'),
-(14, 'Normandie'),
-(15, 'Nouvelle-Aquitaine'),
-(16, 'Occitanie'),
-(17, 'Pays de la Loire'),
-(18, 'Provence-Alpes-Côte d\'Azur');
+INSERT INTO `region` (`ID`, `name`, `admin_id`) VALUES
+(1, 'Auvergne-Rhône-Alpes', 1),
+(2, 'Bourgogne-Franche-Comté', 1),
+(3, 'Bretagne', 1),
+(4, 'Centre-Val de Loire', 1),
+(5, 'Corse', 1),
+(6, 'Grand Est', 1),
+(7, 'Guadeloupe', 1),
+(8, 'Guyane', 1),
+(9, 'Hauts-de-France', 1),
+(10, 'Ile-de-France', 1),
+(11, 'La Réunion', 1),
+(12, 'Martinique', 1),
+(13, 'Mayotte', 1),
+(14, 'Normandie', 1),
+(15, 'Nouvelle-Aquitaine', 1),
+(16, 'Occitanie', 1),
+(17, 'Pays de la Loire', 1),
+(18, 'Provence-Alpes-Côte d\'Azur', 1);
 
 -- --------------------------------------------------------
 
@@ -15681,7 +15856,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `unique_values` (`first_name`,`last_name`,`date_of_birth`),
   KEY `fk_id_region` (`id_region`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `user`
@@ -15689,7 +15864,44 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`ID`, `login`, `password`, `first_name`, `last_name`, `date_of_birth`, `mail`, `id_region`, `profile_picture`, `gender`, `job`, `isSuperAdmin`, `isValidated`, `score`) VALUES
 (22, 'b', '$2b$10$oAjNMz3HNwHFnZYHGstWD.WkcC3nr1ZBDDHrxytykMVVnvbWpobsW', 'b', 'b', '2025-04-02', 'donatien.linossier@gmail.com', 15, '', 'Non défini', NULL, 0, 1, 0),
-(21, 'a', '$2b$10$DH9fEJk8bMn2hFzlUtzbKOWU8glPgu10vcX/kmYdf738TWxE0dJLS', 'a', 'a', '2025-04-01', 'donatien.linossier@gmail.com', 17, '', 'Non défini', NULL, 1, 1, 8400);
+(21, 'a', '$2b$10$DH9fEJk8bMn2hFzlUtzbKOWU8glPgu10vcX/kmYdf738TWxE0dJLS', 'a', 'a', '2025-04-01', 'donatien.linossier@gmail.com', 17, '', 'Non défini', NULL, 1, 1, 9400),
+(23, 'Nico', '$2b$10$.2CCx8C5d8FHOvfPxWAiAufeKf31WqJ0bek4kI/KLPkixOVMhEcS6', 'Nicolas', 'A', '1989-04-07', 'totovadordlp@gmail.com', 10, '', 'Monsieur', NULL, 0, 0, 0),
+(24, 'MisterEgg', '$2b$10$Uq9lg5e60Uz6CAFVTb723.HSgVKv5uSITyfZA2HSrgEhU8My6.Sce', 'Mister', 'Egg', '1999-01-01', 'totovadordlp@gmail.com', 3, '', 'Non binaire', NULL, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user_info`
+--
+
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE IF NOT EXISTS `user_info` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `login` varchar(100) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `mail` varchar(100) DEFAULT NULL,
+  `profile_picture` varchar(255) NOT NULL,
+  `gender` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `profession` varchar(255) DEFAULT NULL,
+  `admin` varchar(255) DEFAULT NULL,
+  `score` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `user_info`
+--
+
+INSERT INTO `user_info` (`ID`, `login`, `password`, `first_name`, `last_name`, `mail`, `profile_picture`, `gender`, `profession`, `admin`, `score`) VALUES
+(2, 'david_guetta', 'MDPdg', 'David', 'Guetta', 'david.guetta@gmail.com', 'Accounts/ID_2/profile_picture/profile_picture_ID_2.jpg', 'Monsieur', 'DJ français', NULL, 0),
+(3, 'TS', 'MDPts', 'Taylor', 'Swift', 'taylor.swift@eras-tour.com', 'Accounts/ID_3/profile_picture/profile_picture_ID_3.jpg', 'Madame', 'Chanteuse du Eras tour.', NULL, 0),
+(4, 'Shakira', 'MDPshakira', 'Shakira', 'Isabel Mebarak Ripoll', 'shakira@gmail.com', 'Accounts/ID_4/profile_picture/profile_picture_ID_4.jpg', 'Madame', 'Chanteuse', NULL, 0),
+(1, 'Toto_admin', '0000', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'Administrateur du site.', 'oui', 0),
+(5, 'Toto', 'a', 'Thomas', 'toto', 'totovadordlp@gmail.com', '', 'Monsieur', 'JSP', NULL, 0),
+(50, 'B', 'B', 'B', 'B2', 'totovadordlp@gmail.com', '', 'Madame', NULL, NULL, 0),
+(49, 'A', 'A', 'A', 'A', 'totovadordlp@gmail.com', '', 'Madame', NULL, NULL, 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
