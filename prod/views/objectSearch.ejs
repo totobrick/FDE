@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image" href="Logos/logo_FDE.svg">
     <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/style4.css">
+    <link rel="stylesheet" href="css/style5_admin.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FDE : Mes informations</title>
 </head>
@@ -25,7 +27,7 @@
                             </div>
                         </form>
                         <div id="objects">
-                            Results...
+                            Résultats...
                         </div>
                     </div>
                 </div>
@@ -34,7 +36,6 @@
                 document.getElementById('searchForm').addEventListener('submit', function(e) {
                     e.preventDefault();
                     const name = document.getElementById('name').value;
-                    console.log("HALLO", name)
                     fetch('/oSearch', {
                         method: 'POST',
                         headers: {
@@ -51,7 +52,7 @@
                             data.forEach(object => {
                                 const div = document.createElement('div');
                                 div.classList.add('result-object');
-                                div.innerHTML = `<h3><a href="/object?obj=${object.ID}">${object.name}</a></h3><br>`;
+                                div.innerHTML = `<h3><a href="/object?id=${object.ID}">${object.name}</a></h3><br>`;
                                 container.appendChild(div);
                             });
                         } else {
@@ -60,7 +61,7 @@
                     })
                     .catch(err => {
                         console.error(err);
-                        document.getElementById('objects').innerHTML = '<p>Erreur lors de la recherche.</p>';
+                        document.getElementById('objects').innerHTML = `<p>Erreur lors de la recherche : ${err}</p>`;
                     });
                 });
                 </script>

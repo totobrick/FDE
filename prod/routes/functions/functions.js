@@ -46,4 +46,20 @@ function queryPromise(sql_query, values){
     });
 }
 
-module.exports = {isConnected, isSuperAdmin, queryPromise};
+
+async function addPoints(userId, pointsToAdd) {
+  const sql_query = 'UPDATE user SET score = score + ? WHERE id = ?';
+  const values = [pointsToAdd, userId];
+
+  try {
+    const result = await queryPromise(sql_query, values);
+    console.log(`+${pointsToAdd} points ajoutés à l'utilisateur ID ${userId}`);
+    return result;
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout des points :', error);
+    throw error;
+  }
+}
+
+
+module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints};

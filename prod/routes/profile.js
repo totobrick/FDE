@@ -27,7 +27,6 @@ router.get('/profile', (req, res) => {
         console.log("ERROR")
           return res.redirect('/');
       }
-      console.log("IT WENT WELL")
       const user = results[0];
       res.render('profile', { user,
         loginBtn: "Se connecter",

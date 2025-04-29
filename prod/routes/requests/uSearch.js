@@ -1,6 +1,7 @@
 const express = require('express');
 const sql = require('mysql2');
 const router = express.Router();
+const { addPoints } = require('../functions/functions.js');
 
 const connection = sql.createConnection({
     host: 'localhost',
@@ -17,12 +18,18 @@ router.post('/uSearch', (req, res) => {
     }
 
     const query = 'SELECT * FROM user WHERE login LIKE ?';
-    connection.query(query, ["%" + username + "%"], (err, results) => {
+    connection.query(query, ["%" + username + "%"], async (err, results) => {
         if (err) {
             console.error('Database query error: ', err);
             return res.status(500).json({ error: "Une erreur s'est produite. Veuillez réessayer plus tard." });
         }
         if (results.length > 0) {
+            try {
+                await addPoints(req.session.user_id, 100); 
+                console.log('Points ajoutés avec succès');
+            } catch (error) {
+                console.error('Erreur lors de l\'ajout des points : ', error);
+            }
             return res.json(results); // ✅ renvoie les données au frontend
         } else {
             return res.status(404).json({ error: 'Aucun utilisateur trouvé.' });

@@ -45,14 +45,77 @@
                         </div>
 
                         <script>
-                            function getRandomColor() {
-                                const letters = '0123456789ABCDEF';
-                                let color = '#';
-                                for (let i = 0; i < 6; i++) {
-                                    color += letters[Math.floor(Math.random() * 16)];
-                                }
-                                return color;
+                            function randomBetween(min, max) {
+                                return Math.floor(Math.random() * (max - min + 1) + min);
                             }
+
+                            function getColorByType(type) {
+                                switch (type) {
+                                    case 'consumption':
+                                        return randomYellow();
+                                    case 'SolarPanel':
+                                        return randomBlue();   
+                                    case 'WindTurbine':
+                                        return randomGreen();  
+                                    case 'Nuclear':
+                                        return randomRed(); 
+                                    case 'HydroelectricDam':
+                                        return randomViolet();  
+                                    case 'BatteryStorage':
+                                        return randomPink();   
+                                    default:
+                                        return randomRed();    
+                                }
+                            }
+
+                            // Fonction pour générer une nuance de rouge
+                            function randomRed() {
+                                const r = randomBetween(150, 255); // Rouge fort
+                                const g = randomBetween(0, 100);   // Peu de vert
+                                const b = randomBetween(0, 100);   // Peu de bleu
+                                return `rgb(${r}, ${g}, ${b})`;
+                            }
+
+                            // Fonction pour générer une nuance de bleu
+                            function randomBlue() {
+                                const r = randomBetween(0, 100);   // Peu de rouge
+                                const g = randomBetween(0, 100);   // Peu de vert
+                                const b = randomBetween(150, 255); // Bleu fort
+                                return `rgb(${r}, ${g}, ${b})`;
+                            }
+
+                            // Fonction pour générer une nuance de vert
+                            function randomGreen() {
+                                const r = randomBetween(0, 100);
+                                const g = randomBetween(150, 255);
+                                const b = randomBetween(0, 100);
+                                return `rgb(${r}, ${g}, ${b})`;
+                            }
+
+                            // Fonction pour générer une nuance de jaune
+                            function randomYellow() {
+                                const r = randomBetween(200, 255);
+                                const g = randomBetween(200, 255);
+                                const b = randomBetween(0, 50);
+                                return `rgb(${r}, ${g}, ${b})`;
+                            }
+
+                            // Fonction pour générer une nuance de violet
+                            function randomViolet() {
+                                const r = randomBetween(150, 255);
+                                const g = randomBetween(0, 100);
+                                const b = randomBetween(150, 255);
+                                return `rgb(${r}, ${g}, ${b})`;
+                            }
+
+                            // Fonction pour générer une nuance de rose
+                            function randomPink() {
+                                const r = randomBetween(200, 255);
+                                const g = randomBetween(100, 200);
+                                const b = randomBetween(150, 220);
+                                return `rgb(${r}, ${g}, ${b})`;
+                            }
+
                         
                             let myChart;
                             let datasetRefs = {};
@@ -62,16 +125,19 @@
                                 .then(data => {
                                     const datasets = [];
                                     const grouped = {};
-                                    const objectMap = {};
-                        
+                                    const objectMap = {}; // Pour stocker { type, type2 }
+
                                     if (<%= userConnected %>) {
                                         data.forEach(entry => {
                                             if (!grouped[entry.connected_object]) {
                                                 grouped[entry.connected_object] = [];
-                                                objectMap[entry.connected_object] = entry.type;
+                                                objectMap[entry.connected_object] = {
+                                                    type: entry.type,
+                                                    type2: entry.type2
+                                                };
                                             }
                                             grouped[entry.connected_object].push({
-                                                x: new Date(entry.date),
+                                                x: new Date(entry.date * 1000),
                                                 y: entry.value
                                             });
                                         });
@@ -80,27 +146,32 @@
                                             if (entry.type !== "consumption") return;
                                             if (!grouped[entry.connected_object]) {
                                                 grouped[entry.connected_object] = [];
-                                                objectMap[entry.connected_object] = entry.type;
+                                                objectMap[entry.connected_object] = {
+                                                    type: entry.type,
+                                                    type2: entry.type2
+                                                };
                                             }
                                             grouped[entry.connected_object].push({
-                                                x: new Date(entry.date),
+                                                x: new Date(entry.date * 1000),
                                                 y: entry.value
                                             });
                                         });
                                     }
-                        
+
                                     for (const [object, values] of Object.entries(grouped)) {
+                                        const typeInfo = objectMap[object];
+                                        const color = getColorByType(typeInfo.type2 || typeInfo.type); // Utilisation propre
                                         const dataset = {
                                             label: object,
                                             data: values,
                                             fill: false,
-                                            borderColor: getRandomColor(),
+                                            borderColor: color,
                                             tension: 0.1
                                         };
                                         datasets.push(dataset);
                                         datasetRefs[object] = dataset;
                                     }
-                        
+
                                     const ctx = document.getElementById('myChart').getContext('2d');
                                     myChart = new Chart(ctx, {
                                         type: 'line',
@@ -134,10 +205,74 @@
                                             }
                                         }
                                     });
-                        
+
+                                    // Correction de la fonction updateChart :
+                                    function updateChart() {
+                                        fetch('/data')
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                const grouped = {};
+                                                const newObjectMap = {};
+
+                                                if (<%= userConnected %>) {
+                                                    data.forEach(entry => {
+                                                        if (!grouped[entry.connected_object]) {
+                                                            grouped[entry.connected_object] = [];
+                                                            newObjectMap[entry.connected_object] = {
+                                                                type: entry.type,
+                                                                type2: entry.type2
+                                                            };
+                                                        }
+                                                        grouped[entry.connected_object].push({
+                                                            x: new Date(entry.date * 1000),
+                                                            y: entry.value
+                                                        });
+                                                    });
+                                                } else {
+                                                    data.forEach(entry => {
+                                                        if (entry.type !== "consumption") return;
+                                                        if (!grouped[entry.connected_object]) {
+                                                            grouped[entry.connected_object] = [];
+                                                            newObjectMap[entry.connected_object] = {
+                                                                type: entry.type,
+                                                                type2: entry.type2
+                                                            };
+                                                        }
+                                                        grouped[entry.connected_object].push({
+                                                            x: new Date(entry.date * 1000),
+                                                            y: entry.value
+                                                        });
+                                                    });
+                                                }
+
+                                                for (const [object, values] of Object.entries(grouped)) {
+                                                    if (datasetRefs[object]) {
+                                                        datasetRefs[object].data = values;
+                                                    } else {
+                                                        const typeInfo = newObjectMap[object];
+                                                        const color = getColorByType(typeInfo.type2 || typeInfo.type);
+
+                                                        const newDataset = {
+                                                            label: object,
+                                                            data: values,
+                                                            fill: false,
+                                                            borderColor: color,
+                                                            tension: 0.1
+                                                        };
+                                                        myChart.data.datasets.push(newDataset);
+                                                        datasetRefs[object] = newDataset;
+                                                    }
+                                                }
+
+                                                myChart.update();
+                                            });
+                                    }
+
+                                    setInterval(updateChart, 1000);
+
                                     const productionContainer = document.getElementById('production-checkboxes');
                                     const consumptionContainer = document.getElementById('consumption-checkboxes');
-                        
+
                                     Object.keys(datasetRefs).forEach(objectName => {
                                         const checkbox = document.createElement('input');
                                         checkbox.type = 'checkbox';
@@ -145,39 +280,41 @@
                                         checkbox.checked = true;
                                         checkbox.className = 'objectCheckbox';
                                         checkbox.id = `checkbox-${objectName}`;
-                        
+
                                         const label = document.createElement('label');
                                         label.htmlFor = checkbox.id;
                                         label.textContent = objectName;
-                        
+
                                         const div = document.createElement('div');
                                         div.appendChild(checkbox);
                                         div.appendChild(label);
-                        
-                                        const type = objectMap[objectName];
+
+                                        const typeInfo = objectMap[objectName];
+                                        const type = typeInfo.type;
                                         if (type === "production") {
                                             productionContainer.appendChild(div);
                                         } else if (type === "consumption") {
                                             consumptionContainer.appendChild(div);
                                         }
-                        
+
                                         checkbox.addEventListener('change', () => {
                                             updateChartVisibility();
-                                            updateParentCheckboxes(); 
+                                            updateParentCheckboxes();
                                         });
                                     });
-                        
+
                                     document.getElementById('parent-production').addEventListener('change', function () {
                                         setAllCheckboxesInGroup('production-checkboxes', this.checked);
                                     });
-                        
+
                                     document.getElementById('parent-consumption').addEventListener('change', function () {
                                         setAllCheckboxesInGroup('consumption-checkboxes', this.checked);
                                     });
-                        
+
                                     updateChartVisibility();
                                     updateParentCheckboxes();
                                 });
+
                         
                             function updateChartVisibility() {
                                 const checkedLabels = Array.from(document.querySelectorAll('.objectCheckbox:checked'))

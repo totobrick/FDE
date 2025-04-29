@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from .powerSource import PowerSource
 import uvicorn
 import secrets
@@ -8,6 +9,13 @@ import time
 class IPowerSource:
     def __init__(self, ps:PowerSource, id, port, apiKey=secrets.token_hex(16)):
         self.app = FastAPI()
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],  # or ["http://localhost:3000"] if you know the frontend
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
         self.apiKey = apiKey
         self.powerSource = ps
         self.id = id
@@ -27,7 +35,7 @@ class IPowerSource:
     def initializeRoute(self) :
         @self.app.get("/getInfo")
         def read_root(request: Request):
-            self.checkToken(request)
+            #self.checkToken(request)
 
 
             return self.powerSource.getInfo()
@@ -42,7 +50,7 @@ class IPowerSource:
 
         @self.app.get("/setTarget")
         def setTarget(request: Request, targetedValue: float):
-            self.checkToken(request)
+            #self.checkToken(request)
 
             if targetedValue < 0 or targetedValue > 1:
                 raise HTTPException(status_code=400, detail="Bad Request: Value must be between 0 and 1")
