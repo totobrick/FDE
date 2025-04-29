@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {isConnected} = require("./functions/functions.js");
+const {isConnected, superAdmin_mails} = require("./functions/functions.js");
 
 
 router.get('/index', (req, res) => {
+  console.log("\nPage : /index");
   const userConnected = isConnected(req);
 
   if(userConnected){
