@@ -105,6 +105,9 @@ app.use('/', GetObjSearchRouter);
 const verifLoginRouter = require('./routes/requests/verifLogin');
 app.use('/', verifLoginRouter);
 
+const deleteObjectRouter = require('./routes/delete');
+app.use('/', deleteObjectRouter);
+
 //Set the index page (the router defines the path in the index.js file)
 //NE MARCHE PAS
 const registerModificationAccount = require('./routes/requests/registerModificationAccount');
