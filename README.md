@@ -1,4 +1,4 @@
-# MVP : Minimum Viable Product
+# FDE Project
 
 ## 📌 Overview
 The MVP is about all the website structure and front.
@@ -22,31 +22,10 @@ After installation :
    - type : ```node -v```, if your version is not written there is a problem
    - type : ```npm -v```, if your version is not written there is a problem
 
-### mysql2
-To install mysql2 : 
-   - open your PowerShell terminal
-   - type : ```npm install mysql2``` (in the directory: FDE/cy-love-main)
-
-### express
-To install express : 
-   - open your PowerShell terminal
-   - type : ```npm install express``` (in the directory: FDE/cy-love-main)
-
-### express-session
-To install express-session : 
-   - open your PowerShell terminal
-   - type : ```npm install express-session``` (in the directory: FDE/cy-love-main)
-
-### fs
-To install fs : 
-   - open your PowerShell terminal
-   - type : ```npm install fs``` (in the directory: FDE/cy-love-main)
-
-### path
-To install path : 
-   - open your PowerShell terminal
-   - type : ```npm install path``` (in the directory: FDE/cy-love-main)
-
+### npm install
+To install npm : 
+   - open your bash terminal
+   - type : ```npm install``` (in the directory: FDE)
 
 
 ### General & database
