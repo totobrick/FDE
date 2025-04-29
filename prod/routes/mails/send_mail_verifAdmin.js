@@ -1,4 +1,7 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
+    // dotenv : charge les variables d'environnement
+    //          elles sont nécessaires pour l'adresse mail et mot de passe de l'expéditeur.
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
@@ -52,10 +55,10 @@ router.get('/send_mail_verifAdmin', async (req, res) => {
 
     // Mail de l'expéditeur
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: process.env.MAIL_service,
         auth: {
-            user: 'thomas.cylove@gmail.com',
-            pass: 'clkaicauxyofkysj'
+            user: process.env.MAIL_sender,
+            pass: process.env.MAIL_pwd
         }
     });
 
@@ -88,7 +91,7 @@ router.get('/send_mail_verifAdmin', async (req, res) => {
         // Envoi du mail
         //path: "./public/Logos/logo_FDE.svg",
         const mailOptions = {
-            from: 'thomas.cylove@gmail.com',
+            from: process.env.MAIL_sender,
             to: admin_mails,
             subject: "FDE : Validation d'un nouveau compte",
             text: textContent,

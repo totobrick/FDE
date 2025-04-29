@@ -1,4 +1,7 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
+    // dotenv : charge les variables d'environnement
+    //          elles sont nécessaires pour l'adresse mail et mot de passe de l'expéditeur.
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
@@ -18,10 +21,10 @@ router.get('/send_mail_forgot_pwd', (req, res) => {
 
     // Mail de l'expéditeur
     var transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: process.env.MAIL_service,
         auth: {
-            user: 'thomas.cylove@gmail.com',
-            pass: 'clkaicauxyofkysj'
+            user: process.env.MAIL_sender,
+            pass: process.env.MAIL_pwd
         }
     });
 
@@ -36,7 +39,8 @@ router.get('/send_mail_forgot_pwd', (req, res) => {
 
     // Version texte brut (fallback si HTML non supporté)
     const textContent = `
-        Mot de passe oublié
+        Mot de passe
+        Le mot de passe ci-dessous est un mot de passe généré, veuillez le changer lors de votre prochaine connexion.
         ID : ${user_id}
         Login : ${user_login}
         Mot de passe : ${user_pwd}
@@ -45,7 +49,7 @@ router.get('/send_mail_forgot_pwd', (req, res) => {
     // Envoi du mail
     //path: "./public/Logos/logo_FDE.svg",
     const mailOptions = {
-        from: 'thomas.cylove@gmail.com',
+        from: process.env.MAIL_sender,
         to: user_mail,
         subject: 'FDE : Mot de passe',
         text: textContent,
@@ -60,9 +64,11 @@ router.get('/send_mail_forgot_pwd', (req, res) => {
 
     transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-            return console.error("Erreur lors de l'envoi :", err);
+            console.error("Erreur lors de l'envoi :", err);
         }
-        req.session.error_msg= "Email envoyé avec succès ! Veuillez vérifier votre boîte mail. Si vous ne voyez pas de mail dans votre boîte de réception, pensez à vérifier vos spams ou attendez quelques minutes la réception de l'email.";
+        else {
+            req.session.error_msg= "Email envoyé avec succès ! Veuillez vérifier votre boîte mail. Si vous ne voyez pas de mail dans votre boîte de réception, pensez à vérifier vos spams ou attendez quelques minutes la réception de l'email.";
+        }
         return res.redirect(301, "/");
     });
 });
