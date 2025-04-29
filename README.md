@@ -22,8 +22,7 @@ After installation :
    - type : ```node -v```, if your version is not written there is a problem
    - type : ```npm -v```, if your version is not written there is a problem
 
-### npm install
-To install npm : 
+To install : 
    - open your bash terminal
    - type : ```npm install``` (in the directory: FDE)
 
