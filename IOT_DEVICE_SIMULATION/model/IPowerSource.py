@@ -35,7 +35,7 @@ class IPowerSource:
     def initializeRoute(self) :
         @self.app.get("/getInfo")
         def read_root(request: Request):
-            #self.checkToken(request)
+            self.checkToken(request)
 
 
             return self.powerSource.getInfo()
@@ -43,14 +43,14 @@ class IPowerSource:
 
         @self.app.get("/getProdData")
         def getStatus(request: Request):
-            #self.checkToken(request)
+            self.checkToken(request)
             
             return self.powerSource.getLastProd()
         
 
         @self.app.get("/setTarget")
         def setTarget(request: Request, targetedValue: float):
-            #self.checkToken(request)
+            self.checkToken(request)
 
             if targetedValue < 0 or targetedValue > 1:
                 raise HTTPException(status_code=400, detail="Bad Request: Value must be between 0 and 1")
