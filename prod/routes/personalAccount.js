@@ -4,17 +4,12 @@ const {isConnected, queryPromise} = require("./functions/functions.js");
 
 
 router.get('/personalAccount', async (req, res) => {
-    console.log("\nPage : /personalAccount");
-    console.log("Variables de session : ", req.session);
-    
     // try/catch : used in case of failure for the database connection or bad request
     try{
         // Check user is connected
         if(! isConnected(req)){
-            console.log("User not connected, redirection to : /index");
             return res.redirect('/index');
         };
-        console.log("User connected.");
 
         // Get error_msg in session var and delete session var content
         const error_msg = req.session.error_msg;
@@ -42,7 +37,6 @@ router.get('/personalAccount', async (req, res) => {
             const isSuperAdmin = response[0].isSuperAdmin;
             const score = response[0].score;
 
-            console.log(region_id);
             // Récupération du nom de région
             const query_2 = "SELECT name FROM region WHERE ID=?";
             const response_2 = await queryPromise(query_2, [region_id]);
@@ -51,16 +45,11 @@ router.get('/personalAccount', async (req, res) => {
 
             if (response_2.length != 1){
                 req.session.error_msg = "Un problème a été rencontré dans l'accès à votre région de rattachement !";
-                console.log("Table region : aucune ou plusieurs régions possédent l'id : ", region_id);
-                console.log(req.session.error_msg);
                 return res.redirect(301, '/homepage');
             }
             const region = response_2[0].name;
-            console.log("region : ", region);
-
 
             // Photo de profil (ou image par défaut si non existante)
-            console.log("profile_picture : ", profile_picture);
             var has_PP;
             // Pas de photo de profil
             if( profile_picture === ""){
@@ -72,7 +61,6 @@ router.get('/personalAccount', async (req, res) => {
                 has_PP = "yes";           // has_PP : has profile picture
             }
             var path_profile_picture = profile_picture + "?t=" + req.session.cache_buster;
-            console.log("path_profile_picture : ", path_profile_picture);
             
             res.render("personalAccount", { loginBtn: "Se déconnecter",
                                     path_loginBtn: "/logout",

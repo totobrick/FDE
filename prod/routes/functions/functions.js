@@ -2,12 +2,8 @@ const sql = require('mysql2');
 const bcrypt = require('bcrypt');
 
 function isConnected(req){
-  /*console.log("Fonction isConnected.");
-  console.log("Variables de session : ", req.session);*/
-
   // if user_id session var exists
   if (req.session.user_id){
-    console.log("req.session.user_id = ", req.session.user_id);
     return true;
   }
   else{
@@ -18,7 +14,6 @@ function isConnected(req){
 function isSuperAdmin(req){
   // if isSuperAdmin session var exists
   if (req.session.isSuperAdmin && req.session.isSuperAdmin=="1"){
-    console.log("req.session.isSuperAdmin = ", req.session.isSuperAdmin);
     return true;
   }
   else{
@@ -89,7 +84,7 @@ async function checkUserLevel(userId) {
     const rows = await queryPromise(sql_query, values);
 
     if (rows.length === 0) {
-      console.log('Utilisateur non trouvé.');
+      console.error('Utilisateur non trouvé.');
       return null;
     }
 
