@@ -3,13 +3,9 @@ const router = express.Router();
 const { isConnected, queryPromise } = require("./functions/functions.js");
 
 router.get('/register', async (req, res) => {
-  console.log("\nPage : /register");
-  console.log("Variables de session : ", req.session);
-
   // try/catch : used in case of failure for the database connection or bad request
   try {
     if (isConnected(req)) {
-      console.log("User connected, redirection to : /homepage");
       return res.redirect(301, '/homepage');
     };
     
@@ -20,9 +16,7 @@ router.get('/register', async (req, res) => {
     // Get all regions (id + name)
     const query = "SELECT ID, name FROM region";
     const regions = await queryPromise(query, []);
-    console.log("regions : ", regions);
-
-    console.log("User not connected.");
+    
     res.render("register", {
       loginBtn: "Se connecter",
       path_loginBtn: "/login",

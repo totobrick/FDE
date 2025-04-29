@@ -47,7 +47,7 @@ router.post('/requests/verifLogin', upload.none(), async (req, res) => {
             return res.status(200).json({ redirect: "/homepage"});
         }
         else if (response.length >= 2){
-            console.log("Erreur anormal : 2 utilisateurs possèdent le même login et mot de passe.");
+            console.error("Erreur anormal : 2 utilisateurs possèdent le même login et mot de passe.");
             return res.status(200).json({ message: "Internal Error."});
         }
         else{
