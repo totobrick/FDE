@@ -26,11 +26,10 @@ router.post('/checkLoginExists', async (req, res) => {
             const response_2 = await queryPromise(query_2, [login]);
             req.session.TMP_user_id = response_2[0].ID;
             req.session.TMP_login = login;
-            req.session.TMP_pwd = response_2[0].password;
             req.session.TMP_mail = response_2[0].mail;
 
             // Send email with password
-            return res.redirect(301, "/send_mail_forgot_pwd");        // 301 : http status for permanent redirection
+            return res.redirect(301, "/generatePwd");        // 301 : http status for permanent redirection
         }
         // Login does not exist
         else if (response.length == 0){

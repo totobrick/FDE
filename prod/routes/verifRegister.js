@@ -8,6 +8,8 @@ const {isConnected, queryPromise} = require("./functions/functions.js");
 router.post('/verifRegister', async (req, res) => {
     // try/catch : used in case of failure for the database connection or bad request
     try{
+        console.log("\nPage : /verifRegister");
+
         // Check if user is connected
         if(isConnected(req)){
             return res.redirect(301, '/homepage');

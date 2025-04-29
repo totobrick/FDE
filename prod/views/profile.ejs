@@ -14,14 +14,36 @@
     <div class="wrapper">
         <%- include('partials/header_connected') %>
         <main>
-            <h1>Profil de <%= user.login %></h1>
-
-            <div class="profile-card">
-                <p><strong>Nom d'utilisateur :</strong> <%= user.first_name %> <%= user.last_name %></p>
-                <p><strong>Email :</strong> <%= user.mail %></p>
+            <div class="container">
+                <div class="form-box">
+                    <div class="login-container" id="modify-account">
+                        <fieldset>
+                            <header>Informations sur <%= user.login %></header>
+                                <div class="input-box">
+                                    <div>Prénom</div>
+                                    <div class="info-field" id="display"><%= user.first_name %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Nom</div>
+                                    <div class="info-field" id="display"><%= user.last_name %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Région</div>
+                                    <div class="info-field" id="display"><%= reg.name %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Job</div>
+                                    <div class="info-field" id="display"><% if(user.job){user.job} else{"Non défini"} %></div>
+                                </div>
+                                <div class="input-box">
+                                    <div>Genre</div>
+                                    <div class="info-field" id="display"><%= user.gender %></div>
+                                </div>
+                            </fieldset>
+                        <a href="/userSearch">← Retour à la recherche</a>    
+                    </div>
+                </div>
             </div>
-
-            <a href="/userSearch">← Retour à la recherche</a>
         </main>
     </div>
 </body>

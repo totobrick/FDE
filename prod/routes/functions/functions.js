@@ -42,6 +42,18 @@ function queryPromise(sql_query, values){
     });
 }
 
+// Return the list of all superAdmin IDs
+async function superAdmin_mails(){
+  console.log("FUNCTION : superAdmin_mails");
+  const sql = "SELECT ID, mail FROM user WHERE isSuperAdmin = 1";
+  const response = await queryPromise(sql, []);
+  console.log("response.length : ", response.length);
+  console.log("response : ", response);
+  console.log("response[0].ID : ", response[0].ID);
+  console.log("response[0].mail : ", response[0].mail);
+  return response;
+}
+
 
 async function addPoints(userId, pointsToAdd) {
   const sql_query = 'UPDATE user SET score = score + ? WHERE id = ?';
@@ -57,6 +69,18 @@ async function addPoints(userId, pointsToAdd) {
   }
 }
 
+
+async function generatePassword(){
+  const list_ascii = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const size_pwd = 15;
+  var new_pwd = "";
+  for (var i=0; i<size_pwd; i++){
+    new_pwd += list_ascii[Math.floor(Math.random() * list_ascii.length)];
+  }
+  console.log("New password generated.");
+  return new_pwd;
+}
+
 // Hashing function
 async function hashPassword(password) {
   const saltRounds = 10; 
@@ -65,7 +89,7 @@ async function hashPassword(password) {
     return hash;
   } catch (err) {
     console.error('Error hashing password:', err);
-    return ""
+    return "";
   }
 }
 
@@ -102,4 +126,4 @@ async function checkUserLevel(userId) {
 
 
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, hashPassword,getUserLevel, checkUserLevel };
+module.exports = {isConnected, isSuperAdmin, queryPromise, superAdmin_mails, addPoints, generatePassword, hashPassword,getUserLevel, checkUserLevel };
