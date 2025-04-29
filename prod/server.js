@@ -114,6 +114,9 @@ app.use('/', GetObjSearchRouter);
 const verifLoginRouter = require('./routes/requests/verifLogin');
 app.use('/', verifLoginRouter);
 
+const deleteObjectRouter = require('./routes/delete');
+app.use('/', deleteObjectRouter);
+
 
 const registerModificationAccount = require('./routes/requests/registerModificationAccount');
 app.use('/', registerModificationAccount);

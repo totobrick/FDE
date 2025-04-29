@@ -34,7 +34,7 @@
                                     <% } %></div>
                                 </div>
                                 
-                                <% if (niveau > 2 && type[0] !== undefined && type[0].type2 !== "SolarPanel" && type[0].type2 !== "WindTurbine") { %>
+                                <% if (niveau >= 2 && type[0] !== undefined && type[0].type2 !== "SolarPanel" && type[0].type2 !== "WindTurbine") { %>
                                         <div class="input-box">
                                             <label for="range">Production</label>
                                             <input type="range" min="0" max="100" value="50" class="slider" id="myRange">
@@ -72,7 +72,7 @@
             
                                             </script>
                                   <% } %>
-                                  <% if (niveau > 2 && type[0] !== undefined && (type[0].type2 == "SolarPanel" || type[0].type2 == "WindTurbine")) { %>
+                                  <% if (niveau >= 2 && type[0] !== undefined && (type[0].type2 == "SolarPanel" || type[0].type2 == "WindTurbine")) { %>
                                         <div class="input-box">
                                             <label for="range">Production</label>
                                             <input type="checkbox" id="switch"> Activer la production
@@ -112,8 +112,35 @@
             
             
                                             </script>
-                                  <% } %>
-                        </fieldset>
+                                    <% } %>
+                                <% if (niveau > 2) { %>
+                                    <form action="/delete" id="searchForm">
+                                        <button type="submit">SUPPRIMER L'OBJET</button>
+                                    </form>
+                                    <script>
+                                        document.getElementById('searchForm').addEventListener('submit', function(e) {
+                                            e.preventDefault();
+                                            fetch('/delete', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify({ID: <%- JSON.stringify(obj.ID) %>})
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.redirectUrl) {
+                                                    window.location.href = data.redirectUrl;
+                                                }
+                                            })
+                                            .catch(err => {
+                                                console.error(err);
+                                                document.getElementById('objects').innerHTML = `<p>Erreur lors de la recherche : ${err}</p>`;
+                                            });
+                                        });
+                                        </script>
+                                    <% } %>
+                                </fieldset>
                         <canvas id="myChart" style="width:100%; background-color: rgba(255,255,255,0.5); border-radius: 5px; padding: 5px;"></canvas>
                             <script>
                                 const dataFromServer = <%- JSON.stringify(data) %>;

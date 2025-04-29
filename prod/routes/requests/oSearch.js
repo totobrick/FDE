@@ -11,7 +11,6 @@ const connection = sql.createConnection({
 });
 
 router.post('/oSearch', (req, res) => {
-    console.log('BODY:', req); 
     const { name } = req.body;
 
     if (!name) {
