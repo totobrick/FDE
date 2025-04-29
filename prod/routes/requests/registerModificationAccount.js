@@ -2,9 +2,37 @@ const express = require('express');
 const router = express.Router();
 const {isConnected, queryPromise} = require("./../functions/functions.js");
 const multer = require('multer');
-const upload = multer();
+const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 
-router.post('/registerModificationAccount', upload.none(), async (req, res) => {
+cloudinary.config({
+    cloud_name: 'dvvoprwgu',
+    api_key: '442214415335732',
+    api_secret: 'uIvwK7aHCmXJ4T1OB3R3QjsvbE0'
+});
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); 
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true); 
+        } else {
+            cb(new Error('Only image files are allowed!'), false); 
+        }
+    }
+}).single('Profile_picture');
+
+router.post('/registerModificationAccount', upload, async (req, res) => {
 
 
     const user_ID = req.session.user_id;
@@ -13,7 +41,6 @@ router.post('/registerModificationAccount', upload.none(), async (req, res) => {
         return res.status(200).json({redirect:"/index"});
     }
 
-    // if form not submitted
     if (! req.body ){
         return res.status(200).json({ message: "Internal Error.", done:false});
     }
@@ -46,30 +73,24 @@ router.post('/registerModificationAccount', upload.none(), async (req, res) => {
         }
 
         if(new_mail != response[0].mail){
-            console.log("L'utilisateur veut changer d'adresse mail !");
             return res.status(200).json({ message: "Vous ne pouvez pas changer votre adresse mail.", done:false});
         }
         
 
-        console.log("Pas de changement de mail.");
 
-        // Login changes
         if (new_login != response[0].login){
-            // Check if new login does not exist in database
+
             const query_0 = "SELECT login FROM user WHERE BINARY login = ?";
                 // BINARY : permet de tenir compte de la casse des caracteres
             const response_0 = await queryPromise(query_0, [new_login, req.session.user_id]);
                 // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
                 //          -> fonctionne avec async
             
-            // Login incorrect : it exists in database
             if (response_0.length > 0){
                 error_msg = "Le login " + new_login + " est déjà pris par un autre utilisateur !";
-                console.log(error_msg);
                 return res.status(200).json({ message: error_msg, done:false});
             }
 
-            // Login is valid
             const query_1= `UPDATE user
                             SET login = ?
                             WHERE ID = ?`;
@@ -80,6 +101,27 @@ router.post('/registerModificationAccount', upload.none(), async (req, res) => {
 
         score = response[0].score;
         new_score = score + 100;
+
+        let profilePicUrl = null;
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path);
+
+            const filePath = path.join(__dirname, '../../uploads/', req.file.filename);
+
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                }
+            });
+
+            profilePicUrl = result.secure_url;
+            const query_2= `UPDATE user
+                        SET profile_picture = ?
+                        WHERE ID = ?`;
+
+            const response_2 = await queryPromise(query_2, [profilePicUrl, req.session.user_id]);
+        }
+    
 
         const query_2= `UPDATE user
                         SET first_name = ?, last_name = ?, gender = ?, job = ?, score = ?

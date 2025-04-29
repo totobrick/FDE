@@ -22,7 +22,7 @@
                         <fieldset>
                             <header>Vos informations</header>
                             <div class='error_msg' id='msgChange'></div>
-                            <form id="changeData">
+                            <form id="changeData" enctype="multipart/form-data">
                                 <div class="input-box">
                                     <div>Points</div>
                                     <div class="info-field" id="score"><%= score %></div>
@@ -68,11 +68,11 @@
                                 </div>
                                 <div class="input-box">
                                     <label for="Email">Email</label>
-                                    <input type="text" name="Email" id="Email" class="input-field" value="<%= mail %>" disabled>
+                                    <input type="text" name="Email" id="Email" class="input-field" value="<%= mail %>">
                                 </div>
                                 <div class="input-box">
                                     <label>Photo de profil</label>
-                                    <input type="file" name="Profile_picture" id="Profile_picture" accept="image/jpeg">
+                                    
                                     <div class="Profile_picture_area" id="Profile_picture_area">
                                         <div class="PP_block_img" id="PP_block_img">
                                             <div class="profile-img vertical-img" id="PP_img_container">
@@ -84,18 +84,8 @@
                                             </div>
                                         </div>
                                         <div class="PP_block_btn">
-                                            <% if(has_PP === "yes"){ %>
-                                                <div class="PP_delete-img_btn">
-                                                    <button id="delete_actual_PP">Supprimer photo</button>
-                                                </div>
-                                                <div class="PP_add-img_btn">
-                                                    <button id="change_actual_PP">changer photo</button>
-                                                </div>
-                                            <% } else { %>
-                                                <div class="PP_add-img_btn">
-                                                    <button id="change_actual_PP">Ajouter une photo</button>
-                                                </div>
-                                            <% } %>
+                                            <label for="Profile_picture" class="upload-btn" id="change_actual_PP">Choisir une image</label>
+                                            <input type="file" name="Profile_picture" id="Profile_picture" accept="image/*"><br><br>
                                         </div>
                                     </div>
                                 </div>
@@ -141,26 +131,6 @@
         </main>
     </div>
     <script>
-        // Centrer l'image dans le cercle
-        const img= new Image();
-        img.src = document.getElementById('PP_img_actual').getAttribute('src');
-        const img_container = document.getElementById('PP_img_container');
-        img.onload = function(){
-            // image verticale
-            if (img.height >= img.width){
-                img_container.classList.remove("horizontal-img");
-                img_container.classList.add("vertical-img");
-                //alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg verticale.");
-            }
-            // image horizontale
-            else {
-                img_container.classList.remove("vertical-img");
-                img_container.classList.add("horizontal-img");
-                //alert("Width : " + img.width + ", Height : " + img.height + " ."  + "\nLIEN : " + img.src + "\nImg horizontale.");
-            }
-        }
-
-
         document.getElementById('changepwd').addEventListener('submit', function(event) {
             event.preventDefault();
 

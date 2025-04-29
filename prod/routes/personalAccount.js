@@ -66,7 +66,6 @@ router.get('/personalAccount', async (req, res) => {
             if( profile_picture === ""){
                 has_PP = "no";            // has_PP : has profile picture
                 profile_picture = "Logos/profile_picture.svg";
-                console.log("profile_picture : ", profile_picture);
             }
             // Avec photo de profil
             else{
