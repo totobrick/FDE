@@ -9,7 +9,6 @@ router.post('/verifRegister', async (req, res) => {
     // try/catch : used in case of failure for the database connection or bad request
     try{
         console.log("\nPage : /verifRegister");
-        console.log("Variables de form : ", req.body);
 
         // Check if user is connected
         if(isConnected(req)){
@@ -22,9 +21,6 @@ router.post('/verifRegister', async (req, res) => {
         const response = await queryPromise(query, [req.body.Login]);
                 // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
                 //          -> fonctionne avec async
-        
-        console.log("Nb lignes : ", response.length);
-        console.log("response", response);
 
         if (response.length > 0){
             req.session.error_msg = "Le login " + req.body.Login + " est déjà utilisé, veuillez en choisir un autre.";
@@ -33,7 +29,6 @@ router.post('/verifRegister', async (req, res) => {
         }
 
         const code = Math.floor(Math.random() * 900000000000) + 100000000000;
-        console.log("Verif code : ", code);
 
         req.session.gender = req.body.Gender;         //name of the input field
         req.session.fname = req.body.Firstname;       //name of the input field

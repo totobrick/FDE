@@ -43,12 +43,21 @@ app.use('/', emptyPathRouter);
 const homepageRouter = require('./routes/homepage');
 app.use('/', homepageRouter);
 
+// Path for login
 const loginRouter = require('./routes/login');
 app.use('/', loginRouter);
+
+// Paths for forgot password (and new password generated and sent)
 const forgotPwdRouter = require('./routes/forgot_pwd');
 app.use('/', forgotPwdRouter);
+const generatePwdRouter = require('./routes/requests/generatePwd');
+app.use('/', generatePwdRouter);
+
+
 const checkLoginExistsRouter = require('./routes/checkLoginExists');
 app.use('/', checkLoginExistsRouter);
+
+
 const sendMailForgotPwdRouter = require('./routes/mails/send_mail_forgot_pwd');
 app.use('/', sendMailForgotPwdRouter);
 

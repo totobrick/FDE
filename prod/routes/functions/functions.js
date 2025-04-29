@@ -62,6 +62,18 @@ async function addPoints(userId, pointsToAdd) {
   }
 }
 
+
+async function generatePassword(){
+  const list_ascii = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const size_pwd = 15;
+  var new_pwd = "";
+  for (var i=0; i<size_pwd; i++){
+    new_pwd += list_ascii[Math.floor(Math.random() * list_ascii.length)];
+  }
+  console.log("New password generated.");
+  return new_pwd;
+}
+
 // Hashing function
 async function hashPassword(password) {
   const saltRounds = 10; 
@@ -70,9 +82,9 @@ async function hashPassword(password) {
     return hash;
   } catch (err) {
     console.error('Error hashing password:', err);
-    return ""
+    return "";
   }
 }
 
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, hashPassword};
+module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, generatePassword, hashPassword};
