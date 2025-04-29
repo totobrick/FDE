@@ -86,3 +86,5 @@ node server.js
 ```
 
 ---
+
+Le rapport sur notre projet se trouve dans le fichier Rapport_projet.pdf.
