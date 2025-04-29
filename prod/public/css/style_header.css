@@ -21,14 +21,16 @@ header.nav{
 .main_menu{
     background-color : #0C3949; /*#219EBC*/
     box-sizing: border-box;
+    font-size: 16px;
     display: flex;
     overflow : auto;
     /*position: absolute;*/
     justify-content: space-between;
     width: 100%;
-    min-height: 50px;
+    min-height: 70px;
     padding: 0 30px;
     border-top: 1px solid #10181D;
+    transition: .5s ease;
     
     /*border: 1px solid red;*/
 }
@@ -72,7 +74,7 @@ header.nav{
     padding: 0;
     margin: 0;
     height: 100%;
-    transition: .3s ease;
+    transition: .5s ease;
     /*border: 1px solid red;*/
 }
 
@@ -89,7 +91,7 @@ header.nav{
     align-items: center;
     height: 100%;
     margin-right: 20px;
-    transition: .3s ease;
+    transition: .5s ease;
 }
 .nav .menu-profile-picture .profile-img{
     display: flex;
@@ -99,7 +101,7 @@ header.nav{
     height: 100%;
     aspect-ratio: 1 / 1; /*échelle 1/1; on peut prendre 16/9, ...*/
     border-radius: 50%;
-    transition: .3s ease;
+    transition: .5s ease;
     background-color: rgb(230, 230, 230);
 }
 .nav .menu-profile-picture .profile-img img{
@@ -163,24 +165,21 @@ header.nav{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     height: 100%;
     /*border: 1px solid green;*/
 }
 .nav-button .btn{
-    font-size: 13px;
+    font-size: 14px;
     width: 130px;
     height: 40px;
     margin: 0 5px;
-    font-weight: 500;
     color: #ffffff;
     /*background: rgba(255, 255, 255, 0.4);*/
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: .3s ease;
-}
-.btn:hover{
-    background: rgba(255, 255, 255, 0.3);
+    transition: 1.5s ease;
 }
 .btn#login-btn {
     background-color: rgba(247, 127, 0, 0.85); /*#00A6D9*/
@@ -214,7 +213,7 @@ header.nav{
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(20px); /*flou*/
     overflow: auto;
-    transition: .3s;
+    transition: .5s ease;
 }
 .nav-menu.responsive {
     top: 70px;
@@ -274,27 +273,31 @@ header.nav{
 
 
 /* Responsive */
-@media (max-width: 800px){
-    .nav-button .btn{
-        width: 100px;/*130px*/
-        height: 34px; /*40px*/
-        border-radius: 17px;
-        margin: 0 2px;
+
+@media (max-width: 650px){
+    .main_menu{
+        font-size: 14px;
+        padding: 0 10px;
     }
 }
 
-@media (max-width: 700px){
-    .nav-logo{
+@media (max-width: 550px){
+    /*.nav-logo{
         width: 40%;
     }
     .nav-logo img{
         height: auto;
         max-height: 100%;
         max-width: 100%;
-    }
+    }*/
+    
     .nav-button{
         flex-direction: column;
     }
+    .nav-button .btn{
+        font-size: 13px;
+    }
+    /*
     .nav-button .btn{
         height: 26px;
     }
@@ -305,39 +308,36 @@ header.nav{
     .btn#register-btn{
         margin-top: auto;
         margin-bottom: 0;
-    }
-
-    .nav .menu-profile-picture{
-        margin-right: 5px;
-    }
-    .nav .menu-profile-picture .profile-img{
-        display: flex;
-        justify-content: center; /*center horizontally*/
-        align-items: center; /*center vertically*/
-        overflow: hidden;
-        height: 100%;
-        aspect-ratio: 1 / 1; /*échelle 1/1; on peut prendre 16/9, ...*/
-        border-radius: 50%;
-        background-color: rgb(230, 230, 230);
-    }
+    }*/
 }
 
+@media (max-width: 500px){
+    .main_menu ul li a{
+        padding : 0 2px;
+    }
+}
+@media (max-width: 450px){
+    .main_menu{
+        font-size: 12px;
+        padding: 0 5px;
+    }
+}
 @media (max-width: 400px){
+    .nav-logo {
+        height: 90%;
+    }
+    .nav-button .btn{
+        width: 120px;
+        height: 35px;
+        margin: 0 5px;
+    }
+
     /* Barres latérales (3) : menu déroulant*/
     .menu-btn .bar1, .menu-btn .bar2, .menu-btn .bar3 {
         width: calc(0.7 * 70px);
         height: 10px;
     }
 }
-/*
-@media (max-width: 400px){
-    .nav-logo{
-        width: 50%;
-    }
-    .nav-button{
-        display: none;
-    }
-}*/
 
 @media (max-width: 330px){
     .nav-button .btn{
@@ -346,10 +346,5 @@ header.nav{
     }
     .nav .menu-profile-picture .profile-img{
         height: 90%;
-    }
-}
-@media (max-width: 280px){
-    .nav .menu-profile-picture{
-        display: none;
     }
 }
