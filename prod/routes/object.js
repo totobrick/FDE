@@ -76,7 +76,6 @@ router.get('/object', async (req, res) => {
             JOIN production_type pt ON p.type = pt.id
             WHERE co.type = 'production'
             AND co.ID = ?`, [objectId]);
-
     if(!data){
         data = NaN;
     }
