@@ -32,7 +32,7 @@ router.post('/oSearch', (req, res) => {
             } catch (error) {
                 console.error('Erreur lors de l\'ajout des points : ', error);
             }
-            return res.json(results); // ✅ renvoie les données au frontend
+            return res.json(results);
         } else {
             return res.status(404).json({ error: 'Aucun objet trouvé.' });
         }

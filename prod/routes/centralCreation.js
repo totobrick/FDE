@@ -1,7 +1,9 @@
 const express = require('express');
 const axios = require('axios');
-const {isConnected} = require("./functions/functions.js");
+/*const {isConnected} = require("./functions/functions.js");
 const { addPoints } = require('./functions/functions.js');
+const { checkUserLevel } = require('./functions/functions.js');*/
+const { isConnected,addPoints, checkUserLevel, queryPromise } = require("./functions/functions.js");
 const router = express.Router();
 const mysql = require('mysql2');
 
@@ -12,31 +14,42 @@ const db = mysql.createConnection({
     database: 'fde_database'  
 });
 
-router.get('/centralCreation', (req, res) => {
+router.get('/centralCreation', async (req, res) => {
     console.log("\nPage : /centralCreation");
     console.log("Variables de session : ", req.session);
-      if(! isConnected(req)){
-          console.log("User not connected, redirection to : /index");
-          return res.redirect('/index');
-      };
-
-    const sql = 'SELECT ID, name FROM region'; 
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Erreur lors de la récupération des régions : ", err);
-            return res.status(500).send('Erreur serveur');
-        }
-    
+  
+    if (!isConnected(req)) {
+      console.log("User not connected, redirection to : /index");
+      return res.redirect('/index');
+    }
+  
+    try {
+      const userId = req.session.user_id;
+      const level = await checkUserLevel(userId);
+  
+      if (level !== 3) {
+        console.log("Niveau insuffisant : accès refusé.");
+        return res.redirect('/index');
+      }
+  
+      const sql = 'SELECT ID, name FROM region';
+      const regions = await queryPromise(sql);
+  
       console.log("User connected.");
-      res.render("centralCreation", { loginBtn: "Se déconnecter",
-                                    path_loginBtn: "/logout",
-                                    welcome_msg: "Bienvenue " + req.session.login + ".",
-                                    account_menu : true,
-                                    regions : results
-        });
-    });
-});
-
+      res.render("centralCreation", {
+        loginBtn: "Se déconnecter",
+        path_loginBtn: "/logout",
+        welcome_msg: "Bienvenue " + req.session.login + ".",
+        account_menu: true,
+        regions: regions
+      });
+  
+    } catch (err) {
+      console.error("Erreur serveur :", err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+  
 router.post('/submit_form', async (req, res) => {
     const { Nom, Région, Lien, Clé } = req.body;
 
