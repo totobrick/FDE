@@ -100,7 +100,7 @@ router.post('/registerModificationAccount', upload, async (req, res) => {
         }
 
         score = response[0].score;
-        new_score = score + 100;
+        new_score = score + 50;
 
         let profilePicUrl = null;
         if (req.file) {
