@@ -17,15 +17,16 @@
             <div class="login-container">
               <fieldset>
                 <header>Formulaire de création d'un objet</header>
-                <form action="/submit_form" method="POST">
+                <div class='error_msg' id='msgRetour'></div>
+                <form id= "centralCreationAdd" action="/centralCreationRequest" method="POST">
                   <div class="input-box">
                     <label for="Nom">Nom</label>
                     <input type="text" name="Nom" class="input-field" required>
                   </div>
   
                   <div class="input-box">
-                    <label for="Région">Région</label>
-                    <select name="Région" class="input-field" required>
+                    <label for="Region">Région</label>
+                    <select name="Region" class="input-field" required>
                       <option value="">-- Sélectionner une région --</option>
                       <% regions.forEach(region => { %>
                         <option value="<%= region.ID %>"><%= region.name %></option>
@@ -39,8 +40,8 @@
                   </div>
   
                   <div class="input-box">
-                    <label for="Clé">Clé</label>
-                    <input type="text" name="Clé" class="input-field">
+                    <label for="Cle">Clé</label>
+                    <input type="text" name="Cle" class="input-field">
                   </div>
                   <div class="input-box">
                     <input type="submit" name="submit" class="submit" value="Enregistrer">
@@ -52,5 +53,43 @@
         </div>
       </main>
     </div>
+    <script>
+        document.getElementById('centralCreationAdd').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/centralCreationRequest', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+
+                if (!response.ok) {
+                   console.error("Internal Error")
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+                
+                const msgDiv = document.getElementById('msgRetour');
+                if (data.done) {
+                    msgDiv.style.color = 'green';
+                } else {
+                    msgDiv.style.color = 'red';
+                }
+                msgDiv.textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+
+    </script>
   </body>
 </html>

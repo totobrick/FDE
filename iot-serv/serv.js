@@ -57,9 +57,9 @@ const getAndPushData = async () => {
             }
 
         } catch (error) {
-            console.error(`Error fetching from ${api.url}`);
-            console.error("Status:", error.response?.status || "Unknown error");
-            console.error("Details:", error.response?.data || error.message);
+            //console.error(`Error fetching from ${api.url}`);
+            //console.error("Status:", error.response?.status || "Unknown error");
+            //console.error("Details:", error.response?.data || error.message);
         }
     }
 
@@ -70,4 +70,4 @@ const getAndPushData = async () => {
 
 
 
-setInterval(getAndPushData, 5000);
+setInterval(getAndPushData, 7000);

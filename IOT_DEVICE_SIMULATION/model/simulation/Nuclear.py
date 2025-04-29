@@ -10,7 +10,7 @@ class Nuclear(PowerSource):
         self.min_exploitable = 0.25 
         self.targeted_exploitation = 0.5 
         self.actual_exploitation = 0.25 
-        self.adjustment_rate = 0.0005 
+        self.adjustment_rate = 0.005 
 
     
 

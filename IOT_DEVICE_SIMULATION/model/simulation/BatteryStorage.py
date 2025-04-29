@@ -4,9 +4,9 @@ class BatteryStorage(PowerSource):
     def __init__(self, name, area):
         super().__init__(name, area)
 
-        self.capacity = 5000         
-        self.current_charge = 500   
-        self.charge_rate = 50       
+        self.capacity = 5000 * 10 #simulation par 10        
+        self.current_charge = 500 * 10 #simulation par 10
+        self.charge_rate = 50 * 10 #simulation par 10      
         self.efficiency = 0.95       
         self.target_power = 0  
         self.targeted_exploitation = 0     
