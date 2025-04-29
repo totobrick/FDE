@@ -2,8 +2,14 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
+const {superAdmin_mails} = require("./../functions/functions.js");
 
-router.get('/send_mail_verifAdmin', (req, res) => {
+router.get('/send_mail_verifAdmin', async (req, res) => {
+    console.log("\nPage : /send_mail_verifAdmin");
+    if (! req.session.mail){
+        console.error("Variables de session manquante inexistantes. Mail au superAdmin non envoyé car les champs du compte créés seraient 'undefined'.");
+        return res.redirect(301, '/');
+    }
     // Récupération des variables de session de l'utilisateur créé
     const user_gender = req.session.gender;
     const user_fname = req.session.fname;
@@ -21,6 +27,28 @@ router.get('/send_mail_verifAdmin', (req, res) => {
     delete req.session.region;
     delete req.session.mail;
     delete req.session.login;
+
+    // Liste contenant tous les mails des super Admin
+    const resultat = await superAdmin_mails();
+    console.log("resultat.length : ", resultat.length);
+    console.log("resultat : ", resultat);
+    if (resultat.length == 0){
+        console.log("Aucun superAdmin trouvé dans la table user. Le compte ne pourra jamais être validé.");
+        req.session.error_msg += "Aucun superAdmin dans la base de données, votre ne pourra pas être validé.";
+        return res.redirect(301, '/');
+    }
+
+    var admin_mails = resultat[0].mail;
+    console.log("admin_mails : ", admin_mails);
+    for (var i=1; i<resultat.length; i++){
+        console.log("resultat["+i+"].ID : ", resultat[i].ID);
+        console.log("resultat["+i+"].mail : ", resultat[i].mail);
+        admin_mails += ", ";
+        admin_mails += resultat[i].mail;
+        console.log("admin_mails : ", admin_mails);
+    }
+
+
 
     // Mail de l'expéditeur
     const transporter = nodemailer.createTransport({
@@ -61,7 +89,7 @@ router.get('/send_mail_verifAdmin', (req, res) => {
         //path: "./public/Logos/logo_FDE.svg",
         const mailOptions = {
             from: 'thomas.cylove@gmail.com',
-            to: user_mail,
+            to: admin_mails,
             subject: "FDE : Validation d'un nouveau compte",
             text: textContent,
             html: htmlContent,

@@ -15627,35 +15627,33 @@ DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `admin_id` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `name` (`name`),
-  KEY `admin_id` (`admin_id`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `region`
 --
 
-INSERT INTO `region` (`ID`, `name`, `admin_id`) VALUES
-(1, 'Auvergne-Rhône-Alpes', 1),
-(2, 'Bourgogne-Franche-Comté', 1),
-(3, 'Bretagne', 1),
-(4, 'Centre-Val de Loire', 1),
-(5, 'Corse', 1),
-(6, 'Grand Est', 1),
-(7, 'Guadeloupe', 1),
-(8, 'Guyane', 1),
-(9, 'Hauts-de-France', 1),
-(10, 'Ile-de-France', 1),
-(11, 'La Réunion', 1),
-(12, 'Martinique', 1),
-(13, 'Mayotte', 1),
-(14, 'Normandie', 1),
-(15, 'Nouvelle-Aquitaine', 1),
-(16, 'Occitanie', 1),
-(17, 'Pays de la Loire', 1),
-(18, 'Provence-Alpes-Côte d\'Azur', 1);
+INSERT INTO `region` (`ID`, `name`) VALUES
+(1, 'Auvergne-Rhône-Alpes'),
+(2, 'Bourgogne-Franche-Comté'),
+(3, 'Bretagne'),
+(4, 'Centre-Val de Loire'),
+(5, 'Corse'),
+(6, 'Grand Est'),
+(7, 'Guadeloupe'),
+(8, 'Guyane'),
+(9, 'Hauts-de-France'),
+(10, 'Ile-de-France'),
+(11, 'La Réunion'),
+(12, 'Martinique'),
+(13, 'Mayotte'),
+(14, 'Normandie'),
+(15, 'Nouvelle-Aquitaine'),
+(16, 'Occitanie'),
+(17, 'Pays de la Loire'),
+(18, 'Provence-Alpes-Côte d\'Azur');
 
 -- --------------------------------------------------------
 

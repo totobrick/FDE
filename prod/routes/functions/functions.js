@@ -42,6 +42,18 @@ function queryPromise(sql_query, values){
     });
 }
 
+// Return the list of all superAdmin IDs
+async function superAdmin_mails(){
+  console.log("FUNCTION : superAdmin_mails");
+  const sql = "SELECT ID, mail FROM user WHERE isSuperAdmin = 1";
+  const response = await queryPromise(sql, []);
+  console.log("response.length : ", response.length);
+  console.log("response : ", response);
+  console.log("response[0].ID : ", response[0].ID);
+  console.log("response[0].mail : ", response[0].mail);
+  return response;
+}
+
 
 async function addPoints(userId, pointsToAdd) {
   const sql_query = 'UPDATE user SET score = score + ? WHERE id = ?';
@@ -114,4 +126,4 @@ async function checkUserLevel(userId) {
 
 
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, generatePassword, hashPassword,getUserLevel, checkUserLevel };
+module.exports = {isConnected, isSuperAdmin, queryPromise, superAdmin_mails, addPoints, generatePassword, hashPassword,getUserLevel, checkUserLevel };
