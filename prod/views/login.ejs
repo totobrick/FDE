@@ -58,7 +58,7 @@
             .then(response => {
 
                 if (!response.ok) {
-                   console.log("Internal Error")
+                   console.error("Internal Error")
                 }
                 return response.json();
             })

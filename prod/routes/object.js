@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mysql2');
 const mysql = require('mysql2/promise');
-const {isConnected} = require("./functions/functions.js");
+const {isConnected, checkUserLevel, addPoints} = require("./functions/functions.js");
 
 const db = sql.createConnection({
   host: 'localhost',
@@ -24,9 +24,10 @@ router.get('/object', async (req, res) => {
         return res.redirect('/');
     }
     if(!isConnected(req)){
-        console.log("User not connected, redirection to : /index");
         return res.redirect(301, '/index');
     };
+    const userId = req.session.user_id;
+    const niv = await checkUserLevel(userId)
 
     let connection;
     connection = await mysql.createConnection(dbConfig);
@@ -58,9 +59,9 @@ router.get('/object', async (req, res) => {
             FROM production p
             JOIN connected_object co ON p.ID_power_source = co.id
             HAVING date > UNIX_TIMESTAMP(NOW()) - 300
-        ) AS combined
-        WHERE combined.co_id = ?
-        ORDER BY combined.date ASC
+            ) AS combined
+            WHERE combined.co_id = ?
+            ORDER BY combined.date ASC
             `, [objectId]);
     
     let [region] = await connection.query(`SELECT r.name 
@@ -68,6 +69,13 @@ router.get('/object', async (req, res) => {
         WHERE co.ID = ?
         AND r.ID = co.id_region`, [objectId]);
 
+    let [type] = await connection.query(
+        `SELECT co.name AS connected_object, pt.type_name AS type2
+            FROM power_source p
+            JOIN connected_object co ON p.ID_object= co.id
+            JOIN production_type pt ON p.type = pt.id
+            WHERE co.type = 'production'
+            AND co.ID = ?`, [objectId]);
     if(!data){
         data = NaN;
     }
@@ -77,7 +85,6 @@ router.get('/object', async (req, res) => {
     if (connection) await connection.end();
     db.query('SELECT * FROM connected_object WHERE ID = ?', [objectId], (err, results) => {
         if (err || results.length === 0) {
-            console.log("ERROR")
             return res.redirect('/');
         }
         const obj = results[0];
@@ -90,9 +97,20 @@ router.get('/object', async (req, res) => {
                             welcome_msg: "",
                             account_menu : true,
                             userConnected: true,
-                            error_msg : ""
+                            error_msg : "",
+                            niveau : niv, 
+                            type
         });
     });
+});
+
+router.post('/submit_form', async (req, res) => {
+    try {
+        await addPoints(req.session.user_id, 100); 
+    } catch (err) {
+        console.error("Erreur lors de l'ajout de points :", err);
+        res.status(500).send("Erreur lors de l'ajout des points");
+    }
 });
 
 module.exports = router;

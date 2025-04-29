@@ -4,8 +4,6 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/send_mail_forgot_pwd', (req, res) => {
-    console.log("\nPage : /send_mail_forgot_pwd");
-
     // Données utilisateur
     const user_id = req.session.TMP_user_id;
     const user_login = req.session.TMP_login;
@@ -17,11 +15,6 @@ router.get('/send_mail_forgot_pwd', (req, res) => {
     delete req.session.TMP_login;
     delete req.session.TMP_pwd;
     delete req.session.TMP_mail;
-
-    console.log("user_id = " + user_id);
-    console.log("user_login = " + user_login);
-    console.log("user_pwd = " + user_pwd);
-    console.log("user_mail = " + user_mail);
 
     // Mail de l'expéditeur
     var transporter = nodemailer.createTransport({
@@ -69,7 +62,6 @@ router.get('/send_mail_forgot_pwd', (req, res) => {
         if (err) {
             return console.error("Erreur lors de l'envoi :", err);
         }
-        console.log("Email envoyé avec succès :", info.response);
         req.session.error_msg= "Email envoyé avec succès ! Veuillez vérifier votre boîte mail. Si vous ne voyez pas de mail dans votre boîte de réception, pensez à vérifier vos spams ou attendez quelques minutes la réception de l'email.";
         return res.redirect(301, "/");
     });

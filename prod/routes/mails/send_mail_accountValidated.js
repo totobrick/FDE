@@ -5,16 +5,13 @@ const router = express.Router();
 const {queryPromise} = require("./../functions/functions.js");
 
 async function send_mail_accountValidated(req, user_id) {
-    console.log("\nFonction : /send_mail_accountValidated");
 
-    // try/catch : used in case of failure for the database connection or bad request
     try {
         const sql = "SELECT login, mail FROM user WHERE ID = ?";
         const response = await queryPromise(sql, [user_id]);
 
         // Un utilisateur trouvé dans la database
         if (response.length == 1){
-            console.log("response : ", response);
 
             // Données utilisateur
             const user_login = response[0].login;
@@ -62,7 +59,6 @@ async function send_mail_accountValidated(req, user_id) {
                 };
 
                 await transporter.sendMail(mailOptions);
-                console.log("Email de validation envoyé avec succès à l'utilisateur.");
                 req.session.error_msg += "Un mail a été envoyé à l'utilisateur validé.";
             }
             catch(err){
@@ -74,12 +70,12 @@ async function send_mail_accountValidated(req, user_id) {
         }
         else if (response.length >= 2){
             req.session.error_msg = "Mail non envoyé à l'utilisateur validé : : au moins 2 utilisateurs possèdent le même ID.";
-            console.log(req.session.error_msg);
+            console.error(req.session.error_msg);
             return res.redirect("/login");
         }
         else{
             req.session.error_msg = "Mail non envoyé à l'utilisateur validé : aucun ID correspondant dans la base de données";
-            console.log(req.session.error_msg);
+            console.error(req.session.error_msg);
             return res.redirect("/login");
         }
     }

@@ -4,8 +4,6 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/send_registerMailCode', (req, res) => {
-    console.log("\nPage : /send_registerMailCode");
-
     // Données utilisateur
     const user_code = req.session.code;
     const user_mail = req.session.mail;
@@ -54,7 +52,7 @@ router.get('/send_registerMailCode', (req, res) => {
             if (err) {
                 return console.error("Erreur lors de l'envoi :", err);
             }
-            console.log("Email envoyé avec succès :", info.response);
+
             req.session.error_msg= "Email envoyé avec succès ! Veuillez vérifier votre boîte mail. Si vous ne voyez pas de mail dans votre boîte de réception, pensez à vérifier vos spams ou attendez quelques minutes la réception de l'email.";
             return res.redirect(301, "/verifRegisterEnterMailCode");
         });

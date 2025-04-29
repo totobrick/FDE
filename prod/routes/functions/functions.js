@@ -2,12 +2,8 @@ const sql = require('mysql2');
 const bcrypt = require('bcrypt');
 
 function isConnected(req){
-  /*console.log("Fonction isConnected.");
-  console.log("Variables de session : ", req.session);*/
-
   // if user_id session var exists
   if (req.session.user_id){
-    console.log("req.session.user_id = ", req.session.user_id);
     return true;
   }
   else{
@@ -18,7 +14,6 @@ function isConnected(req){
 function isSuperAdmin(req){
   // if isSuperAdmin session var exists
   if (req.session.isSuperAdmin && req.session.isSuperAdmin=="1"){
-    console.log("req.session.isSuperAdmin = ", req.session.isSuperAdmin);
     return true;
   }
   else{
@@ -87,4 +82,36 @@ async function hashPassword(password) {
 }
 
 
-module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, generatePassword, hashPassword};
+function getUserLevel(points) {
+  if (points >= 4000) return 3;
+  if (points >= 1000) return 2;
+  return 1;
+}
+
+async function checkUserLevel(userId) {
+  const sql_query = 'SELECT score FROM user WHERE id = ?';
+  const values = [userId];
+
+  try {
+    const rows = await queryPromise(sql_query, values);
+
+    if (rows.length === 0) {
+      console.error('Utilisateur non trouvé.');
+      return null;
+    }
+
+    const points = rows[0].score;
+    const level = getUserLevel(points);
+
+    console.log(`L'utilisateur ${userId} a ${points} points et est au niveau ${level}.`);
+    return level;
+
+  } catch (err) {
+    console.error('Erreur lors de la récupération des données :', err);
+    return null;
+  }
+}
+
+
+
+module.exports = {isConnected, isSuperAdmin, queryPromise, addPoints, generatePassword, hashPassword,getUserLevel, checkUserLevel };

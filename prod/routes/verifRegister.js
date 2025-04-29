@@ -12,7 +12,6 @@ router.post('/verifRegister', async (req, res) => {
 
         // Check if user is connected
         if(isConnected(req)){
-            console.log("User connected, redirection to : /homepage");
             return res.redirect(301, '/homepage');
         };
 
@@ -24,7 +23,7 @@ router.post('/verifRegister', async (req, res) => {
 
         if (response.length > 0){
             req.session.error_msg = "Le login " + req.body.Login + " est déjà utilisé, veuillez en choisir un autre.";
-            console.log(req.session.error_msg);
+            console.error(req.session.error_msg);
             return res.redirect(301, "/register");        // 301 : http status for permanent redirection
         }
 

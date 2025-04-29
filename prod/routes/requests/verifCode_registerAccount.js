@@ -20,10 +20,7 @@ router.post('/verifCode_registerAccount', async (req, res) => {
 
     // try/catch : used in case of failure for the database connection or bad request
     try{
-        console.log("\nPage : /verifCode_registerAccount");
-
         if(isConnected(req)){
-            console.log("User connected, redirection to : /homepage");
             return res.redirect(301, '/homepage');
         };
 
@@ -39,18 +36,6 @@ router.post('/verifCode_registerAccount', async (req, res) => {
         const user_code = req.body.Code;
         const code = req.session.code;
 
-        // Affichage console
-        console.log("user_gender = " + user_gender);
-        console.log("user_fname = " + user_fname);
-        console.log("user_lname = " + user_lname);
-        console.log("user_date = " + user_date);
-        console.log("user_region = " + user_region);
-        console.log("user_mail = " + user_mail);
-        console.log("user_login = " + user_login);
-        console.log("user_pwd = " + user_pwd);
-        console.log("user_code = " + user_code);
-        console.log("code = " + code);
-
         // Check si le code entré est correct
         if (user_code == code){
             // Code correct
@@ -65,13 +50,10 @@ router.post('/verifCode_registerAccount', async (req, res) => {
             const response = await queryPromise(query, [user_login]);
                     // await :  -> attend la fin de l'ececution de la fct pour passer a la suite
                     //          -> fonctionne avec async
-            
-            console.log("Nb lignes : ", response.length);
-            console.log("response", response);
 
             if (response.length > 0){
                 req.session.error_msg = "Le login " + user_login + " vient d'être pris par quelqu'un d'autre. Veuillez en choisir un autre.";
-                console.log(req.session.error_msg);
+                console.error(req.session.error_msg);
                 return res.redirect(301, "/register");        // 301 : http status for permanent redirection
             }
 
@@ -82,14 +64,13 @@ router.post('/verifCode_registerAccount', async (req, res) => {
                     //          -> fonctionne avec async
             
             req.session.error_msg = "Votre compte a été créé avec succès ! Veuillez attendre que l'Administrateur vous accepte.";
-            console.log(req.session.error_msg);
             // Envoi du mail au superAdmin pour qu'il valide le compte
             // En attendant le compte est enregistré mais l'utilisateur ne peut pas se connecter.
             return res.redirect(301, '/send_mail_verifAdmin');
         }
         else {
             req.session.error_msg = "Code entré incorrect.";
-            console.log(req.session.error_msg);
+            console.error(req.session.error_msg);
             return res.redirect(301, '/verifRegisterEnterMailCode');
         }
     }

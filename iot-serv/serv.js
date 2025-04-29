@@ -71,16 +71,3 @@ const getAndPushData = async () => {
 
 
 setInterval(getAndPushData, 5000);
-
-
-//used for debug
-/*const app = express();
-const PORT = 3000;
-
-app.get('/', (req, res) => {
-    res.json(dataHistory);
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});*/
