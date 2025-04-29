@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mysql2');
 const mysql = require('mysql2/promise');
-const {isConnected, checkUserLevel} = require("./functions/functions.js");
+const {isConnected, checkUserLevel, addPoints} = require("./functions/functions.js");
 
 const db = sql.createConnection({
   host: 'localhost',
@@ -76,7 +76,6 @@ router.get('/object', async (req, res) => {
             JOIN production_type pt ON p.type = pt.id
             WHERE co.type = 'production'
             AND co.ID = ?`, [objectId]);
-
     if(!data){
         data = NaN;
     }
@@ -103,6 +102,15 @@ router.get('/object', async (req, res) => {
                             type
         });
     });
+});
+
+router.post('/submit_form', async (req, res) => {
+    try {
+        await addPoints(req.session.user_id, 100); 
+    } catch (err) {
+        console.error("Erreur lors de l'ajout de points :", err);
+        res.status(500).send("Erreur lors de l'ajout des points");
+    }
 });
 
 module.exports = router;
